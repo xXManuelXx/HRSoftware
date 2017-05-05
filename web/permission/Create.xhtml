@@ -12,9 +12,16 @@
             <h:form id="PermissionCreateForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{permissionController.selected != null}">
-                       <p:outputLabel value="#{bundle.CreatePermissionLabel_beschreibung}" for="beschreibung" />
+                        <p:outputLabel value="#{bundle.CreatePermissionLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{permissionController.selected.id}" title="#{bundle.CreatePermissionTitle_id}" required="false" requiredMessage="#{bundle.CreatePermissionRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.CreatePermissionLabel_beschreibung}" for="beschreibung" />
                         <p:inputTextarea rows="4" cols="30" id="beschreibung" value="#{permissionController.selected.beschreibung}" title="#{bundle.CreatePermissionTitle_beschreibung}" required="true" requiredMessage="#{bundle.CreatePermissionRequiredMessage_beschreibung}"/>
-                        
+                        <p:outputLabel value="#{bundle.CreatePermissionLabel_user}" for="user" />
+                        <p:selectOneMenu id="user" value="#{permissionController.selected.user}" >
+                            <f:selectItems value="#{userController.itemsAvailableSelectOne}"
+                                           var="userItem"
+                                           itemValue="#{userItem}"/>
+                        </p:selectOneMenu>
                     </p:panelGrid>
                     <p:commandButton actionListener="#{permissionController.create}" value="#{bundle.Save}" update="display,:PermissionListForm:datalist,:growl" oncomplete="handleSubmit(args,'PermissionCreateDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="PermissionCreateDialog.hide()"/>

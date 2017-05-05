@@ -41,6 +41,8 @@ public class Gehalt implements Serializable {
     @NotNull
     @Column(nullable = false)
     private int gehalt;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "idGehalt")
+    private Mitarbeiter mitarbeiter;
 
     public Gehalt() {
     }
@@ -68,6 +70,14 @@ public class Gehalt implements Serializable {
 
     public void setGehalt(int gehalt) {
         this.gehalt = gehalt;
+    }
+
+    public Mitarbeiter getMitarbeiter() {
+        return mitarbeiter;
+    }
+
+    public void setMitarbeiter(Mitarbeiter mitarbeiter) {
+        this.mitarbeiter = mitarbeiter;
     }
 
     @Override

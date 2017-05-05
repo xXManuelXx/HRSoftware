@@ -16,7 +16,12 @@
                         <p:inputText id="plz" value="#{ortController.selected.plz}" title="#{bundle.CreateOrtTitle_plz}" required="true" requiredMessage="#{bundle.CreateOrtRequiredMessage_plz}"/>
                         <p:outputLabel value="#{bundle.CreateOrtLabel_name}" for="name" />
                         <p:inputText id="name" value="#{ortController.selected.name}" title="#{bundle.CreateOrtTitle_name}" required="true" requiredMessage="#{bundle.CreateOrtRequiredMessage_name}"/>
-                       
+                        <p:outputLabel value="#{bundle.CreateOrtLabel_mitarbeiter}" for="mitarbeiter" />
+                        <p:selectOneMenu id="mitarbeiter" value="#{ortController.selected.mitarbeiter}" >
+                            <f:selectItems value="#{mitarbeiterController.itemsAvailableSelectOne}"
+                                           var="mitarbeiterItem"
+                                           itemValue="#{mitarbeiterItem}"/>
+                        </p:selectOneMenu>
                     </p:panelGrid>
                     <p:commandButton actionListener="#{ortController.create}" value="#{bundle.Save}" update="display,:OrtListForm:datalist,:growl" oncomplete="handleSubmit(args,'OrtCreateDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="OrtCreateDialog.hide()"/>

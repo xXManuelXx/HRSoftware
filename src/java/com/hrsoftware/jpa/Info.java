@@ -44,7 +44,8 @@ public class Info implements Serializable {
     @Size(min = 1, max = 65535)
     @Column(nullable = false, length = 65535)
     private String beschreibung;
-   
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "infoId")
+    private Mitarbeiter mitarbeiter;
 
     public Info() {
     }
@@ -74,6 +75,13 @@ public class Info implements Serializable {
         this.beschreibung = beschreibung;
     }
 
+    public Mitarbeiter getMitarbeiter() {
+        return mitarbeiter;
+    }
+
+    public void setMitarbeiter(Mitarbeiter mitarbeiter) {
+        this.mitarbeiter = mitarbeiter;
+    }
 
     @Override
     public int hashCode() {

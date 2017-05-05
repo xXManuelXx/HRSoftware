@@ -16,7 +16,13 @@
                         <p:inputText id="id" value="#{infoController.selected.id}" title="#{bundle.EditInfoTitle_id}" required="true" requiredMessage="#{bundle.EditInfoRequiredMessage_id}"/>
                         <p:outputLabel value="#{bundle.EditInfoLabel_beschreibung}" for="beschreibung" />
                         <p:inputTextarea rows="4" cols="30" id="beschreibung" value="#{infoController.selected.beschreibung}" title="#{bundle.EditInfoTitle_beschreibung}" required="true" requiredMessage="#{bundle.EditInfoRequiredMessage_beschreibung}"/>
-                   
+                        <p:outputLabel value="#{bundle.EditInfoLabel_mitarbeiter}" for="mitarbeiter" />
+                        <p:selectOneMenu id="mitarbeiter" value="#{infoController.selected.mitarbeiter}" >
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{mitarbeiterController.itemsAvailableSelectOne}"
+                                           var="mitarbeiterItem"
+                                           itemValue="#{mitarbeiterItem}"/>
+                        </p:selectOneMenu>
                     </p:panelGrid>
                     <p:commandButton actionListener="#{infoController.update}" value="#{bundle.Save}" update="display,:InfoListForm:datalist,:growl" oncomplete="handleSubmit(args, 'InfoEditDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="InfoEditDialog.hide()"/>

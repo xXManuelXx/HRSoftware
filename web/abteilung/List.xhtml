@@ -39,6 +39,18 @@
                             </f:facet>
                             <h:outputText value="#{item.beschreibung}"/>
                         </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListAbteilungTitle_mitarbeiter}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.mitarbeiter}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListAbteilungTitle_raum}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.raum}"/>
+                        </p:column>
                         <f:facet name="footer">
                             <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{abteilungController.prepareCreate}" update=":AbteilungCreateForm" oncomplete="PF('AbteilungCreateDialog').show()"/>
                             <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":AbteilungViewForm" oncomplete="PF('AbteilungViewDialog').show()" disabled="#{empty abteilungController.selected}"/>

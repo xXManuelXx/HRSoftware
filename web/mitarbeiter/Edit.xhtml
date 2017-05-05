@@ -12,7 +12,9 @@
             <h:form id="MitarbeiterEditForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{mitarbeiterController.selected != null}">
-                       <p:outputLabel value="#{bundle.EditMitarbeiterLabel_nachname}" for="nachname" />
+                        <p:outputLabel value="#{bundle.EditMitarbeiterLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{mitarbeiterController.selected.id}" title="#{bundle.EditMitarbeiterTitle_id}" required="true" requiredMessage="#{bundle.EditMitarbeiterRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.EditMitarbeiterLabel_nachname}" for="nachname" />
                         <p:inputText id="nachname" value="#{mitarbeiterController.selected.nachname}" title="#{bundle.EditMitarbeiterTitle_nachname}" required="true" requiredMessage="#{bundle.EditMitarbeiterRequiredMessage_nachname}"/>
                         <p:outputLabel value="#{bundle.EditMitarbeiterLabel_vorname}" for="vorname" />
                         <p:inputText id="vorname" value="#{mitarbeiterController.selected.vorname}" title="#{bundle.EditMitarbeiterTitle_vorname}" required="true" requiredMessage="#{bundle.EditMitarbeiterRequiredMessage_vorname}"/>

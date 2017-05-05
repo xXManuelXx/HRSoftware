@@ -12,9 +12,17 @@
             <h:form id="PositionEditForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{positionController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditPositionLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{positionController.selected.id}" title="#{bundle.EditPositionTitle_id}" required="true" requiredMessage="#{bundle.EditPositionRequiredMessage_id}"/>
                         <p:outputLabel value="#{bundle.EditPositionLabel_beschreibung}" for="beschreibung" />
                         <p:inputTextarea rows="4" cols="30" id="beschreibung" value="#{positionController.selected.beschreibung}" title="#{bundle.EditPositionTitle_beschreibung}" required="true" requiredMessage="#{bundle.EditPositionRequiredMessage_beschreibung}"/>
-                        
+                        <p:outputLabel value="#{bundle.EditPositionLabel_mitarbeiter}" for="mitarbeiter" />
+                        <p:selectOneMenu id="mitarbeiter" value="#{positionController.selected.mitarbeiter}" >
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{mitarbeiterController.itemsAvailableSelectOne}"
+                                           var="mitarbeiterItem"
+                                           itemValue="#{mitarbeiterItem}"/>
+                        </p:selectOneMenu>
                     </p:panelGrid>
                     <p:commandButton actionListener="#{positionController.update}" value="#{bundle.Save}" update="display,:PositionListForm:datalist,:growl" oncomplete="handleSubmit(args, 'PositionEditDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="PositionEditDialog.hide()"/>

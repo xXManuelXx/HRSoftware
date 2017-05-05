@@ -12,7 +12,9 @@
             <h:form id="MaHistorieEditForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{maHistorieController.selected != null}">
-                       <p:outputLabel value="#{bundle.EditMaHistorieLabel_anfang}" for="anfang" />
+                        <p:outputLabel value="#{bundle.EditMaHistorieLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{maHistorieController.selected.id}" title="#{bundle.EditMaHistorieTitle_id}" required="true" requiredMessage="#{bundle.EditMaHistorieRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.EditMaHistorieLabel_anfang}" for="anfang" />
                         <p:calendar id="anfang" pattern="MM/dd/yyyy" value="#{maHistorieController.selected.anfang}" title="#{bundle.EditMaHistorieTitle_anfang}" required="true" requiredMessage="#{bundle.EditMaHistorieRequiredMessage_anfang}" showOn="button"/>
                         <p:outputLabel value="#{bundle.EditMaHistorieLabel_ende}" for="ende" />
                         <p:calendar id="ende" pattern="MM/dd/yyyy" value="#{maHistorieController.selected.ende}" title="#{bundle.EditMaHistorieTitle_ende}" required="true" requiredMessage="#{bundle.EditMaHistorieRequiredMessage_ende}" showOn="button"/>

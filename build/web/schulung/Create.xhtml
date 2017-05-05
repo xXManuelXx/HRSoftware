@@ -12,7 +12,9 @@
             <h:form id="SchulungCreateForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{schulungController.selected != null}">
-                      <p:outputLabel value="#{bundle.CreateSchulungLabel_beschreibung}" for="beschreibung" />
+                        <p:outputLabel value="#{bundle.CreateSchulungLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{schulungController.selected.id}" title="#{bundle.CreateSchulungTitle_id}" required="false" requiredMessage="#{bundle.CreateSchulungRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.CreateSchulungLabel_beschreibung}" for="beschreibung" />
                         <p:inputTextarea rows="4" cols="30" id="beschreibung" value="#{schulungController.selected.beschreibung}" title="#{bundle.CreateSchulungTitle_beschreibung}" required="true" requiredMessage="#{bundle.CreateSchulungRequiredMessage_beschreibung}"/>
                         <p:outputLabel value="#{bundle.CreateSchulungLabel_kosten}" for="kosten" />
                         <p:inputText id="kosten" value="#{schulungController.selected.kosten}" title="#{bundle.CreateSchulungTitle_kosten}" required="true" requiredMessage="#{bundle.CreateSchulungRequiredMessage_kosten}"/>

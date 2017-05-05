@@ -52,7 +52,8 @@ public class User implements Serializable {
     @Size(min = 1, max = 255)
     @Column(nullable = false, length = 255)
     private String passwort;
-
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private Mitarbeiter mitarbeiter;
     @JoinColumn(name = "permission_id", referencedColumnName = "id", nullable = false)
     @OneToOne(optional = false)
     private Permission permissionId;
@@ -94,7 +95,14 @@ public class User implements Serializable {
         this.passwort = passwort;
     }
 
-   
+    public Mitarbeiter getMitarbeiter() {
+        return mitarbeiter;
+    }
+
+    public void setMitarbeiter(Mitarbeiter mitarbeiter) {
+        this.mitarbeiter = mitarbeiter;
+    }
+
     public Permission getPermissionId() {
         return permissionId;
     }

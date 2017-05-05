@@ -16,6 +16,10 @@
                         <h:outputText value="#{abteilungController.selected.id}" title="#{bundle.ViewAbteilungTitle_id}"/>
                         <h:outputText value="#{bundle.ViewAbteilungLabel_beschreibung}"/>
                         <h:outputText value="#{abteilungController.selected.beschreibung}" title="#{bundle.ViewAbteilungTitle_beschreibung}"/>
+                        <h:outputText value="#{bundle.ViewAbteilungLabel_mitarbeiter}"/>
+                        <h:outputText value="#{abteilungController.selected.mitarbeiter}" title="#{bundle.ViewAbteilungTitle_mitarbeiter}"/>
+                        <h:outputText value="#{bundle.ViewAbteilungLabel_raum}"/>
+                        <h:outputText value="#{abteilungController.selected.raum}" title="#{bundle.ViewAbteilungTitle_raum}"/>
                     </p:panelGrid>
                     <p:commandButton value="#{bundle.Close}" onclick="AbteilungViewDialog.hide()"/>
                 </h:panelGroup>

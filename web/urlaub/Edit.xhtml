@@ -12,7 +12,9 @@
             <h:form id="UrlaubEditForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{urlaubController.selected != null}">
-                     <p:outputLabel value="#{bundle.EditUrlaubLabel_anfang}" for="anfang" />
+                        <p:outputLabel value="#{bundle.EditUrlaubLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{urlaubController.selected.id}" title="#{bundle.EditUrlaubTitle_id}" required="true" requiredMessage="#{bundle.EditUrlaubRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.EditUrlaubLabel_anfang}" for="anfang" />
                         <p:calendar id="anfang" pattern="MM/dd/yyyy" value="#{urlaubController.selected.anfang}" title="#{bundle.EditUrlaubTitle_anfang}" required="true" requiredMessage="#{bundle.EditUrlaubRequiredMessage_anfang}" showOn="button"/>
                         <p:outputLabel value="#{bundle.EditUrlaubLabel_ende}" for="ende" />
                         <p:calendar id="ende" pattern="MM/dd/yyyy" value="#{urlaubController.selected.ende}" title="#{bundle.EditUrlaubTitle_ende}" required="true" requiredMessage="#{bundle.EditUrlaubRequiredMessage_ende}" showOn="button"/>

@@ -12,9 +12,17 @@
             <h:form id="GehaltCreateForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{gehaltController.selected != null}">
-                       <p:outputLabel value="#{bundle.CreateGehaltLabel_gehalt}" for="gehalt" />
+                        <p:outputLabel value="#{bundle.CreateGehaltLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{gehaltController.selected.id}" title="#{bundle.CreateGehaltTitle_id}" required="false" requiredMessage="#{bundle.CreateGehaltRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltLabel_gehalt}" for="gehalt" />
                         <p:inputText id="gehalt" value="#{gehaltController.selected.gehalt}" title="#{bundle.CreateGehaltTitle_gehalt}" required="true" requiredMessage="#{bundle.CreateGehaltRequiredMessage_gehalt}"/>
-                  </p:panelGrid>
+                        <p:outputLabel value="#{bundle.CreateGehaltLabel_mitarbeiter}" for="mitarbeiter" />
+                        <p:selectOneMenu id="mitarbeiter" value="#{gehaltController.selected.mitarbeiter}" >
+                            <f:selectItems value="#{mitarbeiterController.itemsAvailableSelectOne}"
+                                           var="mitarbeiterItem"
+                                           itemValue="#{mitarbeiterItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
                     <p:commandButton actionListener="#{gehaltController.create}" value="#{bundle.Save}" update="display,:GehaltListForm:datalist,:growl" oncomplete="handleSubmit(args,'GehaltCreateDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="GehaltCreateDialog.hide()"/>
                 </h:panelGroup>

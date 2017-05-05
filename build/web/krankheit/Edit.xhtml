@@ -12,7 +12,9 @@
             <h:form id="KrankheitEditForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{krankheitController.selected != null}">
-                       <p:outputLabel value="#{bundle.EditKrankheitLabel_anfang}" for="anfang" />
+                        <p:outputLabel value="#{bundle.EditKrankheitLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{krankheitController.selected.id}" title="#{bundle.EditKrankheitTitle_id}" required="true" requiredMessage="#{bundle.EditKrankheitRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.EditKrankheitLabel_anfang}" for="anfang" />
                         <p:calendar id="anfang" pattern="MM/dd/yyyy" value="#{krankheitController.selected.anfang}" title="#{bundle.EditKrankheitTitle_anfang}" required="true" requiredMessage="#{bundle.EditKrankheitRequiredMessage_anfang}" showOn="button"/>
                         <p:outputLabel value="#{bundle.EditKrankheitLabel_ende}" for="ende" />
                         <p:calendar id="ende" pattern="MM/dd/yyyy" value="#{krankheitController.selected.ende}" title="#{bundle.EditKrankheitTitle_ende}" required="true" requiredMessage="#{bundle.EditKrankheitRequiredMessage_ende}" showOn="button"/>

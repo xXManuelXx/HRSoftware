@@ -12,10 +12,17 @@
             <h:form id="LandEditForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{landController.selected != null}">
-                       <p:outputLabel value="#{bundle.EditLandLabel_name}" for="name" />
+                        <p:outputLabel value="#{bundle.EditLandLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{landController.selected.id}" title="#{bundle.EditLandTitle_id}" required="true" requiredMessage="#{bundle.EditLandRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.EditLandLabel_name}" for="name" />
                         <p:inputText id="name" value="#{landController.selected.name}" title="#{bundle.EditLandTitle_name}" required="true" requiredMessage="#{bundle.EditLandRequiredMessage_name}"/>
                         <p:outputLabel value="#{bundle.EditLandLabel_mitarbeiter}" for="mitarbeiter" />
-                      
+                        <p:selectOneMenu id="mitarbeiter" value="#{landController.selected.mitarbeiter}" >
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{mitarbeiterController.itemsAvailableSelectOne}"
+                                           var="mitarbeiterItem"
+                                           itemValue="#{mitarbeiterItem}"/>
+                        </p:selectOneMenu>
                     </p:panelGrid>
                     <p:commandButton actionListener="#{landController.update}" value="#{bundle.Save}" update="display,:LandListForm:datalist,:growl" oncomplete="handleSubmit(args, 'LandEditDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="LandEditDialog.hide()"/>

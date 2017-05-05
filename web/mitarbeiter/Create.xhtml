@@ -12,7 +12,9 @@
             <h:form id="MitarbeiterCreateForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{mitarbeiterController.selected != null}">
-                       <p:outputLabel value="#{bundle.CreateMitarbeiterLabel_nachname}" for="nachname" />
+                        <p:outputLabel value="#{bundle.CreateMitarbeiterLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{mitarbeiterController.selected.id}" title="#{bundle.CreateMitarbeiterTitle_id}" required="false" requiredMessage="#{bundle.CreateMitarbeiterRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.CreateMitarbeiterLabel_nachname}" for="nachname" />
                         <p:inputText id="nachname" value="#{mitarbeiterController.selected.nachname}" title="#{bundle.CreateMitarbeiterTitle_nachname}" required="true" requiredMessage="#{bundle.CreateMitarbeiterRequiredMessage_nachname}"/>
                         <p:outputLabel value="#{bundle.CreateMitarbeiterLabel_vorname}" for="vorname" />
                         <p:inputText id="vorname" value="#{mitarbeiterController.selected.vorname}" title="#{bundle.CreateMitarbeiterTitle_vorname}" required="true" requiredMessage="#{bundle.CreateMitarbeiterRequiredMessage_vorname}"/>

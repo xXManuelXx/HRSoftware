@@ -12,26 +12,24 @@
             <h:form id="MaSchulungCreateForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{maSchulungController.selected != null}">
-                        <p:outputLabel value="#{bundle.CreateMaSchulungLabel_maSchulungPK_schulungId}" for="maSchulungPK_schulungId" />                        
-                        <p:selectOneMenu  id="maSchulungPK_schulungId" value="#{maSchulungController.selected.maSchulungPK.schulungId}" required="true" requiredMessage="#{bundle.CreateMaSchulungRequiredMessage_maSchulungPK_schulungId}">
-                            <f:selectItems value="#{schulungController.itemsAvailableSelectOne}"
-                                           var="schulungItem"
-                                           itemValue="#{schulungItem}"/>
-                        </p:selectOneMenu>
-                        
+                        <p:outputLabel value="#{bundle.CreateMaSchulungLabel_maSchulungPK_schulungId}" for="maSchulungPK_schulungId" />
+                        <p:inputText id="maSchulungPK_schulungId" value="#{maSchulungController.selected.maSchulungPK.schulungId}" title="#{bundle.CreateMaSchulungTitle_maSchulungPK_schulungId}" required="false" requiredMessage="#{bundle.CreateMaSchulungRequiredMessage_maSchulungPK_schulungId}"/>
                         <p:outputLabel value="#{bundle.CreateMaSchulungLabel_maSchulungPK_maId}" for="maSchulungPK_maId" />
-                        <p:selectOneMenu id="maSchulungPK_maId" value="#{maSchulungController.selected.maSchulungPK.maId}"  required="true" requiredMessage="#{bundle.CreateMaSchulungRequiredMessage_maSchulungPK_maId}">
+                        <p:inputText id="maSchulungPK_maId" value="#{maSchulungController.selected.maSchulungPK.maId}" title="#{bundle.CreateMaSchulungTitle_maSchulungPK_maId}" required="true" requiredMessage="#{bundle.CreateMaSchulungRequiredMessage_maSchulungPK_maId}"/>
+                        <p:outputLabel value="#{bundle.CreateMaSchulungLabel_abgeschlossen}" for="abgeschlossen" />
+                        <p:selectBooleanCheckbox id="abgeschlossen" value="#{maSchulungController.selected.abgeschlossen}" required="true" requiredMessage="#{bundle.EditMaSchulungRequiredMessage_abgeschlossen}"/>
+                        <p:outputLabel value="#{bundle.CreateMaSchulungLabel_mitarbeiter}" for="mitarbeiter" />
+                        <p:selectOneMenu id="mitarbeiter" value="#{maSchulungController.selected.mitarbeiter}" required="true" requiredMessage="#{bundle.EditMaSchulungRequiredMessage_mitarbeiter}">
                             <f:selectItems value="#{mitarbeiterController.itemsAvailableSelectOne}"
                                            var="mitarbeiterItem"
                                            itemValue="#{mitarbeiterItem}"/>
                         </p:selectOneMenu>
-                     
-                        <p:outputLabel value="#{bundle.CreateMaSchulungLabel_abgeschlossen}" for="abgeschlossen" />
-                        <p:selectBooleanCheckbox id="abgeschlossen" value="#{maSchulungController.selected.abgeschlossen}" required="true" requiredMessage="#{bundle.EditMaSchulungRequiredMessage_abgeschlossen}"/>
-                        
-                      
-                        
-                      
+                        <p:outputLabel value="#{bundle.CreateMaSchulungLabel_schulung}" for="schulung" />
+                        <p:selectOneMenu id="schulung" value="#{maSchulungController.selected.schulung}" required="true" requiredMessage="#{bundle.EditMaSchulungRequiredMessage_schulung}">
+                            <f:selectItems value="#{schulungController.itemsAvailableSelectOne}"
+                                           var="schulungItem"
+                                           itemValue="#{schulungItem}"/>
+                        </p:selectOneMenu>
                     </p:panelGrid>
                     <p:commandButton actionListener="#{maSchulungController.create}" value="#{bundle.Save}" update="display,:MaSchulungListForm:datalist,:growl" oncomplete="handleSubmit(args,'MaSchulungCreateDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="MaSchulungCreateDialog.hide()"/>

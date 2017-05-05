@@ -44,6 +44,10 @@ public class Abteilung implements Serializable {
     @Size(min = 1, max = 65535)
     @Column(nullable = false, length = 65535)
     private String beschreibung;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "abteilungsId")
+    private Mitarbeiter mitarbeiter;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "abteilungsId")
+    private Raum raum;
 
     public Abteilung() {
     }
@@ -71,6 +75,22 @@ public class Abteilung implements Serializable {
 
     public void setBeschreibung(String beschreibung) {
         this.beschreibung = beschreibung;
+    }
+
+    public Mitarbeiter getMitarbeiter() {
+        return mitarbeiter;
+    }
+
+    public void setMitarbeiter(Mitarbeiter mitarbeiter) {
+        this.mitarbeiter = mitarbeiter;
+    }
+
+    public Raum getRaum() {
+        return raum;
+    }
+
+    public void setRaum(Raum raum) {
+        this.raum = raum;
     }
 
     @Override

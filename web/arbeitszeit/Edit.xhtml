@@ -12,6 +12,8 @@
             <h:form id="ArbeitszeitEditForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{arbeitszeitController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditArbeitszeitLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{arbeitszeitController.selected.id}" title="#{bundle.EditArbeitszeitTitle_id}" required="true" requiredMessage="#{bundle.EditArbeitszeitRequiredMessage_id}"/>
                         <p:outputLabel value="#{bundle.EditArbeitszeitLabel_anfang}" for="anfang" />
                         <p:calendar id="anfang" pattern="MM/dd/yyyy" value="#{arbeitszeitController.selected.anfang}" title="#{bundle.EditArbeitszeitTitle_anfang}" required="true" requiredMessage="#{bundle.EditArbeitszeitRequiredMessage_anfang}" showOn="button"/>
                         <p:outputLabel value="#{bundle.EditArbeitszeitLabel_ende}" for="ende" />

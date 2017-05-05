@@ -16,7 +16,8 @@
                         <h:outputText value="#{permissionController.selected.id}" title="#{bundle.ViewPermissionTitle_id}"/>
                         <h:outputText value="#{bundle.ViewPermissionLabel_beschreibung}"/>
                         <h:outputText value="#{permissionController.selected.beschreibung}" title="#{bundle.ViewPermissionTitle_beschreibung}"/>
-
+                        <h:outputText value="#{bundle.ViewPermissionLabel_user}"/>
+                        <h:outputText value="#{permissionController.selected.user}" title="#{bundle.ViewPermissionTitle_user}"/>
                     </p:panelGrid>
                     <p:commandButton value="#{bundle.Close}" onclick="PermissionViewDialog.hide()"/>
                 </h:panelGroup>

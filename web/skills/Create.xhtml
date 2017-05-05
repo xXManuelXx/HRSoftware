@@ -12,7 +12,9 @@
             <h:form id="SkillsCreateForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{skillsController.selected != null}">
-                      <p:outputLabel value="#{bundle.CreateSkillsLabel_beschreibung}" for="beschreibung" />
+                        <p:outputLabel value="#{bundle.CreateSkillsLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{skillsController.selected.id}" title="#{bundle.CreateSkillsTitle_id}" required="false" requiredMessage="#{bundle.CreateSkillsRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.CreateSkillsLabel_beschreibung}" for="beschreibung" />
                         <p:inputText id="beschreibung" value="#{skillsController.selected.beschreibung}" title="#{bundle.CreateSkillsTitle_beschreibung}" required="true" requiredMessage="#{bundle.CreateSkillsRequiredMessage_beschreibung}"/>
                     </p:panelGrid>
                     <p:commandButton actionListener="#{skillsController.create}" value="#{bundle.Save}" update="display,:SkillsListForm:datalist,:growl" oncomplete="handleSubmit(args,'SkillsCreateDialog');"/>

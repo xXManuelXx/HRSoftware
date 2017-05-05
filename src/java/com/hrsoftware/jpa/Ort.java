@@ -41,7 +41,8 @@ public class Ort implements Serializable {
     @Size(min = 1, max = 255)
     @Column(nullable = false, length = 255)
     private String name;
-
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "plz")
+    private Mitarbeiter mitarbeiter;
 
     public Ort() {
     }
@@ -71,7 +72,13 @@ public class Ort implements Serializable {
         this.name = name;
     }
 
-  
+    public Mitarbeiter getMitarbeiter() {
+        return mitarbeiter;
+    }
+
+    public void setMitarbeiter(Mitarbeiter mitarbeiter) {
+        this.mitarbeiter = mitarbeiter;
+    }
 
     @Override
     public int hashCode() {

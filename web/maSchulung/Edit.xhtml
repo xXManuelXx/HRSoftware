@@ -19,7 +19,19 @@
                         <p:outputLabel value="#{bundle.EditMaSchulungLabel_abgeschlossen}" for="abgeschlossen" />
                         <p:selectBooleanCheckbox id="abgeschlossen" value="#{maSchulungController.selected.abgeschlossen}" required="true" requiredMessage="#{bundle.EditMaSchulungRequiredMessage_abgeschlossen}"/>
                         <p:outputLabel value="#{bundle.EditMaSchulungLabel_mitarbeiter}" for="mitarbeiter" />
-                
+                        <p:selectOneMenu id="mitarbeiter" value="#{maSchulungController.selected.mitarbeiter}" required="true" requiredMessage="#{bundle.EditMaSchulungRequiredMessage_mitarbeiter}">
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{mitarbeiterController.itemsAvailableSelectOne}"
+                                           var="mitarbeiterItem"
+                                           itemValue="#{mitarbeiterItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.EditMaSchulungLabel_schulung}" for="schulung" />
+                        <p:selectOneMenu id="schulung" value="#{maSchulungController.selected.schulung}" required="true" requiredMessage="#{bundle.EditMaSchulungRequiredMessage_schulung}">
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{schulungController.itemsAvailableSelectOne}"
+                                           var="schulungItem"
+                                           itemValue="#{schulungItem}"/>
+                        </p:selectOneMenu>
                     </p:panelGrid>
                     <p:commandButton actionListener="#{maSchulungController.update}" value="#{bundle.Save}" update="display,:MaSchulungListForm:datalist,:growl" oncomplete="handleSubmit(args, 'MaSchulungEditDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="MaSchulungEditDialog.hide()"/>

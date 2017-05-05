@@ -12,11 +12,19 @@
             <h:form id="UserEditForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{userController.selected != null}">
-                       <p:outputLabel value="#{bundle.EditUserLabel_username}" for="username" />
+                        <p:outputLabel value="#{bundle.EditUserLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{userController.selected.id}" title="#{bundle.EditUserTitle_id}" required="true" requiredMessage="#{bundle.EditUserRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.EditUserLabel_username}" for="username" />
                         <p:inputText id="username" value="#{userController.selected.username}" title="#{bundle.EditUserTitle_username}" required="true" requiredMessage="#{bundle.EditUserRequiredMessage_username}"/>
                         <p:outputLabel value="#{bundle.EditUserLabel_passwort}" for="passwort" />
                         <p:inputText id="passwort" value="#{userController.selected.passwort}" title="#{bundle.EditUserTitle_passwort}" required="true" requiredMessage="#{bundle.EditUserRequiredMessage_passwort}"/>
-                       
+                        <p:outputLabel value="#{bundle.EditUserLabel_mitarbeiter}" for="mitarbeiter" />
+                        <p:selectOneMenu id="mitarbeiter" value="#{userController.selected.mitarbeiter}" >
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{mitarbeiterController.itemsAvailableSelectOne}"
+                                           var="mitarbeiterItem"
+                                           itemValue="#{mitarbeiterItem}"/>
+                        </p:selectOneMenu>
                         <p:outputLabel value="#{bundle.EditUserLabel_permissionId}" for="permissionId" />
                         <p:selectOneMenu id="permissionId" value="#{userController.selected.permissionId}" required="true" requiredMessage="#{bundle.EditUserRequiredMessage_permissionId}">
                             <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>

@@ -12,9 +12,17 @@
             <h:form id="PermissionEditForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{permissionController.selected != null}">
-                      <p:outputLabel value="#{bundle.EditPermissionLabel_beschreibung}" for="beschreibung" />
+                        <p:outputLabel value="#{bundle.EditPermissionLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{permissionController.selected.id}" title="#{bundle.EditPermissionTitle_id}" required="true" requiredMessage="#{bundle.EditPermissionRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.EditPermissionLabel_beschreibung}" for="beschreibung" />
                         <p:inputTextarea rows="4" cols="30" id="beschreibung" value="#{permissionController.selected.beschreibung}" title="#{bundle.EditPermissionTitle_beschreibung}" required="true" requiredMessage="#{bundle.EditPermissionRequiredMessage_beschreibung}"/>
-
+                        <p:outputLabel value="#{bundle.EditPermissionLabel_user}" for="user" />
+                        <p:selectOneMenu id="user" value="#{permissionController.selected.user}" >
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{userController.itemsAvailableSelectOne}"
+                                           var="userItem"
+                                           itemValue="#{userItem}"/>
+                        </p:selectOneMenu>
                     </p:panelGrid>
                     <p:commandButton actionListener="#{permissionController.update}" value="#{bundle.Save}" update="display,:PermissionListForm:datalist,:growl" oncomplete="handleSubmit(args, 'PermissionEditDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="PermissionEditDialog.hide()"/>

@@ -44,7 +44,8 @@ public class Permission implements Serializable {
     @Size(min = 1, max = 65535)
     @Column(nullable = false, length = 65535)
     private String beschreibung;
-
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "permissionId")
+    private User user;
 
     public Permission() {
     }
@@ -72,6 +73,14 @@ public class Permission implements Serializable {
 
     public void setBeschreibung(String beschreibung) {
         this.beschreibung = beschreibung;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

@@ -12,9 +12,24 @@
             <h:form id="AbteilungEditForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{abteilungController.selected != null}">
-                       <p:outputLabel value="#{bundle.EditAbteilungLabel_beschreibung}" for="beschreibung" />
+                        <p:outputLabel value="#{bundle.EditAbteilungLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{abteilungController.selected.id}" title="#{bundle.EditAbteilungTitle_id}" required="true" requiredMessage="#{bundle.EditAbteilungRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.EditAbteilungLabel_beschreibung}" for="beschreibung" />
                         <p:inputTextarea rows="4" cols="30" id="beschreibung" value="#{abteilungController.selected.beschreibung}" title="#{bundle.EditAbteilungTitle_beschreibung}" required="true" requiredMessage="#{bundle.EditAbteilungRequiredMessage_beschreibung}"/>
                         <p:outputLabel value="#{bundle.EditAbteilungLabel_mitarbeiter}" for="mitarbeiter" />
+                        <p:selectOneMenu id="mitarbeiter" value="#{abteilungController.selected.mitarbeiter}" >
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{mitarbeiterController.itemsAvailableSelectOne}"
+                                           var="mitarbeiterItem"
+                                           itemValue="#{mitarbeiterItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.EditAbteilungLabel_raum}" for="raum" />
+                        <p:selectOneMenu id="raum" value="#{abteilungController.selected.raum}" >
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{raumController.itemsAvailableSelectOne}"
+                                           var="raumItem"
+                                           itemValue="#{raumItem}"/>
+                        </p:selectOneMenu>
                     </p:panelGrid>
                     <p:commandButton actionListener="#{abteilungController.update}" value="#{bundle.Save}" update="display,:AbteilungListForm:datalist,:growl" oncomplete="handleSubmit(args, 'AbteilungEditDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="AbteilungEditDialog.hide()"/>

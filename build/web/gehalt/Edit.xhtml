@@ -12,8 +12,17 @@
             <h:form id="GehaltEditForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{gehaltController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditGehaltLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{gehaltController.selected.id}" title="#{bundle.EditGehaltTitle_id}" required="true" requiredMessage="#{bundle.EditGehaltRequiredMessage_id}"/>
                         <p:outputLabel value="#{bundle.EditGehaltLabel_gehalt}" for="gehalt" />
-                        <p:inputText id="gehalt" value="#{gehaltController.selected.gehalt}" title="#{bundle.EditGehaltTitle_gehalt}" required="true" requiredMessage="#{bundle.EditGehaltRequiredMessage_gehalt}"/>                      
+                        <p:inputText id="gehalt" value="#{gehaltController.selected.gehalt}" title="#{bundle.EditGehaltTitle_gehalt}" required="true" requiredMessage="#{bundle.EditGehaltRequiredMessage_gehalt}"/>
+                        <p:outputLabel value="#{bundle.EditGehaltLabel_mitarbeiter}" for="mitarbeiter" />
+                        <p:selectOneMenu id="mitarbeiter" value="#{gehaltController.selected.mitarbeiter}" >
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{mitarbeiterController.itemsAvailableSelectOne}"
+                                           var="mitarbeiterItem"
+                                           itemValue="#{mitarbeiterItem}"/>
+                        </p:selectOneMenu>
                     </p:panelGrid>
                     <p:commandButton actionListener="#{gehaltController.update}" value="#{bundle.Save}" update="display,:GehaltListForm:datalist,:growl" oncomplete="handleSubmit(args, 'GehaltEditDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="GehaltEditDialog.hide()"/>

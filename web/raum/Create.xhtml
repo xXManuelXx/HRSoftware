@@ -12,6 +12,8 @@
             <h:form id="RaumCreateForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{raumController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateRaumLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{raumController.selected.id}" title="#{bundle.CreateRaumTitle_id}" required="false" requiredMessage="#{bundle.CreateRaumRequiredMessage_id}"/>
                         <p:outputLabel value="#{bundle.CreateRaumLabel_name}" for="name" />
                         <p:inputText id="name" value="#{raumController.selected.name}" title="#{bundle.CreateRaumTitle_name}" required="true" requiredMessage="#{bundle.CreateRaumRequiredMessage_name}"/>
                         <p:outputLabel value="#{bundle.CreateRaumLabel_abteilungsId}" for="abteilungsId" />

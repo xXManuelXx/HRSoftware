@@ -13,10 +13,15 @@
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{infoController.selected != null}">
                         <p:outputLabel value="#{bundle.CreateInfoLabel_id}" for="id" />
-                        <p:inputText id="id" value="#{infoController.selected.id}" title="#{bundle.CreateInfoTitle_id}" required="true" requiredMessage="#{bundle.CreateInfoRequiredMessage_id}"/>
+                        <p:inputText id="id" value="#{infoController.selected.id}" title="#{bundle.CreateInfoTitle_id}" required="false" requiredMessage="#{bundle.CreateInfoRequiredMessage_id}"/>
                         <p:outputLabel value="#{bundle.CreateInfoLabel_beschreibung}" for="beschreibung" />
                         <p:inputTextarea rows="4" cols="30" id="beschreibung" value="#{infoController.selected.beschreibung}" title="#{bundle.CreateInfoTitle_beschreibung}" required="true" requiredMessage="#{bundle.CreateInfoRequiredMessage_beschreibung}"/>
-                        
+                        <p:outputLabel value="#{bundle.CreateInfoLabel_mitarbeiter}" for="mitarbeiter" />
+                        <p:selectOneMenu id="mitarbeiter" value="#{infoController.selected.mitarbeiter}" >
+                            <f:selectItems value="#{mitarbeiterController.itemsAvailableSelectOne}"
+                                           var="mitarbeiterItem"
+                                           itemValue="#{mitarbeiterItem}"/>
+                        </p:selectOneMenu>
                     </p:panelGrid>
                     <p:commandButton actionListener="#{infoController.create}" value="#{bundle.Save}" update="display,:InfoListForm:datalist,:growl" oncomplete="handleSubmit(args,'InfoCreateDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="InfoCreateDialog.hide()"/>

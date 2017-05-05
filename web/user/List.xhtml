@@ -47,6 +47,12 @@
                         </p:column>
                         <p:column>
                             <f:facet name="header">
+                                <h:outputText value="#{bundle.ListUserTitle_mitarbeiter}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.mitarbeiter}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
                                 <h:outputText value="#{bundle.ListUserTitle_permissionId}"/>
                             </f:facet>
                             <h:outputText value="#{item.permissionId}"/>

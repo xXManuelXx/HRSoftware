@@ -12,8 +12,22 @@
             <h:form id="AbteilungCreateForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{abteilungController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateAbteilungLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{abteilungController.selected.id}" title="#{bundle.CreateAbteilungTitle_id}" required="false" requiredMessage="#{bundle.CreateAbteilungRequiredMessage_id}"/>
                         <p:outputLabel value="#{bundle.CreateAbteilungLabel_beschreibung}" for="beschreibung" />
                         <p:inputTextarea rows="4" cols="30" id="beschreibung" value="#{abteilungController.selected.beschreibung}" title="#{bundle.CreateAbteilungTitle_beschreibung}" required="true" requiredMessage="#{bundle.CreateAbteilungRequiredMessage_beschreibung}"/>
+                        <p:outputLabel value="#{bundle.CreateAbteilungLabel_mitarbeiter}" for="mitarbeiter" />
+                        <p:selectOneMenu id="mitarbeiter" value="#{abteilungController.selected.mitarbeiter}" >
+                            <f:selectItems value="#{mitarbeiterController.itemsAvailableSelectOne}"
+                                           var="mitarbeiterItem"
+                                           itemValue="#{mitarbeiterItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateAbteilungLabel_raum}" for="raum" />
+                        <p:selectOneMenu id="raum" value="#{abteilungController.selected.raum}" >
+                            <f:selectItems value="#{raumController.itemsAvailableSelectOne}"
+                                           var="raumItem"
+                                           itemValue="#{raumItem}"/>
+                        </p:selectOneMenu>
                     </p:panelGrid>
                     <p:commandButton actionListener="#{abteilungController.create}" value="#{bundle.Save}" update="display,:AbteilungListForm:datalist,:growl" oncomplete="handleSubmit(args,'AbteilungCreateDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="AbteilungCreateDialog.hide()"/>

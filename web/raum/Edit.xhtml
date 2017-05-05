@@ -12,7 +12,9 @@
             <h:form id="RaumEditForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{raumController.selected != null}">
-                       <p:outputLabel value="#{bundle.EditRaumLabel_name}" for="name" />
+                        <p:outputLabel value="#{bundle.EditRaumLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{raumController.selected.id}" title="#{bundle.EditRaumTitle_id}" required="true" requiredMessage="#{bundle.EditRaumRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.EditRaumLabel_name}" for="name" />
                         <p:inputText id="name" value="#{raumController.selected.name}" title="#{bundle.EditRaumTitle_name}" required="true" requiredMessage="#{bundle.EditRaumRequiredMessage_name}"/>
                         <p:outputLabel value="#{bundle.EditRaumLabel_abteilungsId}" for="abteilungsId" />
                         <p:selectOneMenu id="abteilungsId" value="#{raumController.selected.abteilungsId}" required="true" requiredMessage="#{bundle.EditRaumRequiredMessage_abteilungsId}">
