@@ -1,0 +1,38 @@
+
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+    
+    
+    <p:growl id="messages" showDetail="false"/>   
+	<h:form>
+            <p:outputPanel id="menuPanel" layout="block">
+                <p:menu toggleable="true">
+                    <p:submenu label="CRUD" icon="ui-icon ui-icon-refresh" >
+			<p:menuitem outcome="welcomePrimefaces" value="Primefaces welcome page" />
+                        <p:menuitem outcome="/abteilung/List" value="Show All Abteilung Items"/>
+                        <p:menuitem outcome="/arbeitszeit/List" value="Show All Arbeitszeit Items"/>
+                        <p:menuitem outcome="/gehalt/List" value="Show All Gehalt Items"/>
+                        <p:menuitem outcome="/info/List" value="Show All Info Items"/>
+                        <p:menuitem outcome="/krankheit/List" value="Show All Krankheit Items"/>
+                        <p:menuitem outcome="/land/List" value="Show All Land Items"/>
+                        <p:menuitem outcome="/maHistorie/List" value="Show All MaHistorie Items"/>
+                        <p:menuitem outcome="/maSchulung/List" value="Show All MaSchulung Items"/>
+                        <p:menuitem outcome="/mitarbeiter/List" value="Show All Mitarbeiter Items"/>
+                        <p:menuitem outcome="/ort/List" value="Show All Ort Items"/>
+                        <p:menuitem outcome="/permission/List" value="Show All Permission Items"/>
+                        <p:menuitem outcome="/position/List" value="Show All Position Items"/>
+                        <p:menuitem outcome="/raum/List" value="Show All Raum Items"/>
+                        <p:menuitem outcome="/schulung/List" value="Show All Schulung Items"/>
+                        <p:menuitem outcome="/skills/List" value="Show All Skills Items"/>
+                        <p:menuitem outcome="/urlaub/List" value="Show All Urlaub Items"/>
+                        <p:menuitem outcome="/user/List" value="Show All User Items"/>
+                    </p:submenu>
+                </p:menu>
+            </p:outputPanel>
+	</h:form>
+</ui:composition>
+
