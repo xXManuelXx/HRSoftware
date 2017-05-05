@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ArbeitszeitCreateDlg" widgetVar="ArbeitszeitCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateArbeitszeitTitle}">
+            <h:form id="ArbeitszeitCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{arbeitszeitController.selected != null}">
+                       <p:outputLabel value="#{bundle.CreateArbeitszeitLabel_anfang}" for="anfang" />
+                        <p:calendar id="anfang" pattern="MM/dd/yyyy" value="#{arbeitszeitController.selected.anfang}" title="#{bundle.EditArbeitszeitTitle_anfang}" required="true" requiredMessage="#{bundle.EditArbeitszeitRequiredMessage_anfang}" showOn="button"/>
+                        <p:outputLabel value="#{bundle.CreateArbeitszeitLabel_ende}" for="ende" />
+                        <p:calendar id="ende" pattern="MM/dd/yyyy" value="#{arbeitszeitController.selected.ende}" title="#{bundle.EditArbeitszeitTitle_ende}" required="true" requiredMessage="#{bundle.EditArbeitszeitRequiredMessage_ende}" showOn="button"/>
+                        <p:outputLabel value="#{bundle.CreateArbeitszeitLabel_maId}" for="maId" />
+                        <p:selectOneMenu id="maId" value="#{arbeitszeitController.selected.maId}" required="true" requiredMessage="#{bundle.EditArbeitszeitRequiredMessage_maId}">
+                            <f:selectItems value="#{mitarbeiterController.itemsAvailableSelectOne}"
+                                           var="maIdItem"
+                                           itemValue="#{maIdItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{arbeitszeitController.create}" value="#{bundle.Save}" update="display,:ArbeitszeitListForm:datalist,:growl" oncomplete="handleSubmit(args,'ArbeitszeitCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="ArbeitszeitCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

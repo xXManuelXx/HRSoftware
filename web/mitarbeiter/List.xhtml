@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListMitarbeiterTitle}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <h:form id="MitarbeiterListForm">
+                <p:panel header="#{bundle.ListMitarbeiterTitle}">
+                    <p:dataTable id="datalist" value="#{mitarbeiterController.items}" var="item"
+                                 selectionMode="single" selection="#{mitarbeiterController.selected}"
+                                 paginator="true"
+                                 rowKey="#{item.id}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 >
+
+                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMitarbeiterTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMitarbeiterTitle_nachname}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nachname}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMitarbeiterTitle_vorname}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.vorname}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMitarbeiterTitle_geburtsdatum}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.geburtsdatum}">
+                                <f:convertDateTime pattern="MM/dd/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMitarbeiterTitle_urlaubstage}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.urlaubstage}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMitarbeiterTitle_steuerklasse}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.steuerklasse}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMitarbeiterTitle_idUser}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idUser}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMitarbeiterTitle_land}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.land}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMitarbeiterTitle_idGehalt}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idGehalt}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMitarbeiterTitle_infoId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.infoId}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMitarbeiterTitle_plz}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.plz}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMitarbeiterTitle_abteilungsId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.abteilungsId}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMitarbeiterTitle_positionsId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.positionsId}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMitarbeiterTitle_arbeitszeit}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.arbeitszeit}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMitarbeiterTitle_krankheit}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.krankheit}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMitarbeiterTitle_maHistorie}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.maHistorie}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMitarbeiterTitle_urlaub}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.urlaub}"/>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{mitarbeiterController.prepareCreate}" update=":MitarbeiterCreateForm" oncomplete="PF('MitarbeiterCreateDialog').show()"/>
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":MitarbeiterViewForm" oncomplete="PF('MitarbeiterViewDialog').show()" disabled="#{empty mitarbeiterController.selected}"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":MitarbeiterEditForm" oncomplete="PF('MitarbeiterEditDialog').show()" disabled="#{empty mitarbeiterController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{mitarbeiterController.destroy}" update=":growl,datalist" disabled="#{empty mitarbeiterController.selected}"/>
+                        </f:facet>
+                    </p:dataTable>
+                </p:panel>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+    </ui:composition>
+
+</html>

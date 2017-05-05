@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="UrlaubCreateDlg" widgetVar="UrlaubCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateUrlaubTitle}">
+            <h:form id="UrlaubCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{urlaubController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateUrlaubLabel_anfang}" for="anfang" />
+                        <p:calendar id="anfang" pattern="MM/dd/yyyy" value="#{urlaubController.selected.anfang}" title="#{bundle.EditUrlaubTitle_anfang}" required="true" requiredMessage="#{bundle.EditUrlaubRequiredMessage_anfang}" showOn="button"/>
+                        <p:outputLabel value="#{bundle.CreateUrlaubLabel_ende}" for="ende" />
+                        <p:calendar id="ende" pattern="MM/dd/yyyy" value="#{urlaubController.selected.ende}" title="#{bundle.EditUrlaubTitle_ende}" required="true" requiredMessage="#{bundle.EditUrlaubRequiredMessage_ende}" showOn="button"/>
+                        <p:outputLabel value="#{bundle.CreateUrlaubLabel_beschreibung}" for="beschreibung" />
+                        <p:inputTextarea rows="4" cols="30" id="beschreibung" value="#{urlaubController.selected.beschreibung}" title="#{bundle.CreateUrlaubTitle_beschreibung}" required="true" requiredMessage="#{bundle.CreateUrlaubRequiredMessage_beschreibung}"/>
+                        <p:outputLabel value="#{bundle.CreateUrlaubLabel_maId}" for="maId" />
+                        <p:selectOneMenu id="maId" value="#{urlaubController.selected.maId}" required="true" requiredMessage="#{bundle.EditUrlaubRequiredMessage_maId}">
+                            <f:selectItems value="#{mitarbeiterController.itemsAvailableSelectOne}"
+                                           var="maIdItem"
+                                           itemValue="#{maIdItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{urlaubController.create}" value="#{bundle.Save}" update="display,:UrlaubListForm:datalist,:growl" oncomplete="handleSubmit(args,'UrlaubCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="UrlaubCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="OrtEditDlg" widgetVar="OrtEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditOrtTitle}">
+            <h:form id="OrtEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{ortController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditOrtLabel_plz}" for="plz" />
+                        <p:inputText id="plz" value="#{ortController.selected.plz}" title="#{bundle.EditOrtTitle_plz}" required="true" requiredMessage="#{bundle.EditOrtRequiredMessage_plz}"/>
+                        <p:outputLabel value="#{bundle.EditOrtLabel_name}" for="name" />
+                        <p:inputText id="name" value="#{ortController.selected.name}" title="#{bundle.EditOrtTitle_name}" required="true" requiredMessage="#{bundle.EditOrtRequiredMessage_name}"/>
+                        
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{ortController.update}" value="#{bundle.Save}" update="display,:OrtListForm:datalist,:growl" oncomplete="handleSubmit(args, 'OrtEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="OrtEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

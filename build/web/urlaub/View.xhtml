@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="UrlaubViewDlg" widgetVar="UrlaubViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewUrlaubTitle}">
+            <h:form id="UrlaubViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{urlaubController.selected != null}">
+                        <h:outputText value="#{bundle.ViewUrlaubLabel_id}"/>
+                        <h:outputText value="#{urlaubController.selected.id}" title="#{bundle.ViewUrlaubTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewUrlaubLabel_anfang}"/>
+                        <h:outputText value="#{urlaubController.selected.anfang}" title="#{bundle.ViewUrlaubTitle_anfang}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                        <h:outputText value="#{bundle.ViewUrlaubLabel_ende}"/>
+                        <h:outputText value="#{urlaubController.selected.ende}" title="#{bundle.ViewUrlaubTitle_ende}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                        <h:outputText value="#{bundle.ViewUrlaubLabel_beschreibung}"/>
+                        <h:outputText value="#{urlaubController.selected.beschreibung}" title="#{bundle.ViewUrlaubTitle_beschreibung}"/>
+                        <h:outputText value="#{bundle.ViewUrlaubLabel_maId}"/>
+                        <h:outputText value="#{urlaubController.selected.maId}" title="#{bundle.ViewUrlaubTitle_maId}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="UrlaubViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

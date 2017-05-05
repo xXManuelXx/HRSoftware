@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="SkillsViewDlg" widgetVar="SkillsViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewSkillsTitle}">
+            <h:form id="SkillsViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{skillsController.selected != null}">
+                        <h:outputText value="#{bundle.ViewSkillsLabel_id}"/>
+                        <h:outputText value="#{skillsController.selected.id}" title="#{bundle.ViewSkillsTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewSkillsLabel_beschreibung}"/>
+                        <h:outputText value="#{skillsController.selected.beschreibung}" title="#{bundle.ViewSkillsTitle_beschreibung}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="SkillsViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

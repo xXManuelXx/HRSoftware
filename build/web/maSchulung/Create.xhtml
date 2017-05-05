@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="MaSchulungCreateDlg" widgetVar="MaSchulungCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateMaSchulungTitle}">
+            <h:form id="MaSchulungCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{maSchulungController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateMaSchulungLabel_maSchulungPK_schulungId}" for="maSchulungPK_schulungId" />                        
+                        <p:selectOneMenu  id="maSchulungPK_schulungId" value="#{maSchulungController.selected.maSchulungPK.schulungId}" required="true" requiredMessage="#{bundle.CreateMaSchulungRequiredMessage_maSchulungPK_schulungId}">
+                            <f:selectItems value="#{schulungController.itemsAvailableSelectOne}"
+                                           var="schulungItem"
+                                           itemValue="#{schulungItem}"/>
+                        </p:selectOneMenu>
+                        
+                        <p:outputLabel value="#{bundle.CreateMaSchulungLabel_maSchulungPK_maId}" for="maSchulungPK_maId" />
+                        <p:selectOneMenu id="maSchulungPK_maId" value="#{maSchulungController.selected.maSchulungPK.maId}"  required="true" requiredMessage="#{bundle.CreateMaSchulungRequiredMessage_maSchulungPK_maId}">
+                            <f:selectItems value="#{mitarbeiterController.itemsAvailableSelectOne}"
+                                           var="mitarbeiterItem"
+                                           itemValue="#{mitarbeiterItem}"/>
+                        </p:selectOneMenu>
+                     
+                        <p:outputLabel value="#{bundle.CreateMaSchulungLabel_abgeschlossen}" for="abgeschlossen" />
+                        <p:selectBooleanCheckbox id="abgeschlossen" value="#{maSchulungController.selected.abgeschlossen}" required="true" requiredMessage="#{bundle.EditMaSchulungRequiredMessage_abgeschlossen}"/>
+                        
+                      
+                        
+                      
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{maSchulungController.create}" value="#{bundle.Save}" update="display,:MaSchulungListForm:datalist,:growl" oncomplete="handleSubmit(args,'MaSchulungCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="MaSchulungCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="MaHistorieEditDlg" widgetVar="MaHistorieEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditMaHistorieTitle}">
+            <h:form id="MaHistorieEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{maHistorieController.selected != null}">
+                       <p:outputLabel value="#{bundle.EditMaHistorieLabel_anfang}" for="anfang" />
+                        <p:calendar id="anfang" pattern="MM/dd/yyyy" value="#{maHistorieController.selected.anfang}" title="#{bundle.EditMaHistorieTitle_anfang}" required="true" requiredMessage="#{bundle.EditMaHistorieRequiredMessage_anfang}" showOn="button"/>
+                        <p:outputLabel value="#{bundle.EditMaHistorieLabel_ende}" for="ende" />
+                        <p:calendar id="ende" pattern="MM/dd/yyyy" value="#{maHistorieController.selected.ende}" title="#{bundle.EditMaHistorieTitle_ende}" required="true" requiredMessage="#{bundle.EditMaHistorieRequiredMessage_ende}" showOn="button"/>
+                        <p:outputLabel value="#{bundle.EditMaHistorieLabel_maId}" for="maId" />
+                        <p:selectOneMenu id="maId" value="#{maHistorieController.selected.maId}" required="true" requiredMessage="#{bundle.EditMaHistorieRequiredMessage_maId}">
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{mitarbeiterController.itemsAvailableSelectOne}"
+                                           var="maIdItem"
+                                           itemValue="#{maIdItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{maHistorieController.update}" value="#{bundle.Save}" update="display,:MaHistorieListForm:datalist,:growl" oncomplete="handleSubmit(args, 'MaHistorieEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="MaHistorieEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

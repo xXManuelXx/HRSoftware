@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="GehaltCreateDlg" widgetVar="GehaltCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateGehaltTitle}">
+            <h:form id="GehaltCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{gehaltController.selected != null}">
+                       <p:outputLabel value="#{bundle.CreateGehaltLabel_gehalt}" for="gehalt" />
+                        <p:inputText id="gehalt" value="#{gehaltController.selected.gehalt}" title="#{bundle.CreateGehaltTitle_gehalt}" required="true" requiredMessage="#{bundle.CreateGehaltRequiredMessage_gehalt}"/>
+                  </p:panelGrid>
+                    <p:commandButton actionListener="#{gehaltController.create}" value="#{bundle.Save}" update="display,:GehaltListForm:datalist,:growl" oncomplete="handleSubmit(args,'GehaltCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="GehaltCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

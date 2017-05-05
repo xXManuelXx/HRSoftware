@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="MitarbeiterCreateDlg" widgetVar="MitarbeiterCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateMitarbeiterTitle}">
+            <h:form id="MitarbeiterCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{mitarbeiterController.selected != null}">
+                       <p:outputLabel value="#{bundle.CreateMitarbeiterLabel_nachname}" for="nachname" />
+                        <p:inputText id="nachname" value="#{mitarbeiterController.selected.nachname}" title="#{bundle.CreateMitarbeiterTitle_nachname}" required="true" requiredMessage="#{bundle.CreateMitarbeiterRequiredMessage_nachname}"/>
+                        <p:outputLabel value="#{bundle.CreateMitarbeiterLabel_vorname}" for="vorname" />
+                        <p:inputText id="vorname" value="#{mitarbeiterController.selected.vorname}" title="#{bundle.CreateMitarbeiterTitle_vorname}" required="true" requiredMessage="#{bundle.CreateMitarbeiterRequiredMessage_vorname}"/>
+                        <p:outputLabel value="#{bundle.CreateMitarbeiterLabel_geburtsdatum}" for="geburtsdatum" />
+                        <p:calendar id="geburtsdatum" pattern="MM/dd/yyyy" value="#{mitarbeiterController.selected.geburtsdatum}" title="#{bundle.EditMitarbeiterTitle_geburtsdatum}" required="true" requiredMessage="#{bundle.EditMitarbeiterRequiredMessage_geburtsdatum}" showOn="button"/>
+                        <p:outputLabel value="#{bundle.CreateMitarbeiterLabel_urlaubstage}" for="urlaubstage" />
+                        <p:inputText id="urlaubstage" value="#{mitarbeiterController.selected.urlaubstage}" title="#{bundle.CreateMitarbeiterTitle_urlaubstage}" required="true" requiredMessage="#{bundle.CreateMitarbeiterRequiredMessage_urlaubstage}"/>
+                        <p:outputLabel value="#{bundle.CreateMitarbeiterLabel_steuerklasse}" for="steuerklasse" />
+                        <p:inputText id="steuerklasse" value="#{mitarbeiterController.selected.steuerklasse}" title="#{bundle.CreateMitarbeiterTitle_steuerklasse}" required="true" requiredMessage="#{bundle.CreateMitarbeiterRequiredMessage_steuerklasse}"/>
+                        <p:outputLabel value="#{bundle.CreateMitarbeiterLabel_idUser}" for="idUser" />
+                        <p:selectOneMenu id="idUser" value="#{mitarbeiterController.selected.idUser}" required="true" requiredMessage="#{bundle.EditMitarbeiterRequiredMessage_idUser}">
+                            <f:selectItems value="#{userController.itemsAvailableSelectOne}"
+                                           var="idUserItem"
+                                           itemValue="#{idUserItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateMitarbeiterLabel_land}" for="land" />
+                        <p:selectOneMenu id="land" value="#{mitarbeiterController.selected.land}" required="true" requiredMessage="#{bundle.EditMitarbeiterRequiredMessage_land}">
+                            <f:selectItems value="#{landController.itemsAvailableSelectOne}"
+                                           var="landItem"
+                                           itemValue="#{landItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateMitarbeiterLabel_idGehalt}" for="idGehalt" />
+                        <p:selectOneMenu id="idGehalt" value="#{mitarbeiterController.selected.idGehalt}" required="true" requiredMessage="#{bundle.EditMitarbeiterRequiredMessage_idGehalt}">
+                            <f:selectItems value="#{gehaltController.itemsAvailableSelectOne}"
+                                           var="idGehaltItem"
+                                           itemValue="#{idGehaltItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateMitarbeiterLabel_infoId}" for="infoId" />
+                        <p:selectOneMenu id="infoId" value="#{mitarbeiterController.selected.infoId}" required="true" requiredMessage="#{bundle.EditMitarbeiterRequiredMessage_infoId}">
+                            <f:selectItems value="#{infoController.itemsAvailableSelectOne}"
+                                           var="infoIdItem"
+                                           itemValue="#{infoIdItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateMitarbeiterLabel_plz}" for="plz" />
+                        <p:selectOneMenu id="plz" value="#{mitarbeiterController.selected.plz}" required="true" requiredMessage="#{bundle.EditMitarbeiterRequiredMessage_plz}">
+                            <f:selectItems value="#{ortController.itemsAvailableSelectOne}"
+                                           var="plzItem"
+                                           itemValue="#{plzItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateMitarbeiterLabel_abteilungsId}" for="abteilungsId" />
+                        <p:selectOneMenu id="abteilungsId" value="#{mitarbeiterController.selected.abteilungsId}" required="true" requiredMessage="#{bundle.EditMitarbeiterRequiredMessage_abteilungsId}">
+                            <f:selectItems value="#{abteilungController.itemsAvailableSelectOne}"
+                                           var="abteilungsIdItem"
+                                           itemValue="#{abteilungsIdItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateMitarbeiterLabel_positionsId}" for="positionsId" />
+                        <p:selectOneMenu id="positionsId" value="#{mitarbeiterController.selected.positionsId}" required="true" requiredMessage="#{bundle.EditMitarbeiterRequiredMessage_positionsId}">
+                            <f:selectItems value="#{positionController.itemsAvailableSelectOne}"
+                                           var="positionsIdItem"
+                                           itemValue="#{positionsIdItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateMitarbeiterLabel_arbeitszeit}" for="arbeitszeit" />
+                        <p:selectOneMenu id="arbeitszeit" value="#{mitarbeiterController.selected.arbeitszeit}" >
+                            <f:selectItems value="#{arbeitszeitController.itemsAvailableSelectOne}"
+                                           var="arbeitszeitItem"
+                                           itemValue="#{arbeitszeitItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateMitarbeiterLabel_krankheit}" for="krankheit" />
+                        <p:selectOneMenu id="krankheit" value="#{mitarbeiterController.selected.krankheit}" >
+                            <f:selectItems value="#{krankheitController.itemsAvailableSelectOne}"
+                                           var="krankheitItem"
+                                           itemValue="#{krankheitItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateMitarbeiterLabel_maHistorie}" for="maHistorie" />
+                        <p:selectOneMenu id="maHistorie" value="#{mitarbeiterController.selected.maHistorie}" >
+                            <f:selectItems value="#{maHistorieController.itemsAvailableSelectOne}"
+                                           var="maHistorieItem"
+                                           itemValue="#{maHistorieItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateMitarbeiterLabel_urlaub}" for="urlaub" />
+                        <p:selectOneMenu id="urlaub" value="#{mitarbeiterController.selected.urlaub}" >
+                            <f:selectItems value="#{urlaubController.itemsAvailableSelectOne}"
+                                           var="urlaubItem"
+                                           itemValue="#{urlaubItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{mitarbeiterController.create}" value="#{bundle.Save}" update="display,:MitarbeiterListForm:datalist,:growl" oncomplete="handleSubmit(args,'MitarbeiterCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="MitarbeiterCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

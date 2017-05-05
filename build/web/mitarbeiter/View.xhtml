@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="MitarbeiterViewDlg" widgetVar="MitarbeiterViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewMitarbeiterTitle}">
+            <h:form id="MitarbeiterViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{mitarbeiterController.selected != null}">
+                        <h:outputText value="#{bundle.ViewMitarbeiterLabel_id}"/>
+                        <h:outputText value="#{mitarbeiterController.selected.id}" title="#{bundle.ViewMitarbeiterTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewMitarbeiterLabel_nachname}"/>
+                        <h:outputText value="#{mitarbeiterController.selected.nachname}" title="#{bundle.ViewMitarbeiterTitle_nachname}"/>
+                        <h:outputText value="#{bundle.ViewMitarbeiterLabel_vorname}"/>
+                        <h:outputText value="#{mitarbeiterController.selected.vorname}" title="#{bundle.ViewMitarbeiterTitle_vorname}"/>
+                        <h:outputText value="#{bundle.ViewMitarbeiterLabel_geburtsdatum}"/>
+                        <h:outputText value="#{mitarbeiterController.selected.geburtsdatum}" title="#{bundle.ViewMitarbeiterTitle_geburtsdatum}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                        <h:outputText value="#{bundle.ViewMitarbeiterLabel_urlaubstage}"/>
+                        <h:outputText value="#{mitarbeiterController.selected.urlaubstage}" title="#{bundle.ViewMitarbeiterTitle_urlaubstage}"/>
+                        <h:outputText value="#{bundle.ViewMitarbeiterLabel_steuerklasse}"/>
+                        <h:outputText value="#{mitarbeiterController.selected.steuerklasse}" title="#{bundle.ViewMitarbeiterTitle_steuerklasse}"/>
+                        <h:outputText value="#{bundle.ViewMitarbeiterLabel_idUser}"/>
+                        <h:outputText value="#{mitarbeiterController.selected.idUser}" title="#{bundle.ViewMitarbeiterTitle_idUser}"/>
+                        <h:outputText value="#{bundle.ViewMitarbeiterLabel_land}"/>
+                        <h:outputText value="#{mitarbeiterController.selected.land}" title="#{bundle.ViewMitarbeiterTitle_land}"/>
+                        <h:outputText value="#{bundle.ViewMitarbeiterLabel_idGehalt}"/>
+                        <h:outputText value="#{mitarbeiterController.selected.idGehalt}" title="#{bundle.ViewMitarbeiterTitle_idGehalt}"/>
+                        <h:outputText value="#{bundle.ViewMitarbeiterLabel_infoId}"/>
+                        <h:outputText value="#{mitarbeiterController.selected.infoId}" title="#{bundle.ViewMitarbeiterTitle_infoId}"/>
+                        <h:outputText value="#{bundle.ViewMitarbeiterLabel_plz}"/>
+                        <h:outputText value="#{mitarbeiterController.selected.plz}" title="#{bundle.ViewMitarbeiterTitle_plz}"/>
+                        <h:outputText value="#{bundle.ViewMitarbeiterLabel_abteilungsId}"/>
+                        <h:outputText value="#{mitarbeiterController.selected.abteilungsId}" title="#{bundle.ViewMitarbeiterTitle_abteilungsId}"/>
+                        <h:outputText value="#{bundle.ViewMitarbeiterLabel_positionsId}"/>
+                        <h:outputText value="#{mitarbeiterController.selected.positionsId}" title="#{bundle.ViewMitarbeiterTitle_positionsId}"/>
+                        <h:outputText value="#{bundle.ViewMitarbeiterLabel_arbeitszeit}"/>
+                        <h:outputText value="#{mitarbeiterController.selected.arbeitszeit}" title="#{bundle.ViewMitarbeiterTitle_arbeitszeit}"/>
+                        <h:outputText value="#{bundle.ViewMitarbeiterLabel_krankheit}"/>
+                        <h:outputText value="#{mitarbeiterController.selected.krankheit}" title="#{bundle.ViewMitarbeiterTitle_krankheit}"/>
+                        <h:outputText value="#{bundle.ViewMitarbeiterLabel_maHistorie}"/>
+                        <h:outputText value="#{mitarbeiterController.selected.maHistorie}" title="#{bundle.ViewMitarbeiterTitle_maHistorie}"/>
+                        <h:outputText value="#{bundle.ViewMitarbeiterLabel_urlaub}"/>
+                        <h:outputText value="#{mitarbeiterController.selected.urlaub}" title="#{bundle.ViewMitarbeiterTitle_urlaub}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="MitarbeiterViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="SkillsEditDlg" widgetVar="SkillsEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditSkillsTitle}">
+            <h:form id="SkillsEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{skillsController.selected != null}">
+                       <p:outputLabel value="#{bundle.EditSkillsLabel_beschreibung}" for="beschreibung" />
+                        <p:inputText id="beschreibung" value="#{skillsController.selected.beschreibung}" title="#{bundle.EditSkillsTitle_beschreibung}" required="true" requiredMessage="#{bundle.EditSkillsRequiredMessage_beschreibung}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{skillsController.update}" value="#{bundle.Save}" update="display,:SkillsListForm:datalist,:growl" oncomplete="handleSubmit(args, 'SkillsEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="SkillsEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

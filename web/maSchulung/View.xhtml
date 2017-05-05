@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="MaSchulungViewDlg" widgetVar="MaSchulungViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewMaSchulungTitle}">
+            <h:form id="MaSchulungViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{maSchulungController.selected != null}">
+                        <h:outputText value="#{bundle.ViewMaSchulungLabel_maSchulungPK_schulungId}"/>
+                        <h:outputText value="#{maSchulungController.selected.maSchulungPK.schulungId}" title="#{bundle.ViewMaSchulungTitle_maSchulungPK_schulungId}"/>
+                        <h:outputText value="#{bundle.ViewMaSchulungLabel_maSchulungPK_maId}"/>
+                        <h:outputText value="#{maSchulungController.selected.maSchulungPK.maId}" title="#{bundle.ViewMaSchulungTitle_maSchulungPK_maId}"/>
+                        <h:outputText value="#{bundle.ViewMaSchulungLabel_abgeschlossen}"/>
+                        <p:selectBooleanCheckbox value="#{maSchulungController.selected.abgeschlossen}" disabled="true"/>
+                        <h:outputText value="#{bundle.ViewMaSchulungLabel_mitarbeiter}"/>
+                        <h:outputText value="#{maSchulungController.selected.mitarbeiter}" title="#{bundle.ViewMaSchulungTitle_mitarbeiter}"/>
+                        <h:outputText value="#{bundle.ViewMaSchulungLabel_schulung}"/>
+                        <h:outputText value="#{maSchulungController.selected.schulung}" title="#{bundle.ViewMaSchulungTitle_schulung}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="MaSchulungViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>
