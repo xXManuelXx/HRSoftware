@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="UnternehmenViewDlg" widgetVar="UnternehmenViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewUnternehmenTitle}">
+            <h:form id="UnternehmenViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{unternehmenController.selected != null}">
+                        <h:outputText value="#{bundle.ViewUnternehmenLabel_id}"/>
+                        <h:outputText value="#{unternehmenController.selected.id}" title="#{bundle.ViewUnternehmenTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewUnternehmenLabel_name}"/>
+                        <h:outputText value="#{unternehmenController.selected.name}" title="#{bundle.ViewUnternehmenTitle_name}"/>
+                        <h:outputText value="#{bundle.ViewUnternehmenLabel_strasse}"/>
+                        <h:outputText value="#{unternehmenController.selected.strasse}" title="#{bundle.ViewUnternehmenTitle_strasse}"/>
+                        <h:outputText value="#{bundle.ViewUnternehmenLabel_ort}"/>
+                        <h:outputText value="#{unternehmenController.selected.ort}" title="#{bundle.ViewUnternehmenTitle_ort}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="UnternehmenViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -10,9 +10,9 @@
     <p:growl id="messages" showDetail="false"/>   
 	<h:form>
             <p:outputPanel id="menuPanel" layout="block">
-                <p:menu toggleable="true">
+                <p:menu toggleable="true" >
                     <p:submenu label="CRUD" icon="ui-icon ui-icon-refresh" >
-			<p:menuitem outcome="welcomePrimefaces" value="Primefaces welcome page" />
+			
                         <p:menuitem outcome="/abteilung/List" value="Show All Abteilung Items"/>
                         <p:menuitem outcome="/arbeitszeit/List" value="Show All Arbeitszeit Items"/>
                         <p:menuitem outcome="/gehalt/List" value="Show All Gehalt Items"/>
@@ -30,6 +30,9 @@
                         <p:menuitem outcome="/skills/List" value="Show All Skills Items"/>
                         <p:menuitem outcome="/urlaub/List" value="Show All Urlaub Items"/>
                         <p:menuitem outcome="/user/List" value="Show All User Items"/>
+                    </p:submenu>
+                    <p:submenu label="Personalwesen" icon="ui-icon ui-icon-refresh" >
+			<p:menuitem outcome="/abrechnung/Content" value="Abrechnung" />
                     </p:submenu>
                 </p:menu>
             </p:outputPanel>

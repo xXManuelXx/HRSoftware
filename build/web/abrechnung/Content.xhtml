@@ -1,0 +1,251 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	template="/template/HRSoftwareTemplate.xhtml">
+	<ui:define name="metadata">
+	</ui:define>
+	<ui:define name="content">
+             <h3>Abteilung/Mitarbeiter Auswahl</h3>      
+            <p:outputLabel for="abteilung" value="Abteilung: "  />
+            <p:selectOneMenu id="abteilung" panelStyle="width:180px"
+                             effect="fade" var="t" style="width:160px" filter="true" filterMatchMode="startsWith">
+                <f:selectItems value="" var="theme" itemLabel="" itemValue="" />
+                <p:column>
+                    <h:outputText value="Test" />
+                </p:column>
+            </p:selectOneMenu>
+            <br />
+            <br />
+            <p:outputLabel for="mitarbeiter" value="Mitarbeiter: "  />
+            <p:selectOneMenu id="mitarbeiter" panelStyle="width:180px"
+                             effect="fade" var="t" style="width:160px" filter="true" filterMatchMode="startsWith">
+                <f:selectItems value="" var="theme" itemLabel="" itemValue="" />
+                <p:column>
+                    <h:outputText value="Test" />
+                </p:column>
+            </p:selectOneMenu>    
+            <br />
+            <br/>
+            <h3>Abrechnugszeitraum</h3>
+            <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+                <p:outputLabel for="month" value="Monat: " />
+                <p:selectOneRadio id="month" value="#{monthView.month}"  layout="grid" columns="3">
+                    <f:selectItems value="#{monthView.months}" var="c" itemLabel="#{month}" itemValue="#{month}"/>
+                </p:selectOneRadio>
+            </h:panelGrid>
+            <h:form id="AbrechnungErstellen">
+                <br />
+        
+                <h3>Abrechnungsdaten</h3>
+                 <p:panelGrid style="margin-top:20px">
+                     <f:facet name="header">
+                         <p:row>
+                             <p:column colspan="4">Lohnabrechnung Angaben</p:column>
+                         </p:row>
+                         <p:row>
+                             <p:column colspan="2">Steuerpflichtiges Brutto</p:column>
+                             <p:column colspan="2">Steuerfreie Bezüge</p:column>
+                         </p:row>
+                     </f:facet>
+
+                     <p:row>
+                         <p:column >Urlaubsgeld</p:column>
+                         <p:column ><p:inputText  id="holydaymoney"  size="5" type="number"/></p:column>
+
+                        <p:column >Zeitzuschläge(Stunden Nachschicht)</p:column>
+                        <p:column ><p:inputText  id="timebonus" size="5"  type="number"/></p:column>
+
+                        
+                     </p:row>
+
+                     <p:row>
+                         <p:column >Prämie</p:column>
+                         <p:column ><p:inputText  id="bonus"  size="5" type="number"/></p:column>
+                         
+                         <p:column >Zeitzuschläge(Stunden Sonntag)</p:column>
+                        <p:column ><p:inputText  id="timeSunday" size="5"  type="number"/></p:column>
+                     </p:row>
+
+                  
+
+                     <p:row>
+                         <p:column >Dienstwagen 1%</p:column>
+                         <p:column ><p:inputText  id="companycar" size="5"  type="number"/></p:column>
+                         
+                          <p:column >Zeitzuschläge(Stunden Feiertage)</p:column>
+                        <p:column ><p:inputText  id="timeHolyday" size="5"  type="number"/></p:column>
+                     
+                     </p:row>
+
+                     <p:row>
+                          <p:column >Dienstwagen, Weg zur Arbeit</p:column>
+                         <p:column ><p:inputText  id="companycarRoadToCompany"  size="5" type="number"/></p:column>
+                         
+                          <p:column >Zeitzuschläge(Stunden Sondervergütung)</p:column>
+                          <p:column ><p:inputText  id="timeExtraBenous" size="5" type="number"/></p:column>
+                     
+                     </p:row>
+
+                     <p:row>
+                         <p:column colspan="6" styleClass="ui-widget-header">
+                             <p:spacer height="0"/>
+                         </p:column>
+                     </p:row>
+
+                     <p:row>
+                         <p:column></p:column>
+                         <p:column></p:column>
+
+                         <p:column >Arbeitgeberzuschuss private KV (Auslagen-Erstattung)</p:column>
+                         <p:column ><p:inputText  id="employeeInsuranceBonus" size="5" type="number"/></p:column>
+
+                     </p:row>
+
+                     <p:row>
+                         <p:column></p:column>
+                         <p:column ></p:column>
+                          <p:column >Arbeitgeberzuschuss private KV (Fahrtgeld)</p:column>
+                         <p:column ><p:inputText  id="roadMoney" size="5" type="number"/></p:column>
+
+                     </p:row>
+
+                     <p:row>
+                         <p:column colspan="4" styleClass="ui-widget-header">
+                             <p:spacer height="0"/>
+                         </p:column>
+                     </p:row>
+
+                     <p:row>
+                         <p:column></p:column>
+                         <p:column></p:column>
+                         
+                         <p:column >Arbeitgeberzuschuss private KV (AG-Zuschuss zur baV)</p:column>
+                         <p:column ><p:inputText  id="adBonusBav" size="5" type="number"/></p:column>
+
+                      
+                     </p:row>
+                 </p:panelGrid>
+            </h:form>
+            <br />
+             <h3>Abrechnung</h3>
+                 <p:panelGrid style="margin-top:20px">
+                     <f:facet name="header">
+                         <p:row>
+                             <p:column colspan="7">Lohnabrechnung</p:column>
+                         </p:row>
+                         <p:row>
+                             <p:column colspan="2">Conf. Semifinals</p:column>
+                             <p:column colspan="2">Conf. Finals</p:column>
+                             <p:column colspan="2">NBA Finals</p:column>
+                             <p:column>Champion</p:column>
+                         </p:row>
+
+                     </f:facet>
+
+                     <p:row>
+                         <p:column style="font-weight: bold;">Seattle</p:column>
+                         <p:column style="font-weight: bold;">4</p:column>
+
+                         <p:column rowspan="2" style="font-weight: bold;">Seattle</p:column>
+                         <p:column rowspan="2" style="font-weight: bold;">4</p:column>
+
+                         <p:column rowspan="5">Seattle</p:column>
+                         <p:column rowspan="5">2</p:column>
+
+                         <p:column rowspan="11" style="font-weight: bold;">Chicago</p:column>
+                     </p:row>
+
+                     <p:row>
+                         <p:column>Houston</p:column>
+                         <p:column >0</p:column>
+                     </p:row>
+
+                     <p:row>
+                         <p:column colspan="4" styleClass="ui-widget-header">
+                             <p:spacer height="0"/>
+                         </p:column>
+                     </p:row>
+
+                     <p:row>
+                         <p:column style="font-weight: bold;">Utah</p:column>
+                         <p:column style="font-weight: bold;">4</p:column>
+
+                         <p:column rowspan="2">Utah</p:column>
+                         <p:column rowspan="2">3</p:column>
+                     </p:row>
+
+                     <p:row>
+                         <p:column>San Antonio</p:column>
+                         <p:column >2</p:column>
+                     </p:row>
+
+                     <p:row>
+                         <p:column colspan="6" styleClass="ui-widget-header">
+                             <p:spacer height="0"/>
+                         </p:column>
+                     </p:row>
+
+                     <p:row>
+                         <p:column style="font-weight: bold;">Chicago</p:column>
+                         <p:column style="font-weight: bold;">4</p:column>
+
+                         <p:column rowspan="2" style="font-weight: bold;">Chicago</p:column>
+                         <p:column rowspan="2" style="font-weight: bold;">4</p:column>
+
+                         <p:column rowspan="5" style="font-weight: bold;">Chicago</p:column>
+                         <p:column rowspan="5" style="font-weight: bold;">4</p:column>
+                     </p:row>
+
+                     <p:row>
+                         <p:column>New York</p:column>
+                         <p:column >1</p:column>
+                     </p:row>
+
+                     <p:row>
+                         <p:column colspan="4" styleClass="ui-widget-header">
+                             <p:spacer height="0"/>
+                         </p:column>
+                     </p:row>
+
+                     <p:row>
+                         <p:column>Atlanta</p:column>
+                         <p:column >1</p:column>
+
+                         <p:column rowspan="2">Orlando</p:column>
+                         <p:column rowspan="2">0</p:column>
+                     </p:row>
+
+                     <p:row>
+                         <p:column style="font-weight: bold;">Orlando</p:column>
+                         <p:column style="font-weight: bold;">4</p:column>
+                     </p:row>
+
+
+                     <f:facet name="footer">
+                         <p:row>
+                             <p:column  colspan="4" style="text-align: right">
+                                 Finals MVP
+                             </p:column>
+                             <p:column  colspan="3" rowspan="3">
+                                 Michael Jordan (Chicago)
+                             </p:column>
+                         </p:row>
+
+                         <p:row>
+                             <p:column  colspan="4" style="text-align: right">
+                                 Season MVP
+                             </p:column>
+                         </p:row>
+                         <p:row>
+                             <p:column  colspan="4" style="text-align: right">
+                                 Top Scorer
+                             </p:column>
+                         </p:row>
+                     </f:facet>
+                 </p:panelGrid>
+             
+             
+	</ui:define>
+</ui:composition>
