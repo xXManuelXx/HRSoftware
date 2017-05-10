@@ -98,7 +98,7 @@
                          <p:column></p:column>
                          <p:column></p:column>
 
-                         <p:column >Arbeitgeberzuschuss private KV (Auslagen-Erstattung)</p:column>
+                         <p:column >Auslagen-Erstattung</p:column>
                          <p:column ><p:inputText  id="employeeInsuranceBonus" size="5" type="number"/></p:column>
 
                      </p:row>
@@ -106,144 +106,268 @@
                      <p:row>
                          <p:column></p:column>
                          <p:column ></p:column>
-                          <p:column >Arbeitgeberzuschuss private KV (Fahrtgeld)</p:column>
+                          <p:column >Fahrtgeld</p:column>
                          <p:column ><p:inputText  id="roadMoney" size="5" type="number"/></p:column>
 
-                     </p:row>
-
-                     <p:row>
-                         <p:column colspan="4" styleClass="ui-widget-header">
-                             <p:spacer height="0"/>
-                         </p:column>
                      </p:row>
 
                      <p:row>
                          <p:column></p:column>
                          <p:column></p:column>
                          
-                         <p:column >Arbeitgeberzuschuss private KV (AG-Zuschuss zur baV)</p:column>
+                         <p:column >AG-Zuschuss zur baV</p:column>
                          <p:column ><p:inputText  id="adBonusBav" size="5" type="number"/></p:column>
 
                       
                      </p:row>
                  </p:panelGrid>
             </h:form>
+            
+            
+            
             <br />
              <h3>Abrechnung</h3>
-                 <p:panelGrid style="margin-top:20px">
+                 <p:panelGrid style="margin-top:20px" >
                      <f:facet name="header">
                          <p:row>
                              <p:column colspan="7">Lohnabrechnung</p:column>
                          </p:row>
                          <p:row>
-                             <p:column colspan="2">Conf. Semifinals</p:column>
-                             <p:column colspan="2">Conf. Finals</p:column>
-                             <p:column colspan="2">NBA Finals</p:column>
-                             <p:column>Champion</p:column>
+                             <p:column >Firmenname</p:column>
+                             <p:column >Strasse der Firma</p:column>
+                             <p:column colspan="2">PLZ und Ortname der Firma</p:column>
                          </p:row>
-
                      </f:facet>
 
+                     <p:separator style="visibility: hidden"/>
                      <p:row>
-                         <p:column style="font-weight: bold;">Seattle</p:column>
-                         <p:column style="font-weight: bold;">4</p:column>
-
-                         <p:column rowspan="2" style="font-weight: bold;">Seattle</p:column>
-                         <p:column rowspan="2" style="font-weight: bold;">4</p:column>
-
-                         <p:column rowspan="5">Seattle</p:column>
-                         <p:column rowspan="5">2</p:column>
-
-                         <p:column rowspan="11" style="font-weight: bold;">Chicago</p:column>
+                         <p:column style="font-weight: bold;">Monat</p:column>
+                         <p:column>Januar</p:column>
                      </p:row>
 
                      <p:row>
-                         <p:column>Houston</p:column>
-                         <p:column >0</p:column>
+                          <p:column style="font-weight: bold;">Name</p:column>
+                         <p:column>asdasdasd</p:column>
                      </p:row>
-
+                      <p:row>
+                          <p:column style="font-weight: bold;">Straße</p:column>
+                         <p:column>asdasdasd</p:column>
+                     </p:row>
+                      <p:row>
+                          <p:column style="font-weight: bold;">PLZ Ort</p:column>
+                         <p:column>asdasdasd</p:column>
+                     </p:row>
+                      <p:row>
+                          <p:column style="font-weight: bold;">Datum</p:column>
+                         <p:column>8.12.2017</p:column>
+                         <p:column style="font-weight: bold;">Geburtsdatum</p:column>
+                         <p:column>8.12.2017</p:column>
+                     </p:row>
+                      <p:row>
+                          <p:column style="font-weight: bold;">Steuerklasse</p:column>
+                         <p:column>6</p:column>
+                         <p:column style="font-weight: bold;">Eintrittsdatum</p:column>
+                         <p:column>8.12.2017</p:column>
+                     </p:row>
                      <p:row>
-                         <p:column colspan="4" styleClass="ui-widget-header">
-                             <p:spacer height="0"/>
-                         </p:column>
+                          <p:column style="font-weight: bold;">Kinder</p:column>
+                         <p:column>6</p:column>
+                         <p:column style="font-weight: bold;">Urlaubsanspruch</p:column>
+                         <p:column>25</p:column>
                      </p:row>
-
                      <p:row>
-                         <p:column style="font-weight: bold;">Utah</p:column>
-                         <p:column style="font-weight: bold;">4</p:column>
-
-                         <p:column rowspan="2">Utah</p:column>
-                         <p:column rowspan="2">3</p:column>
+                         <p:column colspan="2"><p:separator style="visibility: hidden"/></p:column>
+                          <p:column style="font-weight: bold;">AV-Pflichtig</p:column>
+                         <p:column>RV-Pflichtig</p:column>
                      </p:row>
-
                      <p:row>
-                         <p:column>San Antonio</p:column>
-                         <p:column >2</p:column>
+                         <p:column style="font-weight: bold;">Krankenversicherung</p:column>
+                         <p:column>14,6%</p:column>
+                         <p:column style="font-weight: bold;">Altersfreibetrag</p:column>
+                         <p:column>123</p:column>
                      </p:row>
-
+                     <p:row>
+                         <p:column style="font-weight: bold;">Zusatzbeitrag</p:column>
+                         <p:column>14,6%</p:column>
+                         <p:column style="font-weight: bold;">Krankheitstage</p:column>
+                         <p:column>123</p:column>
+                     </p:row>
+                     <p:row>
+                         <p:column style="font-weight: bold;">(Jahres)Lohnsteuerfreibetrag</p:column>
+                         <p:column>14,6%</p:column>
+                         <p:column style="font-weight: bold;">Urlaubstage genutzt</p:column>
+                         <p:column>123</p:column>
+                     </p:row>
+                     <p:row>
+                         <p:column style="font-weight: bold;">(Jahres)hinzurechnungsbetrag</p:column>
+                         <p:column>14,6%</p:column>
+                         <p:column style="font-weight: bold;">Resturlaub</p:column>
+                         <p:column>123</p:column>
+                     </p:row>
                      <p:row>
                          <p:column colspan="6" styleClass="ui-widget-header">
-                             <p:spacer height="0"/>
+                             <p:spacer height="0.5"/>
                          </p:column>
                      </p:row>
-
                      <p:row>
-                         <p:column style="font-weight: bold;">Chicago</p:column>
-                         <p:column style="font-weight: bold;">4</p:column>
-
-                         <p:column rowspan="2" style="font-weight: bold;">Chicago</p:column>
-                         <p:column rowspan="2" style="font-weight: bold;">4</p:column>
-
-                         <p:column rowspan="5" style="font-weight: bold;">Chicago</p:column>
-                         <p:column rowspan="5" style="font-weight: bold;">4</p:column>
+                         <p:column colspan="2" >Gehalt</p:column>
+                         <p:column colspan="2" style=" text-align: right;">234234234</p:column>
                      </p:row>
-
                      <p:row>
-                         <p:column>New York</p:column>
-                         <p:column >1</p:column>
+                         <p:column colspan="2" >Urlaubsgeld</p:column>
+                         <p:column colspan="2" style=" text-align: right;">234234234</p:column>
                      </p:row>
-
                      <p:row>
-                         <p:column colspan="4" styleClass="ui-widget-header">
-                             <p:spacer height="0"/>
+                         <p:column colspan="2" >Prämie</p:column>
+                         <p:column colspan="2" style=" text-align: right;">234234234</p:column>
+                     </p:row>
+                     <p:row>
+                         <p:column colspan="2">Dienstwagen</p:column>
+                         <p:column colspan="2" style=" text-align: right;">234234234</p:column>
+                     </p:row>
+                     <p:row>
+                         <p:column colspan="2" >Dienstwagen, Weg zur Arbeit</p:column>
+                         <p:column colspan="2" style=" text-align: right;">234234234</p:column>
+                     </p:row>
+                     <p:row>
+                         <p:column colspan="3" style="font-weight: bold;">Steuer-Brutto</p:column>
+                         <p:column  style=" text-align: right;font-weight: bold;">234234234</p:column>
+                     </p:row>
+                     
+                     <p:row>
+                         <p:column colspan="3" styleClass="ui-widget-header" style="font-weight: bold;">Bruttoarbeitsentgelt (ohne geltwerte Vorteile)</p:column>
+                         <p:column  styleClass="ui-widget-header" style=" text-align: right;font-weight: bold;">234234234</p:column>
+                     </p:row>
+                     <p:row>
+                         <p:column></p:column>
+                         <p:column colspan="2">Lohnsteuer</p:column>
+                         <p:column  style=" text-align: right;">234234234</p:column>
+                     </p:row>
+                     <p:row>
+                         <p:column></p:column>
+                         <p:column colspan="2">9% Kirchensteuer</p:column>
+                         <p:column  style=" text-align: right;">234234234</p:column>
+                     </p:row>
+                     <p:row>
+                         <p:column></p:column>
+                         <p:column colspan="2">Solidaritätszuschlag</p:column>
+                         <p:column  style=" text-align: right;">234234234</p:column>
+                     </p:row>
+                     <p:row>
+                         <p:column></p:column>
+                         <p:column colspan="2">7,3% Krankenkassenbeitrag</p:column>
+                         <p:column  style=" text-align: right;">234234234</p:column>
+                     </p:row>
+                     <p:row>
+                         <p:column></p:column>
+                         <p:column colspan="2">1,1% Zusatzbeitrag</p:column>
+                         <p:column  style=" text-align: right;">234234234</p:column>
+                     </p:row>
+                     <p:row>
+                         <p:column></p:column>
+                         <p:column colspan="2">1,5% Arbeitslosenversicherung</p:column>
+                         <p:column  style=" text-align: right;">234234234</p:column>
+                     </p:row>
+                     <p:row>
+                         <p:column></p:column>
+                         <p:column colspan="2">9,35% Rentenversicherung</p:column>
+                         <p:column  style=" text-align: right;">234234234</p:column>
+                     </p:row>
+                     <p:row>
+                         <p:column></p:column>
+                         <p:column colspan="2">1,175% Pflegeversicherung</p:column>
+                         <p:column  style=" text-align: right;">234234234</p:column>
+                     </p:row>
+                     <p:row>
+                         <p:column styleClass="ui-widget-header"  colspan="3" style="font-weight: bold;">Summe Abzüge</p:column>
+                         <p:column   styleClass="ui-widget-header"  style=" text-align: right;font-weight: bold;">234234234</p:column>
+                     </p:row>
+                      <p:row>
+                         <p:column colspan="6">
+                             <p:spacer height="0.5"/>
                          </p:column>
                      </p:row>
-
                      <p:row>
-                         <p:column>Atlanta</p:column>
-                         <p:column >1</p:column>
-
-                         <p:column rowspan="2">Orlando</p:column>
-                         <p:column rowspan="2">0</p:column>
+                         <p:column colspan="4">Zeitzuschläge</p:column>
                      </p:row>
-
                      <p:row>
-                         <p:column style="font-weight: bold;">Orlando</p:column>
-                         <p:column style="font-weight: bold;">4</p:column>
+                         <p:column colspan="2" >Stunden Nachtschicht</p:column>
+                         <p:column colspan="2" style=" text-align: right;">234234234</p:column>
                      </p:row>
-
-
-                     <f:facet name="footer">
-                         <p:row>
-                             <p:column  colspan="4" style="text-align: right">
-                                 Finals MVP
-                             </p:column>
-                             <p:column  colspan="3" rowspan="3">
-                                 Michael Jordan (Chicago)
-                             </p:column>
-                         </p:row>
-
-                         <p:row>
-                             <p:column  colspan="4" style="text-align: right">
-                                 Season MVP
-                             </p:column>
-                         </p:row>
-                         <p:row>
-                             <p:column  colspan="4" style="text-align: right">
-                                 Top Scorer
-                             </p:column>
-                         </p:row>
-                     </f:facet>
+                     <p:row>
+                         <p:column colspan="2" >Stunden Sonntage</p:column>
+                         <p:column colspan="2" style=" text-align: right;">234234234</p:column>
+                     </p:row>
+                     <p:row>
+                         <p:column colspan="2" >Stunden Sondervergütung</p:column>
+                         <p:column colspan="2" style=" text-align: right;">234234234</p:column>
+                     </p:row>
+                     <p:row>
+                         <p:column colspan="2" >Sonn-, Feiertags- und Nachtzuschläge</p:column>
+                         <p:column colspan="2" style=" text-align: right;">234234234</p:column>
+                     </p:row>
+                      <p:row>
+                         <p:column colspan="6">
+                             <p:spacer height="0.5"/>
+                         </p:column>
+                     </p:row>
+                     <p:row>
+                         <p:column colspan="2" >Arbeitgeberzuschuss private KV</p:column>
+                         <p:column colspan="2" style=" text-align: right;">234234234</p:column>
+                     </p:row>
+                     <p:row>
+                         <p:column colspan="2" >Auslagen-Erstattung</p:column>
+                         <p:column colspan="2" style=" text-align: right;">234234234</p:column>
+                     </p:row>
+                     <p:row>
+                         <p:column colspan="2" >Fahrtgeld</p:column>
+                         <p:column colspan="2" style=" text-align: right;">234234234</p:column>
+                     </p:row>
+                     <p:row>
+                         <p:column colspan="2" >AG-Zuschuss zur baV</p:column>
+                         <p:column colspan="2" style=" text-align: right;">234234234</p:column>
+                     </p:row>
+                      <p:row>
+                         <p:column styleClass="ui-widget-header"  colspan="3" style="font-weight: bold;">Summe steuerfreie Bezüge</p:column>
+                         <p:column   styleClass="ui-widget-header"  style=" text-align: right;font-weight: bold;">234234234</p:column>
+                     </p:row>
+                      <p:row>
+                         <p:column colspan="3" style="font-weight: bold;">Auszahlungsbetrag</p:column>
+                         <p:column  style=" text-align: right;font-weight: bold;">234234234</p:column>
+                     </p:row>
+                     <p:row>
+                         <p:column colspan="6">
+                             <p:spacer height="0.5"/>
+                         </p:column>
+                     </p:row>
+                     <p:row>
+                         <p:column colspan="4" style="font-size:10px;">Kommulierte Jahreswerte</p:column>
+                         
+                     </p:row>
+                     <p:row>
+                         <p:column style="font-size:10px;">Bruttolohn</p:column>
+                         <p:column style=" text-align: right;font-size:10px;">234234234</p:column>
+                         <p:column style="font-size:10px;">Einmalzahlungen</p:column>
+                         <p:column style=" text-align: right;font-size:10px;">234234234</p:column>
+                     </p:row>
+                     <p:row>
+                         <p:column style="font-size:10px;">Lohnsteuer</p:column>
+                         <p:column style=" text-align: right;font-size:10px;">234234234</p:column>
+                         <p:column style="font-size:10px;">steuerfreie Bezüge</p:column>
+                         <p:column style=" text-align: right;font-size:10px;">234234234</p:column>
+                     </p:row>
+                     <p:row>
+                         <p:column style="font-size:10px;">Kirchensteuer</p:column>
+                         <p:column style=" text-align: right;font-size:10px;">234234234</p:column>
+                         <p:column style="font-size:10px;">Beitrag zur baV</p:column>
+                         <p:column style=" text-align: right;font-size:10px;">234234234</p:column>
+                     </p:row>
+                     <p:row>
+                         <p:column style="font-size:10px;">Sol. Zuschlag</p:column>
+                         <p:column style=" text-align: right;font-size:10px;">234234234</p:column>
+                         <p:column style="font-size:10px;">Gesamt Netto</p:column>
+                         <p:column style=" text-align: right;font-size:10px;">234234234</p:column>
+                     </p:row>
                  </p:panelGrid>
              
              
