@@ -29,6 +29,12 @@ public class MonthView {
         return month;
     }
     
+    
+    public void setMonth(String month){
+        this.month = month;
+    }
+    
+    
     public List<String> getMonths() {
         return months;
     }

@@ -120,14 +120,17 @@
 
                       
                      </p:row>
+              
+                   
+               
                  </p:panelGrid>
-            </h:form>
             
-            
-            
+             <p:commandButton value="Ajax Submit" id="ajax" update="gridContainer" styleClass="ui-priority-primary" />
+          
             <br />
              <h3>Abrechnung</h3>
-                 <p:panelGrid style="margin-top:20px" >
+             <p:outputPanel id="gridContainer" layout="block" >
+                 <p:panelGrid id="lohnabrechnung" style="margin-top:20px" >
                      <f:facet name="header">
                          <p:row>
                              <p:column colspan="7">Lohnabrechnung</p:column>
@@ -369,7 +372,7 @@
                          <p:column style=" text-align: right;font-size:10px;">234234234</p:column>
                      </p:row>
                  </p:panelGrid>
-             
-             
+             </p:outputPanel>
+            </h:form> 
 	</ui:define>
 </ui:composition>
