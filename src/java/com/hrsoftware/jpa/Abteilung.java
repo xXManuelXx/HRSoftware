@@ -115,7 +115,7 @@ public class Abteilung implements Serializable {
 
     @Override
     public String toString() {
-        return "com.hrsoftware.jpa.Abteilung[ id=" + id + " ]";
+        return this.getBeschreibung();
     }
     
 }

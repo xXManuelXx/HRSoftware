@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="GehaltsabrechnungvariableeingabenCreateDlg" widgetVar="GehaltsabrechnungvariableeingabenCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle}">
+            <h:form id="GehaltsabrechnungvariableeingabenCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{gehaltsabrechnungvariableeingabenController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{gehaltsabrechnungvariableeingabenController.selected.id}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_id}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_urlaubsgeld}" for="urlaubsgeld" />
+                        <p:inputText id="urlaubsgeld" value="#{gehaltsabrechnungvariableeingabenController.selected.urlaubsgeld}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_urlaubsgeld}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_urlaubsgeld}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_praemie}" for="praemie" />
+                        <p:inputText id="praemie" value="#{gehaltsabrechnungvariableeingabenController.selected.praemie}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_praemie}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_praemie}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_dienstwagen}" for="dienstwagen" />
+                        <p:inputText id="dienstwagen" value="#{gehaltsabrechnungvariableeingabenController.selected.dienstwagen}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_dienstwagen}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_dienstwagen}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_dienstwagenWeg}" for="dienstwagenWeg" />
+                        <p:inputText id="dienstwagenWeg" value="#{gehaltsabrechnungvariableeingabenController.selected.dienstwagenWeg}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_dienstwagenWeg}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_dienstwagenWeg}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_nachschicht}" for="nachschicht" />
+                        <p:inputText id="nachschicht" value="#{gehaltsabrechnungvariableeingabenController.selected.nachschicht}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_nachschicht}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_nachschicht}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_sonntage}" for="sonntage" />
+                        <p:inputText id="sonntage" value="#{gehaltsabrechnungvariableeingabenController.selected.sonntage}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_sonntage}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_sonntage}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_feiertage}" for="feiertage" />
+                        <p:inputText id="feiertage" value="#{gehaltsabrechnungvariableeingabenController.selected.feiertage}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_feiertage}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_feiertage}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_sonderverguetung}" for="sonderverguetung" />
+                        <p:inputText id="sonderverguetung" value="#{gehaltsabrechnungvariableeingabenController.selected.sonderverguetung}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_sonderverguetung}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_sonderverguetung}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_auslagenErstattungen}" for="auslagenErstattungen" />
+                        <p:inputText id="auslagenErstattungen" value="#{gehaltsabrechnungvariableeingabenController.selected.auslagenErstattungen}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_auslagenErstattungen}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_auslagenErstattungen}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_fahrtgeld}" for="fahrtgeld" />
+                        <p:inputText id="fahrtgeld" value="#{gehaltsabrechnungvariableeingabenController.selected.fahrtgeld}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_fahrtgeld}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_fahrtgeld}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_gehalt}" for="gehalt" />
+                        <p:inputText id="gehalt" value="#{gehaltsabrechnungvariableeingabenController.selected.gehalt}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_gehalt}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_gehalt}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_steuerklasse}" for="steuerklasse" />
+                        <p:inputText id="steuerklasse" value="#{gehaltsabrechnungvariableeingabenController.selected.steuerklasse}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_steuerklasse}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_steuerklasse}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_kinder}" for="kinder" />
+                        <p:inputText id="kinder" value="#{gehaltsabrechnungvariableeingabenController.selected.kinder}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_kinder}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_kinder}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_krankenversicherung}" for="krankenversicherung" />
+                        <p:inputText id="krankenversicherung" value="#{gehaltsabrechnungvariableeingabenController.selected.krankenversicherung}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_krankenversicherung}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_krankenversicherung}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_zusatzbeitragProzent}" for="zusatzbeitragProzent" />
+                        <p:inputText id="zusatzbeitragProzent" value="#{gehaltsabrechnungvariableeingabenController.selected.zusatzbeitragProzent}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_zusatzbeitragProzent}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_zusatzbeitragProzent}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_lohnsteuerfreibetrag}" for="lohnsteuerfreibetrag" />
+                        <p:inputText id="lohnsteuerfreibetrag" value="#{gehaltsabrechnungvariableeingabenController.selected.lohnsteuerfreibetrag}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_lohnsteuerfreibetrag}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_lohnsteuerfreibetrag}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_hinzurechnungsbetrag}" for="hinzurechnungsbetrag" />
+                        <p:inputText id="hinzurechnungsbetrag" value="#{gehaltsabrechnungvariableeingabenController.selected.hinzurechnungsbetrag}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_hinzurechnungsbetrag}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_hinzurechnungsbetrag}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_eintrittsdatum}" for="eintrittsdatum" />
+                        <p:calendar id="eintrittsdatum" pattern="MM/dd/yyyy" value="#{gehaltsabrechnungvariableeingabenController.selected.eintrittsdatum}" title="#{bundle.EditGehaltsabrechnungvariableeingabenTitle_eintrittsdatum}" required="true" requiredMessage="#{bundle.EditGehaltsabrechnungvariableeingabenRequiredMessage_eintrittsdatum}" showOn="button"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_urlaubsanspruch}" for="urlaubsanspruch" />
+                        <p:inputText id="urlaubsanspruch" value="#{gehaltsabrechnungvariableeingabenController.selected.urlaubsanspruch}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_urlaubsanspruch}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_urlaubsanspruch}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_avPflichtig}" for="avPflichtig" />
+                        <p:inputText id="avPflichtig" value="#{gehaltsabrechnungvariableeingabenController.selected.avPflichtig}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_avPflichtig}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_avPflichtig}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_altersfreibetrag}" for="altersfreibetrag" />
+                        <p:inputText id="altersfreibetrag" value="#{gehaltsabrechnungvariableeingabenController.selected.altersfreibetrag}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_altersfreibetrag}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_altersfreibetrag}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_krankheitstage}" for="krankheitstage" />
+                        <p:inputText id="krankheitstage" value="#{gehaltsabrechnungvariableeingabenController.selected.krankheitstage}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_krankheitstage}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_krankheitstage}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_urlaubstageGenutzt}" for="urlaubstageGenutzt" />
+                        <p:inputText id="urlaubstageGenutzt" value="#{gehaltsabrechnungvariableeingabenController.selected.urlaubstageGenutzt}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_urlaubstageGenutzt}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_urlaubstageGenutzt}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_lohnsteuer}" for="lohnsteuer" />
+                        <p:inputText id="lohnsteuer" value="#{gehaltsabrechnungvariableeingabenController.selected.lohnsteuer}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_lohnsteuer}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_lohnsteuer}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_kirchensteuer}" for="kirchensteuer" />
+                        <p:inputText id="kirchensteuer" value="#{gehaltsabrechnungvariableeingabenController.selected.kirchensteuer}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_kirchensteuer}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_kirchensteuer}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_solidaritätszuschlag}" for="solidaritätszuschlag" />
+                        <p:inputText id="solidaritätszuschlag" value="#{gehaltsabrechnungvariableeingabenController.selected.solidaritätszuschlag}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_solidaritätszuschlag}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_solidaritätszuschlag}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_krankenkassenbeitrag}" for="krankenkassenbeitrag" />
+                        <p:inputText id="krankenkassenbeitrag" value="#{gehaltsabrechnungvariableeingabenController.selected.krankenkassenbeitrag}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_krankenkassenbeitrag}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_krankenkassenbeitrag}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_zusatzbeitragGeld}" for="zusatzbeitragGeld" />
+                        <p:inputText id="zusatzbeitragGeld" value="#{gehaltsabrechnungvariableeingabenController.selected.zusatzbeitragGeld}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_zusatzbeitragGeld}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_zusatzbeitragGeld}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_arbeitslosenversicherung}" for="arbeitslosenversicherung" />
+                        <p:inputText id="arbeitslosenversicherung" value="#{gehaltsabrechnungvariableeingabenController.selected.arbeitslosenversicherung}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_arbeitslosenversicherung}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_arbeitslosenversicherung}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_rentenversicherung}" for="rentenversicherung" />
+                        <p:inputText id="rentenversicherung" value="#{gehaltsabrechnungvariableeingabenController.selected.rentenversicherung}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_rentenversicherung}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_rentenversicherung}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_pflegeversicherung}" for="pflegeversicherung" />
+                        <p:inputText id="pflegeversicherung" value="#{gehaltsabrechnungvariableeingabenController.selected.pflegeversicherung}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_pflegeversicherung}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_pflegeversicherung}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_agzuschussbaV}" for="agzuschussbaV" />
+                        <p:inputText id="agzuschussbaV" value="#{gehaltsabrechnungvariableeingabenController.selected.agzuschussbaV}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_agzuschussbaV}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_agzuschussbaV}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_auszahlungsbetrag}" for="auszahlungsbetrag" />
+                        <p:inputText id="auszahlungsbetrag" value="#{gehaltsabrechnungvariableeingabenController.selected.auszahlungsbetrag}" title="#{bundle.CreateGehaltsabrechnungvariableeingabenTitle_auszahlungsbetrag}" required="true" requiredMessage="#{bundle.CreateGehaltsabrechnungvariableeingabenRequiredMessage_auszahlungsbetrag}"/>
+                        <p:outputLabel value="#{bundle.CreateGehaltsabrechnungvariableeingabenLabel_maId}" for="maId" />
+                        <p:selectOneMenu id="maId" value="#{gehaltsabrechnungvariableeingabenController.selected.maId}" required="true" requiredMessage="#{bundle.EditGehaltsabrechnungvariableeingabenRequiredMessage_maId}">
+                            <f:selectItems value="#{mitarbeiterController.itemsAvailableSelectOne}"
+                                           var="maIdItem"
+                                           itemValue="#{maIdItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{gehaltsabrechnungvariableeingabenController.create}" value="#{bundle.Save}" update="display,:GehaltsabrechnungvariableeingabenListForm:datalist,:growl" oncomplete="handleSubmit(args,'GehaltsabrechnungvariableeingabenCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="GehaltsabrechnungvariableeingabenCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

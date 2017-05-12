@@ -14,7 +14,9 @@
         </ui:define>
 
         <ui:define name="body">
+
             <h:form id="AbteilungListForm">
+                                  
                 <p:panel header="#{bundle.ListAbteilungTitle}">
                     <p:dataTable id="datalist" value="#{abteilungController.items}" var="item"
                                  selectionMode="single" selection="#{abteilungController.selected}"

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListStammdatenTitle}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <h:form id="StammdatenListForm">
+                <p:panel header="#{bundle.ListStammdatenTitle}">
+                    <p:dataTable id="datalist" value="#{stammdatenController.items}" var="item"
+                                 selectionMode="single" selection="#{stammdatenController.selected}"
+                                 paginator="true"
+                                 rowKey="#{item.id}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 >
+
+                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListStammdatenTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListStammdatenTitle_steuerklasse}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.steuerklasse}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListStammdatenTitle_ehegattenfaktor}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.ehegattenfaktor}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListStammdatenTitle_rentenversichert}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.rentenversichert}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListStammdatenTitle_arbeitslosenversicherungspflichtig}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.arbeitslosenversicherungspflichtig}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListStammdatenTitle_kinderfreibetrag}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.kinderfreibetrag}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListStammdatenTitle_krankenversicherung}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.krankenversicherung}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListStammdatenTitle_kvzuschlag}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.kvzuschlag}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListStammdatenTitle_arbeitgeberzuschussKvPv}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.arbeitgeberzuschussKvPv}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListStammdatenTitle_kinderlos}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.kinderlos}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListStammdatenTitle_stelleImOsten}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.stelleImOsten}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListStammdatenTitle_stelleInSachsen}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.stelleInSachsen}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListStammdatenTitle_kirchensteuer}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.kirchensteuer}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListStammdatenTitle_lohnsteuerfreibetrag}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.lohnsteuerfreibetrag}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListStammdatenTitle_hinzurechnungsbetrag}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.hinzurechnungsbetrag}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListStammdatenTitle_minijobGleizonenberechnung}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.minijobGleizonenberechnung}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListStammdatenTitle_rentenanwartschaft}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.rentenanwartschaft}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListStammdatenTitle_mitarbeiterid}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.mitarbeiterid}"/>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{stammdatenController.prepareCreate}" update=":StammdatenCreateForm" oncomplete="PF('StammdatenCreateDialog').show()"/>
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":StammdatenViewForm" oncomplete="PF('StammdatenViewDialog').show()" disabled="#{empty stammdatenController.selected}"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":StammdatenEditForm" oncomplete="PF('StammdatenEditDialog').show()" disabled="#{empty stammdatenController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{stammdatenController.destroy}" update=":growl,datalist" disabled="#{empty stammdatenController.selected}"/>
+                        </f:facet>
+                    </p:dataTable>
+                </p:panel>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+    </ui:composition>
+
+</html>

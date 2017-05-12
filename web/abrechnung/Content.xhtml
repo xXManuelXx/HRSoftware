@@ -1,3 +1,4 @@
+
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -6,26 +7,57 @@
 	template="/template/HRSoftwareTemplate.xhtml">
 	<ui:define name="metadata">
 	</ui:define>
-	<ui:define name="content">
-             <h3>Abteilung/Mitarbeiter Auswahl</h3>      
-            <p:outputLabel for="abteilung" value="Abteilung: "  />
-            <p:selectOneMenu id="abteilung" panelStyle="width:180px"
-                             effect="fade" var="t" style="width:160px" filter="true" filterMatchMode="startsWith">
-                <f:selectItems value="" var="theme" itemLabel="" itemValue="" />
-                <p:column>
-                    <h:outputText value="Test" />
-                </p:column>
-            </p:selectOneMenu>
-            <br />
-            <br />
-            <p:outputLabel for="mitarbeiter" value="Mitarbeiter: "  />
-            <p:selectOneMenu id="mitarbeiter" panelStyle="width:180px"
-                             effect="fade" var="t" style="width:160px" filter="true" filterMatchMode="startsWith">
-                <f:selectItems value="" var="theme" itemLabel="" itemValue="" />
-                <p:column>
-                    <h:outputText value="Test" />
-                </p:column>
-            </p:selectOneMenu>    
+	<ui:define name="content">            
+ 
+            <h:form id="MitarbeiterListForm">
+                <p:growl id="growl" life="2000" />
+                <p:panel header="Abteilung/Mitarbeiter Auswahl">
+                    <p:dataTable id="datalist" value="#{abrechnungsController.itemsEmployee}" var="item"
+                                 selectionMode="single" selection="#{abrechnungsController.selectedEmployee}"
+                                 paginator="true"
+                                 rowKey="#{item.id}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 >
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMitarbeiterTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMitarbeiterTitle_nachname}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nachname}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMitarbeiterTitle_vorname}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.vorname}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMitarbeiterTitle_geburtsdatum}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.geburtsdatum}">
+                                <f:convertDateTime pattern="MM/dd/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton value="Ajax Submit" id="ajax" update=":mainForm:MitarbeiterListForm:growl" actionListener="#{abrechnungsController.onDepartmentChange}" styleClass="ui-priority-primary" />
+                            <p:commandButton id="chooseButton" icon="ui-icon-plus"   value="Auswählen"
+                                             actionListener="#{abrechnungsController.onDepartmentChange}"  
+                                             update=":mainForm:AbrechnungErstellen" />
+                            </f:facet>
+                    </p:dataTable>
+                </p:panel>
+            </h:form>
+            
+  
+                 
+         
             <br />
             <br/>
             <h3>Abrechnugszeitraum</h3>
@@ -35,6 +67,7 @@
                     <f:selectItems value="#{monthView.months}" var="c" itemLabel="#{month}" itemValue="#{month}"/>
                 </p:selectOneRadio>
             </h:panelGrid>
+      
             <h:form id="AbrechnungErstellen">
                 <br />
         
@@ -42,7 +75,7 @@
                  <p:panelGrid style="margin-top:20px">
                      <f:facet name="header">
                          <p:row>
-                             <p:column colspan="4">Lohnabrechnung Angaben</p:column>
+                             <p:column colspan="4">Lohnabrechnung Angaben </p:column>
                          </p:row>
                          <p:row>
                              <p:column colspan="2">Steuerpflichtiges Brutto</p:column>
@@ -125,11 +158,11 @@
                
                  </p:panelGrid>
             
-             <p:commandButton value="Ajax Submit" id="ajax" update="gridContainer" styleClass="ui-priority-primary" />
+             <p:commandButton value="Abrechnung erstellen" id="ajax" update="lohnabrechnung" styleClass="ui-priority-primary" />
           
             <br />
-             <h3>Abrechnung</h3>
-             <p:outputPanel id="gridContainer" layout="block" >
+             
+                 <h3>Abrechnung</h3>
                  <p:panelGrid id="lohnabrechnung" style="margin-top:20px" >
                      <f:facet name="header">
                          <p:row>
@@ -372,7 +405,6 @@
                          <p:column style=" text-align: right;font-size:10px;">234234234</p:column>
                      </p:row>
                  </p:panelGrid>
-             </p:outputPanel>
             </h:form> 
 	</ui:define>
 </ui:composition>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="GehaltsabrechnungvariableeingabenViewDlg" widgetVar="GehaltsabrechnungvariableeingabenViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle}">
+            <h:form id="GehaltsabrechnungvariableeingabenViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{gehaltsabrechnungvariableeingabenController.selected != null}">
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_id}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.id}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_urlaubsgeld}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.urlaubsgeld}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_urlaubsgeld}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_praemie}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.praemie}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_praemie}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_dienstwagen}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.dienstwagen}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_dienstwagen}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_dienstwagenWeg}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.dienstwagenWeg}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_dienstwagenWeg}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_nachschicht}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.nachschicht}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_nachschicht}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_sonntage}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.sonntage}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_sonntage}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_feiertage}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.feiertage}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_feiertage}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_sonderverguetung}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.sonderverguetung}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_sonderverguetung}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_auslagenErstattungen}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.auslagenErstattungen}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_auslagenErstattungen}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_fahrtgeld}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.fahrtgeld}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_fahrtgeld}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_gehalt}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.gehalt}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_gehalt}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_steuerklasse}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.steuerklasse}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_steuerklasse}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_kinder}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.kinder}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_kinder}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_krankenversicherung}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.krankenversicherung}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_krankenversicherung}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_zusatzbeitragProzent}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.zusatzbeitragProzent}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_zusatzbeitragProzent}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_lohnsteuerfreibetrag}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.lohnsteuerfreibetrag}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_lohnsteuerfreibetrag}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_hinzurechnungsbetrag}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.hinzurechnungsbetrag}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_hinzurechnungsbetrag}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_eintrittsdatum}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.eintrittsdatum}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_eintrittsdatum}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_urlaubsanspruch}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.urlaubsanspruch}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_urlaubsanspruch}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_avPflichtig}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.avPflichtig}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_avPflichtig}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_altersfreibetrag}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.altersfreibetrag}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_altersfreibetrag}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_krankheitstage}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.krankheitstage}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_krankheitstage}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_urlaubstageGenutzt}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.urlaubstageGenutzt}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_urlaubstageGenutzt}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_lohnsteuer}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.lohnsteuer}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_lohnsteuer}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_kirchensteuer}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.kirchensteuer}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_kirchensteuer}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_solidaritätszuschlag}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.solidaritätszuschlag}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_solidaritätszuschlag}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_krankenkassenbeitrag}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.krankenkassenbeitrag}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_krankenkassenbeitrag}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_zusatzbeitragGeld}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.zusatzbeitragGeld}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_zusatzbeitragGeld}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_arbeitslosenversicherung}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.arbeitslosenversicherung}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_arbeitslosenversicherung}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_rentenversicherung}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.rentenversicherung}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_rentenversicherung}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_pflegeversicherung}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.pflegeversicherung}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_pflegeversicherung}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_agzuschussbaV}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.agzuschussbaV}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_agzuschussbaV}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_auszahlungsbetrag}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.auszahlungsbetrag}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_auszahlungsbetrag}"/>
+                        <h:outputText value="#{bundle.ViewGehaltsabrechnungvariableeingabenLabel_maId}"/>
+                        <h:outputText value="#{gehaltsabrechnungvariableeingabenController.selected.maId}" title="#{bundle.ViewGehaltsabrechnungvariableeingabenTitle_maId}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="GehaltsabrechnungvariableeingabenViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

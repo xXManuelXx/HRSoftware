@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <h:form id="GehaltsabrechnungvariableeingabenListForm">
+                <p:panel header="#{bundle.ListGehaltsabrechnungvariableeingabenTitle}">
+                    <p:dataTable id="datalist" value="#{gehaltsabrechnungvariableeingabenController.items}" var="item"
+                                 selectionMode="single" selection="#{gehaltsabrechnungvariableeingabenController.selected}"
+                                 paginator="true"
+                                 rowKey="#{item.id}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 >
+
+                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_urlaubsgeld}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.urlaubsgeld}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_praemie}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.praemie}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_dienstwagen}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dienstwagen}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_dienstwagenWeg}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dienstwagenWeg}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_nachschicht}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nachschicht}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_sonntage}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.sonntage}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_feiertage}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.feiertage}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_sonderverguetung}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.sonderverguetung}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_auslagenErstattungen}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.auslagenErstattungen}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_fahrtgeld}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.fahrtgeld}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_gehalt}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.gehalt}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_steuerklasse}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.steuerklasse}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_kinder}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.kinder}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_krankenversicherung}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.krankenversicherung}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_zusatzbeitragProzent}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.zusatzbeitragProzent}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_lohnsteuerfreibetrag}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.lohnsteuerfreibetrag}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_hinzurechnungsbetrag}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.hinzurechnungsbetrag}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_eintrittsdatum}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.eintrittsdatum}">
+                                <f:convertDateTime pattern="MM/dd/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_urlaubsanspruch}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.urlaubsanspruch}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_avPflichtig}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.avPflichtig}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_altersfreibetrag}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.altersfreibetrag}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_krankheitstage}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.krankheitstage}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_urlaubstageGenutzt}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.urlaubstageGenutzt}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_lohnsteuer}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.lohnsteuer}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_kirchensteuer}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.kirchensteuer}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_solidaritätszuschlag}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.solidaritätszuschlag}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_krankenkassenbeitrag}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.krankenkassenbeitrag}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_zusatzbeitragGeld}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.zusatzbeitragGeld}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_arbeitslosenversicherung}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.arbeitslosenversicherung}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_rentenversicherung}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.rentenversicherung}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_pflegeversicherung}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.pflegeversicherung}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_agzuschussbaV}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.agzuschussbaV}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_auszahlungsbetrag}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.auszahlungsbetrag}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListGehaltsabrechnungvariableeingabenTitle_maId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.maId}"/>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{gehaltsabrechnungvariableeingabenController.prepareCreate}" update=":GehaltsabrechnungvariableeingabenCreateForm" oncomplete="PF('GehaltsabrechnungvariableeingabenCreateDialog').show()"/>
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":GehaltsabrechnungvariableeingabenViewForm" oncomplete="PF('GehaltsabrechnungvariableeingabenViewDialog').show()" disabled="#{empty gehaltsabrechnungvariableeingabenController.selected}"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":GehaltsabrechnungvariableeingabenEditForm" oncomplete="PF('GehaltsabrechnungvariableeingabenEditDialog').show()" disabled="#{empty gehaltsabrechnungvariableeingabenController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{gehaltsabrechnungvariableeingabenController.destroy}" update=":growl,datalist" disabled="#{empty gehaltsabrechnungvariableeingabenController.selected}"/>
+                        </f:facet>
+                    </p:dataTable>
+                </p:panel>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+    </ui:composition>
+
+</html>

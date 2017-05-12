@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="StammdatenCreateDlg" widgetVar="StammdatenCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateStammdatenTitle}">
+            <h:form id="StammdatenCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{stammdatenController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateStammdatenLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{stammdatenController.selected.id}" title="#{bundle.CreateStammdatenTitle_id}" required="true" requiredMessage="#{bundle.CreateStammdatenRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.CreateStammdatenLabel_steuerklasse}" for="steuerklasse" />
+                        <p:inputText id="steuerklasse" value="#{stammdatenController.selected.steuerklasse}" title="#{bundle.CreateStammdatenTitle_steuerklasse}" required="true" requiredMessage="#{bundle.CreateStammdatenRequiredMessage_steuerklasse}"/>
+                        <p:outputLabel value="#{bundle.CreateStammdatenLabel_ehegattenfaktor}" for="ehegattenfaktor" />
+                        <p:inputText id="ehegattenfaktor" value="#{stammdatenController.selected.ehegattenfaktor}" title="#{bundle.CreateStammdatenTitle_ehegattenfaktor}" required="true" requiredMessage="#{bundle.CreateStammdatenRequiredMessage_ehegattenfaktor}"/>
+                        <p:outputLabel value="#{bundle.CreateStammdatenLabel_rentenversichert}" for="rentenversichert" />
+                        <p:inputText id="rentenversichert" value="#{stammdatenController.selected.rentenversichert}" title="#{bundle.CreateStammdatenTitle_rentenversichert}" required="true" requiredMessage="#{bundle.CreateStammdatenRequiredMessage_rentenversichert}"/>
+                        <p:outputLabel value="#{bundle.CreateStammdatenLabel_arbeitslosenversicherungspflichtig}" for="arbeitslosenversicherungspflichtig" />
+                        <p:inputText id="arbeitslosenversicherungspflichtig" value="#{stammdatenController.selected.arbeitslosenversicherungspflichtig}" title="#{bundle.CreateStammdatenTitle_arbeitslosenversicherungspflichtig}" required="true" requiredMessage="#{bundle.CreateStammdatenRequiredMessage_arbeitslosenversicherungspflichtig}"/>
+                        <p:outputLabel value="#{bundle.CreateStammdatenLabel_kinderfreibetrag}" for="kinderfreibetrag" />
+                        <p:inputText id="kinderfreibetrag" value="#{stammdatenController.selected.kinderfreibetrag}" title="#{bundle.CreateStammdatenTitle_kinderfreibetrag}" required="true" requiredMessage="#{bundle.CreateStammdatenRequiredMessage_kinderfreibetrag}"/>
+                        <p:outputLabel value="#{bundle.CreateStammdatenLabel_krankenversicherung}" for="krankenversicherung" />
+                        <p:inputText id="krankenversicherung" value="#{stammdatenController.selected.krankenversicherung}" title="#{bundle.CreateStammdatenTitle_krankenversicherung}" required="true" requiredMessage="#{bundle.CreateStammdatenRequiredMessage_krankenversicherung}"/>
+                        <p:outputLabel value="#{bundle.CreateStammdatenLabel_kvzuschlag}" for="kvzuschlag" />
+                        <p:inputText id="kvzuschlag" value="#{stammdatenController.selected.kvzuschlag}" title="#{bundle.CreateStammdatenTitle_kvzuschlag}" required="true" requiredMessage="#{bundle.CreateStammdatenRequiredMessage_kvzuschlag}"/>
+                        <p:outputLabel value="#{bundle.CreateStammdatenLabel_arbeitgeberzuschussKvPv}" for="arbeitgeberzuschussKvPv" />
+                        <p:inputText id="arbeitgeberzuschussKvPv" value="#{stammdatenController.selected.arbeitgeberzuschussKvPv}" title="#{bundle.CreateStammdatenTitle_arbeitgeberzuschussKvPv}" required="true" requiredMessage="#{bundle.CreateStammdatenRequiredMessage_arbeitgeberzuschussKvPv}"/>
+                        <p:outputLabel value="#{bundle.CreateStammdatenLabel_kinderlos}" for="kinderlos" />
+                        <p:inputText id="kinderlos" value="#{stammdatenController.selected.kinderlos}" title="#{bundle.CreateStammdatenTitle_kinderlos}" required="true" requiredMessage="#{bundle.CreateStammdatenRequiredMessage_kinderlos}"/>
+                        <p:outputLabel value="#{bundle.CreateStammdatenLabel_stelleImOsten}" for="stelleImOsten" />
+                        <p:inputText id="stelleImOsten" value="#{stammdatenController.selected.stelleImOsten}" title="#{bundle.CreateStammdatenTitle_stelleImOsten}" required="true" requiredMessage="#{bundle.CreateStammdatenRequiredMessage_stelleImOsten}"/>
+                        <p:outputLabel value="#{bundle.CreateStammdatenLabel_stelleInSachsen}" for="stelleInSachsen" />
+                        <p:inputText id="stelleInSachsen" value="#{stammdatenController.selected.stelleInSachsen}" title="#{bundle.CreateStammdatenTitle_stelleInSachsen}" required="true" requiredMessage="#{bundle.CreateStammdatenRequiredMessage_stelleInSachsen}"/>
+                        <p:outputLabel value="#{bundle.CreateStammdatenLabel_kirchensteuer}" for="kirchensteuer" />
+                        <p:inputText id="kirchensteuer" value="#{stammdatenController.selected.kirchensteuer}" title="#{bundle.CreateStammdatenTitle_kirchensteuer}" required="true" requiredMessage="#{bundle.CreateStammdatenRequiredMessage_kirchensteuer}"/>
+                        <p:outputLabel value="#{bundle.CreateStammdatenLabel_lohnsteuerfreibetrag}" for="lohnsteuerfreibetrag" />
+                        <p:inputText id="lohnsteuerfreibetrag" value="#{stammdatenController.selected.lohnsteuerfreibetrag}" title="#{bundle.CreateStammdatenTitle_lohnsteuerfreibetrag}" required="true" requiredMessage="#{bundle.CreateStammdatenRequiredMessage_lohnsteuerfreibetrag}"/>
+                        <p:outputLabel value="#{bundle.CreateStammdatenLabel_hinzurechnungsbetrag}" for="hinzurechnungsbetrag" />
+                        <p:inputText id="hinzurechnungsbetrag" value="#{stammdatenController.selected.hinzurechnungsbetrag}" title="#{bundle.CreateStammdatenTitle_hinzurechnungsbetrag}" required="true" requiredMessage="#{bundle.CreateStammdatenRequiredMessage_hinzurechnungsbetrag}"/>
+                        <p:outputLabel value="#{bundle.CreateStammdatenLabel_minijobGleizonenberechnung}" for="minijobGleizonenberechnung" />
+                        <p:inputText id="minijobGleizonenberechnung" value="#{stammdatenController.selected.minijobGleizonenberechnung}" title="#{bundle.CreateStammdatenTitle_minijobGleizonenberechnung}" required="true" requiredMessage="#{bundle.CreateStammdatenRequiredMessage_minijobGleizonenberechnung}"/>
+                        <p:outputLabel value="#{bundle.CreateStammdatenLabel_rentenanwartschaft}" for="rentenanwartschaft" />
+                        <p:inputText id="rentenanwartschaft" value="#{stammdatenController.selected.rentenanwartschaft}" title="#{bundle.CreateStammdatenTitle_rentenanwartschaft}" required="true" requiredMessage="#{bundle.CreateStammdatenRequiredMessage_rentenanwartschaft}"/>
+                        <p:outputLabel value="#{bundle.CreateStammdatenLabel_mitarbeiterid}" for="mitarbeiterid" />
+                        <p:inputText id="mitarbeiterid" value="#{stammdatenController.selected.mitarbeiterid}" title="#{bundle.CreateStammdatenTitle_mitarbeiterid}" required="true" requiredMessage="#{bundle.CreateStammdatenRequiredMessage_mitarbeiterid}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{stammdatenController.create}" value="#{bundle.Save}" update="display,:StammdatenListForm:datalist,:growl" oncomplete="handleSubmit(args,'StammdatenCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="StammdatenCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

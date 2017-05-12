@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="StammdatenEditDlg" widgetVar="StammdatenEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditStammdatenTitle}">
+            <h:form id="StammdatenEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{stammdatenController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditStammdatenLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{stammdatenController.selected.id}" title="#{bundle.EditStammdatenTitle_id}" required="true" requiredMessage="#{bundle.EditStammdatenRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.EditStammdatenLabel_steuerklasse}" for="steuerklasse" />
+                        <p:inputText id="steuerklasse" value="#{stammdatenController.selected.steuerklasse}" title="#{bundle.EditStammdatenTitle_steuerklasse}" required="true" requiredMessage="#{bundle.EditStammdatenRequiredMessage_steuerklasse}"/>
+                        <p:outputLabel value="#{bundle.EditStammdatenLabel_ehegattenfaktor}" for="ehegattenfaktor" />
+                        <p:inputText id="ehegattenfaktor" value="#{stammdatenController.selected.ehegattenfaktor}" title="#{bundle.EditStammdatenTitle_ehegattenfaktor}" required="true" requiredMessage="#{bundle.EditStammdatenRequiredMessage_ehegattenfaktor}"/>
+                        <p:outputLabel value="#{bundle.EditStammdatenLabel_rentenversichert}" for="rentenversichert" />
+                        <p:inputText id="rentenversichert" value="#{stammdatenController.selected.rentenversichert}" title="#{bundle.EditStammdatenTitle_rentenversichert}" required="true" requiredMessage="#{bundle.EditStammdatenRequiredMessage_rentenversichert}"/>
+                        <p:outputLabel value="#{bundle.EditStammdatenLabel_arbeitslosenversicherungspflichtig}" for="arbeitslosenversicherungspflichtig" />
+                        <p:inputText id="arbeitslosenversicherungspflichtig" value="#{stammdatenController.selected.arbeitslosenversicherungspflichtig}" title="#{bundle.EditStammdatenTitle_arbeitslosenversicherungspflichtig}" required="true" requiredMessage="#{bundle.EditStammdatenRequiredMessage_arbeitslosenversicherungspflichtig}"/>
+                        <p:outputLabel value="#{bundle.EditStammdatenLabel_kinderfreibetrag}" for="kinderfreibetrag" />
+                        <p:inputText id="kinderfreibetrag" value="#{stammdatenController.selected.kinderfreibetrag}" title="#{bundle.EditStammdatenTitle_kinderfreibetrag}" required="true" requiredMessage="#{bundle.EditStammdatenRequiredMessage_kinderfreibetrag}"/>
+                        <p:outputLabel value="#{bundle.EditStammdatenLabel_krankenversicherung}" for="krankenversicherung" />
+                        <p:inputText id="krankenversicherung" value="#{stammdatenController.selected.krankenversicherung}" title="#{bundle.EditStammdatenTitle_krankenversicherung}" required="true" requiredMessage="#{bundle.EditStammdatenRequiredMessage_krankenversicherung}"/>
+                        <p:outputLabel value="#{bundle.EditStammdatenLabel_kvzuschlag}" for="kvzuschlag" />
+                        <p:inputText id="kvzuschlag" value="#{stammdatenController.selected.kvzuschlag}" title="#{bundle.EditStammdatenTitle_kvzuschlag}" required="true" requiredMessage="#{bundle.EditStammdatenRequiredMessage_kvzuschlag}"/>
+                        <p:outputLabel value="#{bundle.EditStammdatenLabel_arbeitgeberzuschussKvPv}" for="arbeitgeberzuschussKvPv" />
+                        <p:inputText id="arbeitgeberzuschussKvPv" value="#{stammdatenController.selected.arbeitgeberzuschussKvPv}" title="#{bundle.EditStammdatenTitle_arbeitgeberzuschussKvPv}" required="true" requiredMessage="#{bundle.EditStammdatenRequiredMessage_arbeitgeberzuschussKvPv}"/>
+                        <p:outputLabel value="#{bundle.EditStammdatenLabel_kinderlos}" for="kinderlos" />
+                        <p:inputText id="kinderlos" value="#{stammdatenController.selected.kinderlos}" title="#{bundle.EditStammdatenTitle_kinderlos}" required="true" requiredMessage="#{bundle.EditStammdatenRequiredMessage_kinderlos}"/>
+                        <p:outputLabel value="#{bundle.EditStammdatenLabel_stelleImOsten}" for="stelleImOsten" />
+                        <p:inputText id="stelleImOsten" value="#{stammdatenController.selected.stelleImOsten}" title="#{bundle.EditStammdatenTitle_stelleImOsten}" required="true" requiredMessage="#{bundle.EditStammdatenRequiredMessage_stelleImOsten}"/>
+                        <p:outputLabel value="#{bundle.EditStammdatenLabel_stelleInSachsen}" for="stelleInSachsen" />
+                        <p:inputText id="stelleInSachsen" value="#{stammdatenController.selected.stelleInSachsen}" title="#{bundle.EditStammdatenTitle_stelleInSachsen}" required="true" requiredMessage="#{bundle.EditStammdatenRequiredMessage_stelleInSachsen}"/>
+                        <p:outputLabel value="#{bundle.EditStammdatenLabel_kirchensteuer}" for="kirchensteuer" />
+                        <p:inputText id="kirchensteuer" value="#{stammdatenController.selected.kirchensteuer}" title="#{bundle.EditStammdatenTitle_kirchensteuer}" required="true" requiredMessage="#{bundle.EditStammdatenRequiredMessage_kirchensteuer}"/>
+                        <p:outputLabel value="#{bundle.EditStammdatenLabel_lohnsteuerfreibetrag}" for="lohnsteuerfreibetrag" />
+                        <p:inputText id="lohnsteuerfreibetrag" value="#{stammdatenController.selected.lohnsteuerfreibetrag}" title="#{bundle.EditStammdatenTitle_lohnsteuerfreibetrag}" required="true" requiredMessage="#{bundle.EditStammdatenRequiredMessage_lohnsteuerfreibetrag}"/>
+                        <p:outputLabel value="#{bundle.EditStammdatenLabel_hinzurechnungsbetrag}" for="hinzurechnungsbetrag" />
+                        <p:inputText id="hinzurechnungsbetrag" value="#{stammdatenController.selected.hinzurechnungsbetrag}" title="#{bundle.EditStammdatenTitle_hinzurechnungsbetrag}" required="true" requiredMessage="#{bundle.EditStammdatenRequiredMessage_hinzurechnungsbetrag}"/>
+                        <p:outputLabel value="#{bundle.EditStammdatenLabel_minijobGleizonenberechnung}" for="minijobGleizonenberechnung" />
+                        <p:inputText id="minijobGleizonenberechnung" value="#{stammdatenController.selected.minijobGleizonenberechnung}" title="#{bundle.EditStammdatenTitle_minijobGleizonenberechnung}" required="true" requiredMessage="#{bundle.EditStammdatenRequiredMessage_minijobGleizonenberechnung}"/>
+                        <p:outputLabel value="#{bundle.EditStammdatenLabel_rentenanwartschaft}" for="rentenanwartschaft" />
+                        <p:inputText id="rentenanwartschaft" value="#{stammdatenController.selected.rentenanwartschaft}" title="#{bundle.EditStammdatenTitle_rentenanwartschaft}" required="true" requiredMessage="#{bundle.EditStammdatenRequiredMessage_rentenanwartschaft}"/>
+                        <p:outputLabel value="#{bundle.EditStammdatenLabel_mitarbeiterid}" for="mitarbeiterid" />
+                        <p:inputText id="mitarbeiterid" value="#{stammdatenController.selected.mitarbeiterid}" title="#{bundle.EditStammdatenTitle_mitarbeiterid}" required="true" requiredMessage="#{bundle.EditStammdatenRequiredMessage_mitarbeiterid}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{stammdatenController.update}" value="#{bundle.Save}" update="display,:StammdatenListForm:datalist,:growl" oncomplete="handleSubmit(args, 'StammdatenEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="StammdatenEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

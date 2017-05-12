@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="StammdatenViewDlg" widgetVar="StammdatenViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewStammdatenTitle}">
+            <h:form id="StammdatenViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{stammdatenController.selected != null}">
+                        <h:outputText value="#{bundle.ViewStammdatenLabel_id}"/>
+                        <h:outputText value="#{stammdatenController.selected.id}" title="#{bundle.ViewStammdatenTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewStammdatenLabel_steuerklasse}"/>
+                        <h:outputText value="#{stammdatenController.selected.steuerklasse}" title="#{bundle.ViewStammdatenTitle_steuerklasse}"/>
+                        <h:outputText value="#{bundle.ViewStammdatenLabel_ehegattenfaktor}"/>
+                        <h:outputText value="#{stammdatenController.selected.ehegattenfaktor}" title="#{bundle.ViewStammdatenTitle_ehegattenfaktor}"/>
+                        <h:outputText value="#{bundle.ViewStammdatenLabel_rentenversichert}"/>
+                        <h:outputText value="#{stammdatenController.selected.rentenversichert}" title="#{bundle.ViewStammdatenTitle_rentenversichert}"/>
+                        <h:outputText value="#{bundle.ViewStammdatenLabel_arbeitslosenversicherungspflichtig}"/>
+                        <h:outputText value="#{stammdatenController.selected.arbeitslosenversicherungspflichtig}" title="#{bundle.ViewStammdatenTitle_arbeitslosenversicherungspflichtig}"/>
+                        <h:outputText value="#{bundle.ViewStammdatenLabel_kinderfreibetrag}"/>
+                        <h:outputText value="#{stammdatenController.selected.kinderfreibetrag}" title="#{bundle.ViewStammdatenTitle_kinderfreibetrag}"/>
+                        <h:outputText value="#{bundle.ViewStammdatenLabel_krankenversicherung}"/>
+                        <h:outputText value="#{stammdatenController.selected.krankenversicherung}" title="#{bundle.ViewStammdatenTitle_krankenversicherung}"/>
+                        <h:outputText value="#{bundle.ViewStammdatenLabel_kvzuschlag}"/>
+                        <h:outputText value="#{stammdatenController.selected.kvzuschlag}" title="#{bundle.ViewStammdatenTitle_kvzuschlag}"/>
+                        <h:outputText value="#{bundle.ViewStammdatenLabel_arbeitgeberzuschussKvPv}"/>
+                        <h:outputText value="#{stammdatenController.selected.arbeitgeberzuschussKvPv}" title="#{bundle.ViewStammdatenTitle_arbeitgeberzuschussKvPv}"/>
+                        <h:outputText value="#{bundle.ViewStammdatenLabel_kinderlos}"/>
+                        <h:outputText value="#{stammdatenController.selected.kinderlos}" title="#{bundle.ViewStammdatenTitle_kinderlos}"/>
+                        <h:outputText value="#{bundle.ViewStammdatenLabel_stelleImOsten}"/>
+                        <h:outputText value="#{stammdatenController.selected.stelleImOsten}" title="#{bundle.ViewStammdatenTitle_stelleImOsten}"/>
+                        <h:outputText value="#{bundle.ViewStammdatenLabel_stelleInSachsen}"/>
+                        <h:outputText value="#{stammdatenController.selected.stelleInSachsen}" title="#{bundle.ViewStammdatenTitle_stelleInSachsen}"/>
+                        <h:outputText value="#{bundle.ViewStammdatenLabel_kirchensteuer}"/>
+                        <h:outputText value="#{stammdatenController.selected.kirchensteuer}" title="#{bundle.ViewStammdatenTitle_kirchensteuer}"/>
+                        <h:outputText value="#{bundle.ViewStammdatenLabel_lohnsteuerfreibetrag}"/>
+                        <h:outputText value="#{stammdatenController.selected.lohnsteuerfreibetrag}" title="#{bundle.ViewStammdatenTitle_lohnsteuerfreibetrag}"/>
+                        <h:outputText value="#{bundle.ViewStammdatenLabel_hinzurechnungsbetrag}"/>
+                        <h:outputText value="#{stammdatenController.selected.hinzurechnungsbetrag}" title="#{bundle.ViewStammdatenTitle_hinzurechnungsbetrag}"/>
+                        <h:outputText value="#{bundle.ViewStammdatenLabel_minijobGleizonenberechnung}"/>
+                        <h:outputText value="#{stammdatenController.selected.minijobGleizonenberechnung}" title="#{bundle.ViewStammdatenTitle_minijobGleizonenberechnung}"/>
+                        <h:outputText value="#{bundle.ViewStammdatenLabel_rentenanwartschaft}"/>
+                        <h:outputText value="#{stammdatenController.selected.rentenanwartschaft}" title="#{bundle.ViewStammdatenTitle_rentenanwartschaft}"/>
+                        <h:outputText value="#{bundle.ViewStammdatenLabel_mitarbeiterid}"/>
+                        <h:outputText value="#{stammdatenController.selected.mitarbeiterid}" title="#{bundle.ViewStammdatenTitle_mitarbeiterid}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="StammdatenViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

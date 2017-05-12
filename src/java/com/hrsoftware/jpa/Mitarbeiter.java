@@ -304,7 +304,7 @@ public class Mitarbeiter implements Serializable {
 
     @Override
     public String toString() {
-        return "com.hrsoftware.jpa.Mitarbeiter[ id=" + id + " ]";
+        return this.vorname + " " + this.nachname;
     }
     
 }
