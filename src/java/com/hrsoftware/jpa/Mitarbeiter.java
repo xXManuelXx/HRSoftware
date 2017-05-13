@@ -47,8 +47,7 @@ import javax.validation.constraints.Size;
     , @NamedQuery(name = "Mitarbeiter.findByNachname", query = "SELECT m FROM Mitarbeiter m WHERE m.nachname = :nachname")
     , @NamedQuery(name = "Mitarbeiter.findByVorname", query = "SELECT m FROM Mitarbeiter m WHERE m.vorname = :vorname")
     , @NamedQuery(name = "Mitarbeiter.findByGeburtsdatum", query = "SELECT m FROM Mitarbeiter m WHERE m.geburtsdatum = :geburtsdatum")
-    , @NamedQuery(name = "Mitarbeiter.findByUrlaubstage", query = "SELECT m FROM Mitarbeiter m WHERE m.urlaubstage = :urlaubstage")
-    , @NamedQuery(name = "Mitarbeiter.findBySteuerklasse", query = "SELECT m FROM Mitarbeiter m WHERE m.steuerklasse = :steuerklasse")})
+    , @NamedQuery(name = "Mitarbeiter.findByUrlaubstage", query = "SELECT m FROM Mitarbeiter m WHERE m.urlaubstage = :urlaubstage")})
 public class Mitarbeiter implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -76,10 +75,6 @@ public class Mitarbeiter implements Serializable {
     @NotNull
     @Column(nullable = false)
     private int urlaubstage;
-    @Basic(optional = false)
-    @NotNull
-    @Column(nullable = false)
-    private int steuerklasse;
     @ManyToMany(mappedBy = "mitarbeiterCollection")
     private Collection<Skills> skillsCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "mitarbeiter")
@@ -121,13 +116,12 @@ public class Mitarbeiter implements Serializable {
         this.id = id;
     }
 
-    public Mitarbeiter(Integer id, String nachname, String vorname, Date geburtsdatum, int urlaubstage, int steuerklasse) {
+    public Mitarbeiter(Integer id, String nachname, String vorname, Date geburtsdatum, int urlaubstage) {
         this.id = id;
         this.nachname = nachname;
         this.vorname = vorname;
         this.geburtsdatum = geburtsdatum;
         this.urlaubstage = urlaubstage;
-        this.steuerklasse = steuerklasse;
     }
 
     public Integer getId() {
@@ -168,14 +162,6 @@ public class Mitarbeiter implements Serializable {
 
     public void setUrlaubstage(int urlaubstage) {
         this.urlaubstage = urlaubstage;
-    }
-
-    public int getSteuerklasse() {
-        return steuerklasse;
-    }
-
-    public void setSteuerklasse(int steuerklasse) {
-        this.steuerklasse = steuerklasse;
     }
 
     public Collection<Skills> getSkillsCollection() {

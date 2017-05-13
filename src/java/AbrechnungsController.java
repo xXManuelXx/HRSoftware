@@ -37,6 +37,15 @@ import javax.inject.Named;
 @SessionScoped
 public class AbrechnungsController  implements Serializable {
     private boolean all = true; 
+    private Stammdaten stammdaten;
+    
+    @Inject
+    Gehaltsabrechnungsrechner gehaltsabrechnungsrechner;
+    
+    @EJB
+    private com.hrsoftware.jpacontroller.StammdatenFacade ejbFacadeBasedata;
+    private Stammdaten selectedBasedata;
+
     
     @EJB
     private com.hrsoftware.jpacontroller.MitarbeiterFacade ejbFacadeEmployee;
@@ -48,8 +57,11 @@ public class AbrechnungsController  implements Serializable {
     private List<Abteilung> itemsDepartment = null;
     private Abteilung selectedDepartment;
 
+   
     
-    
+     public Gehaltsabrechnungsrechner getGehaltsabrechnungsrechner() {
+        return gehaltsabrechnungsrechner;
+    }
     
   public AbrechnungsController() {
   }
@@ -104,8 +116,24 @@ public class AbrechnungsController  implements Serializable {
         return ejbFacadeDepartment;
     }
     
-    public void onDepartmentChange(){
-        System.out.println("onDepartmentChange wird ausgeführt");
+    public void createSalaryStatement(){
+      // System.out.println("onDepartmentChange wird ausgeführt: " + selectedEmployee.getNachname() + " maid: " + selectedBasedata.getMitarbeiterid());
+           
+         Stammdaten stamm = ejbFacadeBasedata.getBaseDataFromEmployeeId(selectedEmployee.getId());
+         
+         if(stamm == null){
+             
+              System.out.println("Stammdaten sind null");
+         }else{
+                           System.out.println("Stammdaten sind nicht  null: " + stamm.getId());
+
+         }
+         selectedBasedata = stamm;//ejbFacadeBasedata.getBaseDataFromEmployeeId(selectedBasedata.getMitarbeiterid());
+         if(selectedBasedata != null){
+             gehaltsabrechnungsrechner.setStammdaten(selectedBasedata);
+         }else{
+             System.out.println("Stammdaten nicht geladen " );
+         }
          /*if( selectedDepartment!=null){
              itemsEmployee.remove(0);
            // itemsEmployee = ejbFacadeEmployee.getEntityManager().createNamedQuery("Mitarbeiter.findByIdAbteilungId").setParameter("id",selectedDepartment.getId()).getResultList();     
@@ -115,86 +143,5 @@ public class AbrechnungsController  implements Serializable {
          }*/
     }
     
-    @FacesConverter(forClass = Abteilung.class)
-    public static class AbrechnungsControllerConverterDepartment implements Converter {
-
-        @Override
-        public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
-            if (value == null || value.length() == 0) {
-                return null;
-            }
-            AbteilungController controller = (AbteilungController) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "abrechnungsController");
-            return controller.getAbteilung(getKey(value));
-        }
-
-        java.lang.Integer getKey(String value) {
-            java.lang.Integer key;
-            key = Integer.valueOf(value);
-            return key;
-        }
-
-        String getStringKey(java.lang.Integer value) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(value);
-            return sb.toString();
-        }
-
-        @Override
-        public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
-            if (object == null) {
-                return null;
-            }
-            if (object instanceof Abteilung) {
-                Abteilung o = (Abteilung) object;
-                return getStringKey(o.getId());
-            } else {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), Abteilung.class.getName()});
-                return null;
-            }
-        }
-
-    }
-     
-     
-    @FacesConverter(forClass = Mitarbeiter.class)
-    public static class AbrechnungsControllerConverterEmployee implements Converter {
-
-        @Override
-        public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
-            if (value == null || value.length() == 0) {
-                return null;
-            }
-            MitarbeiterController controller = (MitarbeiterController) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "abrechnungsController");
-            return controller.getMitarbeiter(getKey(value));
-        }
-
-        java.lang.Integer getKey(String value) {
-            java.lang.Integer key;
-            key = Integer.valueOf(value);
-            return key;
-        }
-
-        String getStringKey(java.lang.Integer value) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(value);
-            return sb.toString();
-        }
-
-        @Override
-        public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
-            if (object == null) {
-                return null;
-            }
-            if (object instanceof Mitarbeiter) {
-                Mitarbeiter o = (Mitarbeiter) object;
-                return getStringKey(o.getId());
-            } else {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), Mitarbeiter.class.getName()});
-                return null;
-            }
-        }
-
-    }
+   
 } 

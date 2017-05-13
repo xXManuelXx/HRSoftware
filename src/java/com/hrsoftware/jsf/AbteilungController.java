@@ -29,6 +29,7 @@ public class AbteilungController implements Serializable {
     private Abteilung selected;
 
     public AbteilungController() {
+        
     }
 
     public Abteilung getSelected() {

@@ -22,8 +22,6 @@
                         <p:calendar id="geburtsdatum" pattern="MM/dd/yyyy" value="#{mitarbeiterController.selected.geburtsdatum}" title="#{bundle.EditMitarbeiterTitle_geburtsdatum}" required="true" requiredMessage="#{bundle.EditMitarbeiterRequiredMessage_geburtsdatum}" showOn="button"/>
                         <p:outputLabel value="#{bundle.EditMitarbeiterLabel_urlaubstage}" for="urlaubstage" />
                         <p:inputText id="urlaubstage" value="#{mitarbeiterController.selected.urlaubstage}" title="#{bundle.EditMitarbeiterTitle_urlaubstage}" required="true" requiredMessage="#{bundle.EditMitarbeiterRequiredMessage_urlaubstage}"/>
-                        <p:outputLabel value="#{bundle.EditMitarbeiterLabel_steuerklasse}" for="steuerklasse" />
-                        <p:inputText id="steuerklasse" value="#{mitarbeiterController.selected.steuerklasse}" title="#{bundle.EditMitarbeiterTitle_steuerklasse}" required="true" requiredMessage="#{bundle.EditMitarbeiterRequiredMessage_steuerklasse}"/>
                         <p:outputLabel value="#{bundle.EditMitarbeiterLabel_idUser}" for="idUser" />
                         <p:selectOneMenu id="idUser" value="#{mitarbeiterController.selected.idUser}" required="true" requiredMessage="#{bundle.EditMitarbeiterRequiredMessage_idUser}">
                             <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>

@@ -29,4 +29,7 @@ public class StammdatenFacade extends AbstractFacade<Stammdaten> {
         super(Stammdaten.class);
     }
     
+    public Stammdaten getBaseDataFromEmployeeId(int id){
+        return (Stammdaten) getEntityManager().createNamedQuery("Stammdaten.findByMitarbeiterid").setParameter("mitarbeiterid",id).getSingleResult();     
+    }
 }
