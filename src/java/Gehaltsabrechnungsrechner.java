@@ -279,7 +279,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
    //jahreslohn+alle .EinmZ
     private double jahreslohn1_alter1;
     private double jahreslohn1_zkf;
-    private double jahreslohn1_llz;
+    private double jahreslohn1_lzz;
     private double jahreslohn1_krv;
     private double jahreslohn1_zre4j;
     private double jahreslohn1_stkl;
@@ -305,7 +305,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     
     //MZTABFB
    private double mztabfb2_kztab;
-   private double mztabfb2_anp;
+   private double mztabfb2_anp = 1000;
    private double mztabfb2_efa;
    private double mztabfb2_sap;
    private double mztabfb2_kfb;
@@ -1765,12 +1765,12 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         this.jahreslohn1_zkf = jahreslohn1_zkf;
     }
 
-    public double getJahreslohn1_llz() {
-        return jahreslohn1_llz;
+    public double getJahreslohn1_lzz() {
+        return jahreslohn1_lzz;
     }
 
-    public void setJahreslohn1_llz(double jahreslohn1_llz) {
-        this.jahreslohn1_llz = jahreslohn1_llz;
+    public void setJahreslohn1_lzz(double jahreslohn1_lzz) {
+        this.jahreslohn1_lzz = jahreslohn1_lzz;
     }
 
     public double getJahreslohn1_krv() {
@@ -2467,6 +2467,29 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         }
     }
     
+    public void calcJahreslohn1_alter1(){
+        try {
+            String inputDateOld = "1940-12-31";
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+            Date dateOld = dateFormat.parse(inputDateOld);
+            
+            String inputDateMittleOld = "1951-1-1";
+            DateFormat dateFormatMittle = new SimpleDateFormat("yyyy-mm-dd");
+            Date dateMittleOld = dateFormat.parse(inputDateMittleOld);
+            
+            if(employee.getGeburtsdatum().before(dateOld)){
+                jahreslohn1_alter1 = 1;
+            }else if(employee.getGeburtsdatum().before(dateMittleOld)){
+                jahreslohn1_alter1 = -1;
+            }else{
+                int diffYears = (getYearFromDate(employee.getGeburtsdatum())-1940) +1;
+                jahreslohn1_alter1 = diffYears;
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(Gehaltsabrechnungsrechner.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     
     public void fillLohnst_zkf(){
         if(baseData.getSteuerklasse() >4){
@@ -2484,6 +2507,15 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         }
     }
     
+    public void fillJahreslohn1_zkf(){
+        if(baseData.getSteuerklasse() >4){
+            jahreslohn1_zkf = 0;
+        }else{
+            jahreslohn1_zkf = baseData.getSteuerklasse();
+        }
+    }
+    
+    
     public void fillLohnst_lzz(){
         lohnst_lzz = 2;
     }
@@ -2491,6 +2523,11 @@ public class Gehaltsabrechnungsrechner implements Serializable {
      public void fillJahreslohn_lzz(){
         jahreslohn_lzz = 1;
     }
+     
+     public void fillJahreslohn1_lzz(){
+        jahreslohn1_lzz = 1;
+    }
+    
     
     public void fillLohnst_krv(){
         calcLohnst_alter1();
@@ -2514,6 +2551,17 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         }
     }
     
+    public void fillJahreslohn1_krv(){
+        calcJahreslohn1_alter1();
+        if(jahreslohn1_alter1 == 1){
+            jahreslohn1_krv =1;
+        }else if(baseData.getRentenversichert() == 1){
+            jahreslohn1_krv = 0; 
+        }else{
+            jahreslohn1_krv = 1;
+        }
+    }
+    
     public void fillLohnst_zre4j(){
         clacOneTimePayment();
         lohnst_zre4j =( calcBruttoTaxes()*100-einmalzahlung)*12;
@@ -2522,6 +2570,11 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     public void fillJahreslohn_zre4j(){
         clacOneTimePayment();
         jahreslohn_zre4j =( calcBruttoTaxes()*100-einmalzahlung)*12 + ((einmalzahlung*12)*100-einmalzahlung);
+    }
+    
+    public void fillJahreslohn1_zre4j(){
+        clacOneTimePayment();
+        jahreslohn1_zre4j =( calcBruttoTaxes()*100-einmalzahlung)*12 + ((einmalzahlung*12)*100-einmalzahlung);
     }
     
     public void fillLohnst_stkl(){
@@ -2534,7 +2587,13 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     
     public void fillJahreslohn_stkl(){
   
-            lohnst_stkl = baseData.getSteuerklasse();
+            jahreslohn_stkl = baseData.getSteuerklasse();
+        
+    }
+    
+      public void fillJahreslohn1_stkl(){
+  
+            jahreslohn1_stkl = baseData.getSteuerklasse();
         
     }
     
@@ -2546,6 +2605,10 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         jahreslohn_jlfreib = baseData.getLohnsteuerfreibetrag()*100;
     }
     
+    public void fillJahreslohn1_jlfreib(){
+        jahreslohn1_jlfreib = baseData.getLohnsteuerfreibetrag()*100;
+    }
+    
     public void fillLohnst_jlhinzu(){
         fillLohnst_stkl();
         lohnst_jlhinzu = baseData.getHinzurechnungsbetrag()*100;
@@ -2555,6 +2618,12 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         fillJahreslohn_stkl();
         jahreslohn_jlhinzu = baseData.getHinzurechnungsbetrag()*100;
     }
+    
+        public void fillJahreslohn1_jlhinzu(){
+        fillJahreslohn1_stkl();
+        jahreslohn1_jlhinzu = baseData.getHinzurechnungsbetrag()*100;
+    }
+    
     
     public void fillLohnst_rvbemes(){
         if(baseData.getStelleImOsten() == 0){
@@ -2569,6 +2638,14 @@ public class Gehaltsabrechnungsrechner implements Serializable {
             jahreslohn_rvBemes = 74400;
         }else{
             jahreslohn_rvBemes = 64800;
+        }
+    }
+    
+    public void fillJahreslohn1_rvbemes(){
+        if(baseData.getStelleImOsten() == 0){
+            jahreslohn1_rvBemes = 74400;
+        }else{
+            jahreslohn1_rvBemes = 64800;
         }
     }
     
@@ -2635,6 +2712,40 @@ public class Gehaltsabrechnungsrechner implements Serializable {
             jahreslohn_pkv = 0;
         }
     }
+      
+      
+      
+      
+      public void fillJahreslohn1_pkv(){
+        fillMztabfb2_kztab();
+        fillUpevp2_vhb();
+        
+        if(baseData.getKrankenversicherung() > 20){
+            if(upevp2_vhb >(baseData.getKvzuschlag()*12)){
+                if(baseData.getArbeitgeberzuschussKvPv()>0){
+                    if(baseData.getStelleImOsten() == 1){
+                        jahreslohn1_pkv = upevp2_vhb - (0.07675 * min(jahreslohn1_zre4j/100,50850));
+                    }else{
+                        jahreslohn1_pkv = upevp2_vhb - (0.08175 * min(jahreslohn1_zre4j/100,50850));
+                    }
+                }else{
+                    jahreslohn1_pkv = upevp2_vhb -0;
+                }
+            }else{
+                 if(baseData.getArbeitgeberzuschussKvPv()>0){
+                    if(baseData.getStelleImOsten() == 1){
+                        jahreslohn1_pkv = (baseData.getKvzuschlag()*12) - (0.07675 * min(jahreslohn1_zre4j/100,50850));
+                    }else{
+                        jahreslohn1_pkv = (baseData.getKvzuschlag()*12)  - (0.08175 * min(jahreslohn1_zre4j/100,50850));
+                    }
+                }else{
+                    jahreslohn1_pkv = (baseData.getKvzuschlag()*12)  -0;
+                }
+            }
+        }else{
+            jahreslohn1_pkv = 0;
+        }
+    }
     
     
     
@@ -2678,6 +2789,28 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         jahreslohn_pv = wert1 + wert2;
     }
     
+    
+    
+    public void fillJahreslohn1_pv(){
+        double wert1;
+        double wert2;
+        
+        if(baseData.getStelleInSachsen() == 0){
+            wert1 = 0.01175;
+        }else{
+            wert1 = 0.01675;
+        }
+        
+        if(baseData.getKinderlos() == 1){
+            wert2 = 0.0025;
+        }else{
+            wert2 = 0;
+        }
+        
+        jahreslohn1_pv = wert1 + wert2;
+    }
+    
+    
     public void fillLohnst_faktorf(){
         if( (baseData.getEhegattenfaktor() == 0 || baseData.getEhegattenfaktor() > 1 ) || baseData.getSteuerklasse() != 4){
             lohnst_faktorF = 1;
@@ -2694,6 +2827,13 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         }
     }
     
+    public void fillJahreslohn1_faktorf(){
+        if( (baseData.getEhegattenfaktor() == 0 || baseData.getEhegattenfaktor() > 1 ) || baseData.getSteuerklasse() != 4){
+            jahreslohn1_faktorF = 1;
+        }else{
+            jahreslohn1_faktorF = baseData.getEhegattenfaktor();
+        }
+    }
     
     public void fillUpevp_vhb(){
         if(mztabfb_kztab == 1){
@@ -2708,6 +2848,14 @@ public class Gehaltsabrechnungsrechner implements Serializable {
             upevp1_vhb = 1900;
         }else{
             upevp1_vhb = 3000;
+        }
+    }
+     
+     public void fillUpevp2_vhb(){
+        if(mztabfb2_kztab == 1){
+            upevp2_vhb = 1900;
+        }else{
+            upevp2_vhb = 3000;
         }
     }
     
@@ -2775,6 +2923,37 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         }
     }
     
+    public void fillMre4Alte2_tab5(){
+        
+        double wert1 = 0;
+        
+        if(lohnst_alter1 == 9){
+             wert1 = 129200;
+        }else if(lohnst_alter1 == 10){
+             wert1 = 121600;
+        }else {
+             wert1 = 0;
+        }
+        
+        if(jahreslohn1_alter1 == 1){
+            mre4alte2_tab5 = 190000 + wert1;
+        }else if(jahreslohn1_alter1 == 2){
+             mre4alte2_tab5 = 182400 + wert1;
+        }else if(jahreslohn1_alter1 == 3){
+             mre4alte2_tab5 = 174200 + wert1;
+        }else if(jahreslohn1_alter1 == 4){
+             mre4alte2_tab5 = 167200 + wert1;
+        }else if(jahreslohn1_alter1 == 5){
+             mre4alte2_tab5 = 159600 + wert1;
+        }else if(jahreslohn1_alter1 == 6){
+             mre4alte2_tab5 = 152000 + wert1;
+        }else if(jahreslohn1_alter1 == 7){
+             mre4alte2_tab5 = 144400 + wert1;
+        }else if(jahreslohn1_alter1 == 8){
+             mre4alte2_tab5 = 136800 + wert1;
+        }
+    }
+    
     public void fillMre4alte_tab4(){
            double wert1 = 0;
         
@@ -2836,6 +3015,35 @@ public class Gehaltsabrechnungsrechner implements Serializable {
              mre4alte1_tab4 = 0.288 + wert1;
         }
     }
+     
+     public void fillMre4alte2_tab4(){
+           double wert1 = 0;
+        if(lohnst_alter1 == 9){
+             wert1 = 0.272;
+        }else if(lohnst_alter1 == 10){
+             wert1 = 0.256;
+        }else{
+            wert1 = 0;
+        }
+        
+        if(jahreslohn1_alter1 == 1){
+            mre4alte2_tab4 = 0.4 + wert1;
+        }else if(jahreslohn1_alter1 == 2){
+             mre4alte2_tab4 = 0.384 + wert1;
+        }else if(jahreslohn1_alter1 == 3){
+             mre4alte2_tab4 = 0.368 + wert1;
+        }else if(jahreslohn1_alter1 == 4){
+             mre4alte2_tab4 = 0.352 + wert1;
+        }else if(jahreslohn1_alter1 == 5){
+             mre4alte2_tab4 = 0.336 + wert1;
+        }else if(jahreslohn1_alter1 == 6){
+             mre4alte2_tab4 = 0.32 + wert1;
+        }else if(jahreslohn1_alter1 == 7){
+             mre4alte2_tab4 = 0.304 + wert1;
+        }else if(jahreslohn1_alter1 == 8){
+             mre4alte2_tab4 = 0.288 + wert1;
+        }
+    }
     
     public void fillMztabfb_kztab(){
         fillLohnst_stkl();
@@ -2856,6 +3064,16 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         
     }
     
+    public void fillMztabfb2_kztab(){
+        fillLohnst_stkl();
+        if(jahreslohn1_stkl == 3){
+            mztabfb2_kztab = 2;
+        }else{
+            mztabfb2_kztab = 1;
+        }
+        
+    }
+    
     
     public void fillMre4alte_alteanteil(){
         fillMre4Alte_tab5();
@@ -2866,7 +3084,11 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         fillMre4Alte1_tab5();
         mre4alte1_alteanteil = mre4alte1_tab5;
     }
-    
+      
+    public void fillMre4alte2_alteanteil(){
+        fillMre4Alte2_tab5();
+        mre4alte2_alteanteil = mre4alte2_tab5;
+    }    
     
     public void fillMre4alte_alte(){
         fillLohnst_zre4j();
@@ -2892,6 +3114,18 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         }
     }
     
+    public void fillMre4alte2_alte(){
+        fillJahreslohn1_zre4j();
+        fillMre4alte2_alteanteil();
+        if(jahreslohn1_alter1 == 0){
+            mre4alte2_alte = 0;
+        }else if((jahreslohn1_zre4j*mre4alte2_tab4)>mre4alte2_alteanteil){
+            mre4alte2_alte = mre4alte2_alteanteil;
+        }else{
+            mre4alte2_alte = (jahreslohn1_zre4j*mre4alte2_tab4);
+        }
+    }
+    
     public void fillMre4alte_zre4(){
         fillLohnst_zre4j();
         fillLohnst_jlfreib();
@@ -2908,6 +3142,14 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         mre4alte1_zre4 = jahreslohn_zre4j - (jahreslohn_jlfreib + jahreslohn_jlhinzu) - mre4alte1_alte;
     }
     
+     public void fillMre4alte2_zre4(){
+        fillJahreslohn1_zre4j();
+        fillJahreslohn1_jlfreib();
+        fillJahreslohn1_jlhinzu();
+        fillMre4alte2_alte();
+        mre4alte2_zre4 = jahreslohn1_zre4j - (jahreslohn1_jlfreib + jahreslohn1_jlhinzu) - mre4alte2_alte;
+    }
+    
     public void fillMre4alte_zre4vp(){
         fillLohnst_zre4j();
         mre4alte_zre4vp = lohnst_zre4j;
@@ -2918,6 +3160,10 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         mre4alte1_zre4vp = jahreslohn_zre4j;
     }
     
+    public void fillMre4alte2_zre4vp(){
+        fillJahreslohn1_zre4j();
+        mre4alte2_zre4vp = jahreslohn1_zre4j;
+    }
     public void fillMre4_zre4(){
         fillMre4alte_zre4();
         mre4_zre4 = mre4alte_zre4/100;
@@ -2926,6 +3172,11 @@ public class Gehaltsabrechnungsrechner implements Serializable {
      public void fillMre41_zre4(){
         fillMre4alte1_zre4();
         mre41_zre4 = mre4alte1_zre4/100;
+    }
+     
+      public void fillMre42_zre4(){
+        fillMre4alte2_zre4();
+        mre42_zre4 = mre4alte2_zre4/100;
     }
     
      public void fillMre4_zre4vp(){
@@ -2937,6 +3188,12 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         fillMre4alte1_zre4vp();
         mre41_zre4vp = mre4alte1_zre4vp/100;
     }
+     
+     public void fillMre42_zre4vp(){
+        fillMre4alte2_zre4vp();
+        mre42_zre4vp = mre4alte2_zre4vp/100;
+    }
+     
      public void fillMztabfb_efa(){
          fillLohnst_stkl();
          if(lohnst_stkl == 2){
@@ -2955,6 +3212,15 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          }
      }
      
+     public void fillMztabfb2_efa(){
+         fillJahreslohn1_stkl();
+         if(jahreslohn1_stkl == 2){
+             mztabfb2_efa = 1908;
+         }else{
+             mztabfb2_efa = 0;
+         }
+     }
+     
      public void fillMztabfb_sap(){
          fillLohnst_stkl();
          if(lohnst_stkl > 5){
@@ -2970,6 +3236,15 @@ public class Gehaltsabrechnungsrechner implements Serializable {
              mztabfb1_sap = 0;
          }else{
              mztabfb1_sap = 36;
+         }
+     }
+     
+     public void fillMztabfb2_sap(){
+         fillJahreslohn1_stkl();
+         if(jahreslohn1_stkl > 5){
+             mztabfb2_sap = 0;
+         }else{
+             mztabfb2_sap = 36;
          }
      }
      
@@ -2999,6 +3274,20 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         }
      }
      
+     public void fillMztabfb2_kfb(){
+        fillJahreslohn1_stkl();
+        fillJahreslohn1_zkf();
+        
+        if(jahreslohn1_stkl<4){
+            mztabfb2_kfb = jahreslohn1_zkf*7248;
+        }else if(jahreslohn1_stkl == 4){
+             mztabfb2_kfb = jahreslohn1_zkf*3624;
+        }else{
+             mztabfb2_kfb = 0;
+        }
+     }
+     
+     
      public void fillMztabfb_ztabfb(){
         fillLohnst_stkl();
         fillMztabfb_efa();
@@ -3022,6 +3311,18 @@ public class Gehaltsabrechnungsrechner implements Serializable {
              mztabfb1_ztabfb = mztabfb1_efa + mztabfb1_sap + mztabfb1_anp;
          }
      }
+    
+    public void fillMztabfb2_ztabfb(){
+        fillJahreslohn1_stkl();
+        fillMztabfb2_efa();
+        fillMztabfb2_sap();
+
+         if(jahreslohn1_stkl == 6){
+             mztabfb2_ztabfb = 0;
+         }else{
+             mztabfb2_ztabfb = mztabfb2_efa + mztabfb2_sap + mztabfb2_anp;
+         }
+     }
      
      public void fillUpevp_zre4vp(){
          fillLohnst_rvbemes();
@@ -3033,6 +3334,12 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          fillJahreslohn_rvbemes();
          fillMre41_zre4();
          upevp1_zre4vp = min(jahreslohn_rvBemes,mre41_zre4);
+     }
+     
+     public void fillUpevp2_zre4vp(){
+         fillJahreslohn1_rvbemes();
+         fillMre42_zre4();
+         upevp2_zre4vp = min(jahreslohn1_rvBemes,mre42_zre4);
      }
      
      public void fillUpevp_vsp1(){
@@ -3057,6 +3364,17 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          }
      }
      
+      public void fillUpevp2_vsp1(){
+         fillUpevp2_zre4vp();
+         fillJahreslohn1_krv();
+         
+         if(jahreslohn1_krv == 1){
+             upevp2_vsp1 = 0;
+         }else{
+             upevp2_vsp1 = 0.64*upevp2_zre4vp*0.0935;
+         }
+     }
+     
      public void fillUpevp_vsp2(){
          fillUpevp_zre4vp();
          fillUpevp_vhb();
@@ -3067,6 +3385,12 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          fillUpevp1_zre4vp();
          fillUpevp1_vhb();
          upevp1_vsp2 = min(upevp1_vhb,(upevp1_zre4vp*0.12));
+     }
+     
+      public void fillUpevp2_vsp2(){
+         fillUpevp2_zre4vp();
+         fillUpevp2_vhb();
+         upevp2_vsp2 = min(upevp2_vhb,(upevp2_zre4vp*0.12));
      }
      
      public void fillUpevp_zukvpv(){
@@ -3084,6 +3408,15 @@ public class Gehaltsabrechnungsrechner implements Serializable {
              upevp1_zukvPv = 0;
          }else{
              upevp1_zukvPv = 0.07+baseData.getKvzuschlag()/100+jahreslohn_pv;
+         }
+     }
+     
+      public void fillUpevp2_zukvpv(){
+         fillJahreslohn1_pv();
+         if(baseData.getKrankenversicherung()== 0){
+             upevp2_zukvPv = 0;
+         }else{
+             upevp2_zukvPv = 0.07+baseData.getKvzuschlag()/100+jahreslohn1_pv;
          }
      }
      
@@ -3118,6 +3451,22 @@ public class Gehaltsabrechnungsrechner implements Serializable {
             upevp1_kv = (min(mre41_zre4vp,50850) * upevp1_zukvPv*100)/100;  
          }
      }
+      
+      public void fillUpevp2_kv(){
+         fillJahreslohn1_pkv();
+         fillJahreslohn1_stkl();
+         fillMre42_zre4vp();
+         fillUpevp2_zukvpv();
+         if(jahreslohn1_pkv > 0){
+            if(jahreslohn1_stkl == 6){
+                upevp2_kv = 0;
+            }else{
+                upevp2_kv = jahreslohn_pkv;
+            }
+         }else {
+            upevp2_kv = (min(mre42_zre4vp,50850) * upevp2_zukvPv*100)/100;  
+         }
+     }
      
      public void fillUpevp_kvvhb(){
          fillUpevp_kv();
@@ -3140,6 +3489,17 @@ public class Gehaltsabrechnungsrechner implements Serializable {
              upevp1_kvVhb = upevp1_vsp2;
          }
      }
+      
+        public void fillUpevp2_kvvhb(){
+         fillUpevp2_kv();
+         fillUpevp2_vhb();
+         fillUpevp2_vsp2();
+         if(upevp2_kv > upevp2_vhb){
+             upevp2_kvVhb = upevp2_kv;
+         }else{
+             upevp2_kvVhb = upevp2_vsp2;
+         }
+     }
      
      public void fillUpevp_vspn(){
          fillUpevp_vsp1();
@@ -3151,6 +3511,12 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          fillUpevp1_vsp1();
          fillUpevp1_kvvhb();
          upevp1_vspn = upevp1_vsp1 + upevp1_kvVhb;
+     }
+     
+      public void fillUpevp2_vspn(){
+         fillUpevp2_vsp1();
+         fillUpevp2_kvvhb();
+         upevp2_vspn = upevp2_vsp1 + upevp2_kvVhb;
      }
      
      public void fillUmvsp_zve(){
@@ -3166,6 +3532,13 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          fillUpevp1_vspn();
          umvsp1_zve = mre41_zre4 -mztabfb1_ztabfb - upevp1_vspn;
      }
+      
+       public void fillUmvsp2_zve(){
+         fillMre42_zre4();
+         fillMztabfb2_ztabfb();
+         fillUpevp2_vspn();
+         umvsp2_zve = mre42_zre4 -mztabfb2_ztabfb - upevp2_vspn;
+     }
      
      public void fillUmvsp_zzx(){
          fillUmvsp_zve();
@@ -3179,6 +3552,13 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          umvsp1_zzx = max(0,umvsp1_zve/mztabfb1_kztab);
      }
      
+       public void fillUmvsp2_zzx(){
+         fillUmvsp2_zve();
+         fillMztabfb2_kztab();
+         umvsp2_zzx = max(0,umvsp2_zve/mztabfb2_kztab);
+     }
+     
+      
      public void fillUptab07_st(){
          fillUmvsp_zzx();
         
@@ -3196,6 +3576,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          }
      }
      
+      
       public void fillUptab071_st(){
          fillUmvsp1_zzx();
         
@@ -3204,7 +3585,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
              uptab071_st = 0 * mztabfb1_anp;
          }else if(umvsp1_zzx <= 13669){
              uptab071_st = ((993.62*(umvsp1_zzx-8652)/10000+1400)*(umvsp1_zzx-8652)/10000)* mztabfb1_anp;
-         }else if(umvsp_zzx <= 53665){
+         }else if(umvsp1_zzx <= 53665){
              uptab071_st = ((225.4*(umvsp1_zzx-13669)/10000+2397)*(umvsp1_zzx-13669)/10000+952.48)* mztabfb1_anp;
          }else if(umvsp1_zzx <= 254446){
              uptab071_st = ((umvsp1_zzx * 0.42-8394.14)* mztabfb1_anp);
@@ -3212,6 +3593,24 @@ public class Gehaltsabrechnungsrechner implements Serializable {
              uptab071_st = ((umvsp1_zzx * 0.45-16027.52)* mztabfb1_anp);
          }
      }
+      
+        public void fillUptab072_st(){
+         fillUmvsp2_zzx();
+        
+         //uptab07_st;
+         if(umvsp2_zzx<= 8652){
+             uptab072_st = 0 * mztabfb2_anp;
+         }else if(umvsp2_zzx <= 13669){
+             uptab072_st = ((993.62*(umvsp2_zzx-8652)/10000+1400)*(umvsp2_zzx-8652)/10000)* mztabfb2_anp;
+         }else if(umvsp2_zzx <= 53665){
+             uptab072_st = ((225.4*(umvsp2_zzx-13669)/10000+2397)*(umvsp2_zzx-13669)/10000+952.48)* mztabfb2_anp;
+         }else if(umvsp2_zzx <= 254446){
+             uptab072_st = ((umvsp2_zzx * 0.42-8394.14)* mztabfb2_anp);
+         }else{
+             uptab072_st = ((umvsp2_zzx * 0.45-16027.52)* mztabfb2_anp);
+         }
+     }
+     
      
      public void fillMst56_x(){
          fillUmvsp_zzx();
@@ -3220,6 +3619,11 @@ public class Gehaltsabrechnungsrechner implements Serializable {
      public void fillMst561_x(){
          fillUmvsp1_zzx();
          mst561_x = min(26832,umvsp1_zzx)*1.25;
+     }
+     
+     public void fillMst562_x(){
+         fillUmvsp2_zzx();
+         mst562_x = min(26832,umvsp2_zzx)*1.25;
      }
      
      public void fillMst56_st(){
@@ -3258,6 +3662,24 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          }
      }
      
+      public void fillMst562_st(){
+         //mst56_st1;
+         
+          fillMst562_x();
+        
+         if(mst562_x<= 8652){
+             mst562_st = 0 * mztabfb2_anp;
+         }else if(mst562_x <= 13669){
+             mst562_st = ((993.62*(mst562_x-8652)/10000+1400)*(mst562_x-8652)/10000)* mztabfb2_anp;
+         }else if(mst562_x <= 53665){
+             mst562_st = ((225.4*(mst562_x-13669)/10000+2397)*(mst562_x-13669)/10000+952.48)* mztabfb2_anp;
+         }else if(mst562_x <= 254446){
+             mst562_st = ((mst562_x * 0.42-8394.14)* mztabfb2_anp);
+         }else{
+             mst562_st = ((mst562_x * 0.45-16027.52)* mztabfb2_anp);
+         }
+     }
+     
       public void fillMst56_x1(){
          fillUmvsp_zzx();
          mst56_x1 = min(26832,umvsp_zzx)*0.75;
@@ -3267,7 +3689,10 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          mst561_x1 = min(26832,umvsp1_zzx)*0.75;
      }
       
-      
+       public void fillMst562_x1(){
+         fillUmvsp2_zzx();
+         mst562_x1 = min(26832,umvsp2_zzx)*0.75;
+     }
       
      public void fillMst56_st1(){
          //mst56_st1;
@@ -3305,6 +3730,24 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          }
      }
      
+     public void fillMst562_st1(){
+         //mst56_st1;
+         
+          fillMst562_x1();
+        
+         if(mst562_x1<= 8652){
+             mst562_st1 = 0 * mztabfb2_anp;
+         }else if(mst562_x1 <= 13669){
+             mst562_st2 = ((993.62*(mst562_x1-8652)/10000+1400)*(mst562_x1-8652)/10000)* mztabfb2_anp;
+         }else if(mst562_x1 <= 53665){
+             mst562_st1 = ((225.4*(mst562_x1-13669)/10000+2397)*(mst562_x1-13669)/10000+952.48)* mztabfb2_anp;
+         }else if(mst561_x1 <= 254446){
+             mst562_st1 = ((mst562_x1 * 0.42-8394.14)* mztabfb2_anp);
+         }else{
+             mst562_st1 = ((mst562_x1 * 0.45-16027.52)* mztabfb2_anp);
+         }
+     }
+     
      public void fillMst56_diff(){
          fillMst56_st();
          fillMst56_st1();
@@ -3315,6 +3758,12 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          fillMst561_st();
          fillMst561_st1();
          mst561_diff = mst561_st-mst561_st1;
+     }
+     
+       public void fillMst562_diff(){
+         fillMst562_st();
+         fillMst562_st1();
+         mst562_diff = mst562_st-mst562_st1;
      }
      
      public void fillMst56_mist(){
@@ -3329,6 +3778,13 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         mst561_mist = min(umvsp1_zzx,26832)*0.14;
      }
      
+     public void fillMst562_mist(){
+        fillUmvsp2_zzx();
+        
+        mst562_mist = min(umvsp2_zzx,26832)*0.14;
+     }
+     
+     
      public void fillMst56_st2(){
          fillMst56_mist();
          fillMst56_diff();
@@ -3339,6 +3795,12 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          fillMst561_mist();
          fillMst561_diff();
          mst561_st2 = max(mst561_diff,mst561_mist);
+     }
+     
+     public void fillMst562_st2(){
+         fillMst562_mist();
+         fillMst562_diff();
+         mst562_st2 = max(mst562_diff,mst562_mist);
      }
      
      public void fillMst56_st3(){
@@ -3354,6 +3816,8 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          
      }
      
+     
+     
       public void fillMst561_st3(){
          //mst56_st1;
         fillMst561_st2();
@@ -3363,6 +3827,19 @@ public class Gehaltsabrechnungsrechner implements Serializable {
             mst561_st3 = (203557-26832)*0.42+mst561_st2;
          }else{
             mst561_st3 = max((umvsp1_zzx-26832),0)*0.42+mst561_st2;
+         }
+         
+     }
+      
+        public void fillMst562_st3(){
+         //mst56_st1;
+        fillMst562_st2();
+        fillUmvsp2_zzx();
+
+         if(umvsp2_zzx >203557){
+            mst562_st3 = (203557-26832)*0.42+mst562_st2;
+         }else{
+            mst562_st3 = max((umvsp2_zzx-26832),0)*0.42+mst562_st2;
          }
          
      }
@@ -3387,7 +3864,15 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         }
      }
      
-     
+      public void fillMst562_vergl(){
+        fillUmvsp2_zzx();
+        fillMst562_st2();
+        if(umvsp2_zzx>10070 && umvsp2_zzx <= 26832){
+            mst562_vergl = mst562_st3;
+        }else{
+            mst562_vergl = 0;
+        }
+     }
      
      public void fillMst56_st4(){
          mst56_st4 = 10070*0.14;
@@ -3397,7 +3882,10 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          mst561_st4 = 1366;
      }
      
-     
+      public void fillMst562_st4(){
+         mst562_st4 = 1366;
+     }
+      
      public void fillMst56_st5(){
         fillUmvsp_zzx();
         fillMst56_st3();
@@ -3410,6 +3898,13 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         fillMst561_st4();
          mst561_st5 = min(max(umvsp1_zzx-10070,0)*0.42+mst561_st4,mst561_st3);
      }
+      
+        public void fillMst562_st5(){
+        fillUmvsp2_zzx();
+        fillMst562_st3();
+        fillMst562_st4();
+         mst562_st5 = min(max(umvsp2_zzx-10070,0)*0.42+mst562_st4,mst562_st3);
+     }
      
      public void fillMst56_reichst(){
         fillUmvsp_zzx();
@@ -3421,6 +3916,12 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         fillUmvsp1_zzx();
         fillMst561_st5();
         mst561_reichst = max(umvsp1_zzx-203557,0)*0.45+mst561_st5;
+     }
+      
+       public void fillMst562_reichst(){
+        fillUmvsp2_zzx();
+        fillMst562_st5();
+        mst562_reichst = max(umvsp2_zzx-203557,0)*0.45+mst562_st5;
      }
      
      public void fillMst56_lstjahr(){
@@ -3449,6 +3950,20 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          }
      }
      
+      public void fillMst562_lstjahr(){
+         fillJahreslohn1_stkl();
+         fillJahreslohn1_faktorf();
+         fillUptab072_st();
+         fillMst562_reichst();
+         if(jahreslohn1_stkl<5){
+             mst562_lstjahr = uptab072_st*jahreslohn1_faktorF;
+         }else{
+             mst562_lstjahr = mst562_reichst*jahreslohn1_faktorF;
+
+         }
+     }
+      
+      
      public void fillMst56_jw(){
          fillMst56_lstjahr();
          mst56_jw = mst56_lstjahr*100;
@@ -3459,10 +3974,22 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          mst561_jw = mst561_lstjahr*100;
      }
      
+     public void fillMst562_jw(){
+         fillMst562_lstjahr();
+         mst562_jw = mst562_lstjahr*100;
+     }
+     
+     
      public void fillMlstjahr1_lstlzz(){
          fillMst561_jw();
          
          mlstjahr1_lstlzzSum = mst561_jw;
+     }
+     
+      public void fillMlstjahr2_lstlzz(){
+         fillMst562_jw();
+         
+         mlstjahr2_lstlzzSum = mst562_jw;
      }
      
      public void fillMlstjahr_lstlzzsum(){
@@ -3486,6 +4013,13 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          
          mlstjahr1_ztabfb = mztabfb1_kfb + mztabfb1_ztabfb;
      }
+      
+      public void fillMlstjahr2_ztabfb(){
+         fillMztabfb2_kfb();
+         fillMztabfb2_ztabfb();
+         
+         mlstjahr2_ztabfb = mztabfb2_kfb + mztabfb2_ztabfb;
+     }
      
      public void fillMlstjahr_zve(){
          fillMre4_zre4();
@@ -3499,6 +4033,13 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          fillUpevp1_vspn();
          fillMlstjahr1_ztabfb();
          mlstjahr1_zve = mre41_zre4-upevp1_vspn-mlstjahr1_ztabfb; 
+     }
+     
+      public void fillMlstjahr2_zve(){
+         fillMre42_zre4();
+         fillUpevp2_vspn();
+         fillMlstjahr2_ztabfb();
+         mlstjahr2_zve = mre42_zre4-upevp2_vspn-mlstjahr2_ztabfb; 
      }
      
      public void fillMlstjahr_zvex(){
@@ -3522,6 +4063,18 @@ public class Gehaltsabrechnungsrechner implements Serializable {
              mlstjahr1_zveX = mlstjahr1_zve/mztabfb1_kztab;
          }
      }
+      
+        public void fillMlstjahr2_zvex(){
+         fillMlstjahr2_zve();
+         fillMztabfb2_kztab();
+         
+         if(mlstjahr2_zve<36){
+             mlstjahr2_zveX = 0;
+         }else{
+             mlstjahr2_zveX = mlstjahr2_zve/mztabfb2_kztab;
+         }
+     }
+      
      public void fillMlstjahr_st(){
           fillMlstjahr_zvex();
         
@@ -3554,6 +4107,22 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          }
      }
      
+      public void fillMlstjahr2_st(){
+          fillMlstjahr2_zvex();
+        
+         if(mlstjahr2_zveX<= 8652){
+             mlstjahr2_st = 0 * mztabfb2_anp;
+         }else if(mlstjahr2_zveX <= 13669){
+             mlstjahr2_st = ((993.62*(mlstjahr2_zveX-8652)/10000+1400)*(mlstjahr2_zveX-8652)/10000)* mztabfb2_anp;
+         }else if(mlstjahr2_zveX <= 53665){
+             mlstjahr2_st = ((225.4*(mlstjahr2_zveX-13669)/10000+2397)*(mlstjahr2_zveX-13669)/10000+952.48)* mztabfb2_anp;
+         }else if(mlstjahr2_zveX <= 254446){
+             mlstjahr2_st = ((mlstjahr2_zveX * 0.42-8394.14)* mztabfb2_anp);
+         }else{
+             mlstjahr2_st = ((mlstjahr2_zveX * 0.45-16027.52)* mztabfb2_anp);
+         }
+     }
+     
      public void fillMlstjahr_jbmg(){
          fillLohnst_zkf();
          fillLohnst_faktorf();
@@ -3580,6 +4149,19 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          }
      }
      
+        public void fillMlstjahr2_jbmg(){
+         fillJahreslohn1_zkf();
+         fillJahreslohn1_faktorf();
+         fillMst562_lstjahr();
+         fillMlstjahr2_st();
+         
+         if(jahreslohn1_zkf > 0){
+            mlstjahr2_jbmg = mlstjahr2_st*jahreslohn1_faktorF;
+         }else{
+             mlstjahr2_jbmg = mst562_lstjahr;
+         }
+     }
+     
      public void fillMsolz_solzfrei(){
          fillMztabfb_kztab();
          msolz_solzfrei = 972*mztabfb_kztab;
@@ -3588,6 +4170,11 @@ public class Gehaltsabrechnungsrechner implements Serializable {
      public void fillMsolz1_solzfrei(){
          fillMztabfb1_kztab();
          msolz1_solzfrei = 972*mztabfb1_kztab;
+     }
+     
+      public void fillMsolz2_solzfrei(){
+         fillMztabfb2_kztab();
+         msolz2_solzfrei = 972*mztabfb2_kztab;
      }
      
      public void fillMsolz_solzj(){
@@ -3600,6 +4187,11 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          msolz1_solzj =(mlstjahr1_st*5.5)/100;
      }
      
+     public void fillMsolz2_solzj(){
+         fillMlstjahr2_st();
+         msolz2_solzj =(mlstjahr2_st*5.5)/100;
+     }
+     
      public void fillMsolz1_solzeinmal(){
          fillMsolz1_solzj();
          fillMsolz2_solzj();
@@ -3608,12 +4200,22 @@ public class Gehaltsabrechnungsrechner implements Serializable {
      
      public void fillBk1_anteil1(){
          fillMlstjahr1_jbmg();
-         bk1_anteil1 = mlstjahr2_jbmg;
+         bk1_anteil1 = mlstjahr1_jbmg;
+     }
+     
+     public void fillBk2_anteil1(){
+         fillMlstjahr2_jbmg();
+         bk2_anteil1 = mlstjahr2_jbmg;
      }
 
      public void fillBk1_bk(){
          fillBk1_anteil1();
          bk1_bk = bk1_anteil1;
+     }
+     
+     public void fillBk2_bk(){
+         fillBk2_anteil1();
+         bk2_bk = bk2_anteil1;
      }
      
      public void fillBk1_bkeinmal(){
