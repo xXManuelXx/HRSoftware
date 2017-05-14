@@ -13,6 +13,7 @@ import com.hrsoftware.jpa.Mitarbeiter;
 import com.hrsoftware.jpa.Stammdaten;
 import com.hrsoftware.jpacontroller.StammdatenFacade;
 import java.io.Serializable;
+import static java.lang.Math.max;
 import static java.lang.Math.min;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -2720,6 +2721,301 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          }
      }
      
+     public void fillUpevp_zre4vp(){
+         fillLohnst_rvbemes();
+         fillMre4_zre4();
+         upevp_zre4vp = min(lohnst_rvbemes,mre4_zre4);
+     }
+     
+     public void fillUpevp_vsp1(){
+         fillUpevp_zre4vp();
+         fillLohnst_krv();
+         
+         if(lohnst_krv == 1){
+             upevp_vsp1 = 0;
+         }else{
+             upevp_vsp1 = 0.64*upevp_zre4vp*0.0935;
+         }
+     }
+     
+     public void fillUpevp_vsp2(){
+         fillUpevp_zre4vp();
+         fillUpevp_vhb();
+         upevp_vsp2 = min(upevp_vhb,(upevp_zre4vp*0.12));
+     }
+     
+     public void fillUpevp_zukvpv(){
+         fillLohnst_pv();
+         if(baseData.getKrankenversicherung()== 0){
+             upevp_zukvPv = 0;
+         }else{
+             upevp_zukvPv = 0.07+baseData.getKvzuschlag()/100+lohnst_pv;
+         }
+     }
+     
+     public void fillUpevp_kv(){
+         fillLohnst_pkv();
+         fillLohnst_stkl();
+         fillMre4_zre4vp();
+         fillUpevp_zukvpv();
+         if(lohnst_pkv > 0){
+            if(lohnst_stkl == 6){
+                upevp_kv = 0;
+            }else{
+                upevp_kv = lohnst_pkv;
+            }
+         }else {
+            upevp_kv = (min(mre4_zre4vp,50850) * upevp_zukvPv*100)/100;  
+         }
+     }
+     
+     public void fillUpevp_kvvhb(){
+         fillUpevp_kv();
+         fillUpevp_vhb();
+         fillUpevp_vsp2();
+         if(upevp_kv > upevp_vhb){
+             upevp_kvVhb = upevp_kv;
+         }else{
+             upevp_kvVhb = upevp_vsp2;
+         }
+     }
+     
+     public void fillUpevp_vspn(){
+         fillUpevp_vsp1();
+         fillUpevp_kvvhb();
+         upevp_vspn = upevp_vsp1 + upevp_kvVhb;
+     }
+     
+     public void fillUmvsp_zve(){
+         fillMre4_zre4();
+         fillMztabfb_ztabfb();
+         fillUpevp_vspn();
+         umvsp_zve = mre4_zre4 -mztabfb_ztabfb - upevp_vspn;
+     }
+     
+     public void fillUmvsp_zzx(){
+         fillUmvsp_zve();
+         fillMztabfb_kztab();
+         umvsp1_zzx = max(0,umvsp_zve/mztabfb_kztab);
+     }
+     
+     public void fillUptab07_st(){
+         fillUmvsp_zzx();
+        
+         //uptab07_st;
+         if(umvsp_zzx<= 8652){
+             uptab07_st = 0 * mztabfb_anp;
+         }else if(umvsp_zzx <= 13669){
+             uptab07_st = ((993.62*(umvsp_zzx-8652)/10000+1400)*(umvsp_zzx-8652)/10000)* mztabfb_anp;
+         }else if(umvsp_zzx <= 53665){
+             uptab07_st = ((225.4*(umvsp_zzx-13669)/10000+2397)*(umvsp_zzx-13669)/10000+952.48)* mztabfb_anp;
+         }else if(umvsp_zzx <= 254446){
+             uptab07_st = ((umvsp_zzx * 0.42-8394.14)* mztabfb_anp);
+         }else{
+             uptab07_st = ((umvsp_zzx * 0.45-16027.52)* mztabfb_anp);
+         }
+     }
+     
+     public void fillMst56_x(){
+         fillUmvsp_zzx();
+         mst56_x = min(26832,umvsp_zzx)*1.25;
+     }
+     
+     public void fillMst56_st(){
+         //mst56_st1;
+         
+          fillMst56_x();
+        
+         if(mst56_x<= 8652){
+             mst56_st = 0 * mztabfb_anp;
+         }else if(mst56_x <= 13669){
+             mst56_st = ((993.62*(mst56_x-8652)/10000+1400)*(mst56_x-8652)/10000)* mztabfb_anp;
+         }else if(mst56_x <= 53665){
+             mst56_st = ((225.4*(mst56_x-13669)/10000+2397)*(mst56_x-13669)/10000+952.48)* mztabfb_anp;
+         }else if(mst56_x <= 254446){
+             mst56_st = ((mst56_x * 0.42-8394.14)* mztabfb_anp);
+         }else{
+             mst56_st = ((mst56_x * 0.45-16027.52)* mztabfb_anp);
+         }
+     }
+     
+      public void fillMst56_x1(){
+         fillUmvsp_zzx();
+         mst56_x1 = min(26832,umvsp_zzx)*0.75;
+     }
+      
+      
+      
+     public void fillMst56_st1(){
+         //mst56_st1;
+         
+          fillMst56_x1();
+        
+         if(mst56_x1<= 8652){
+             mst56_st1 = 0 * mztabfb_anp;
+         }else if(mst56_x1 <= 13669){
+             mst56_st2 = ((993.62*(mst56_x1-8652)/10000+1400)*(mst56_x1-8652)/10000)* mztabfb_anp;
+         }else if(mst56_x1 <= 53665){
+             mst56_st1 = ((225.4*(mst56_x1-13669)/10000+2397)*(mst56_x1-13669)/10000+952.48)* mztabfb_anp;
+         }else if(mst56_x1 <= 254446){
+             mst56_st1 = ((mst56_x1 * 0.42-8394.14)* mztabfb_anp);
+         }else{
+             mst56_st1 = ((mst56_x1 * 0.45-16027.52)* mztabfb_anp);
+         }
+     }
+     
+     public void fillMst56_diff(){
+         fillMst56_st1();
+         fillMst56_st2();
+         mst56_diff = mst56_st-mst56_st1;
+     }
+     
+     public void fillMst56_mist(){
+        fillUmvsp_zzx();
+        
+        mst56_mist = min(umvsp_zzx,26832)*0.14;
+     }
+     
+     public void fillMst56_st2(){
+         fillMst56_mist();
+         fillMst56_diff();
+         mst56_st2 = max(mst56_diff,mst56_mist);
+     }
+     
+     public void fillMst56_st3(){
+         //mst56_st1;
+        fillMst56_st2();
+        fillUmvsp_zzx();
+
+         if(umvsp_zzx >203557){
+            mst56_st3 = (203557-26832)*0.42+mst56_st2;
+         }else{
+            mst56_st3 = max((umvsp_zzx-26832),0)*0.42+mst56_st2;
+         }
+         
+     }
+     
+     public void fillMst56_vergl(){
+        fillUmvsp_zzx();
+        fillMst56_st2();
+        if(umvsp_zzx>10070 && umvsp_zzx <= 26832){
+            mst56_vergl = mst56_st3;
+        }else{
+            mst56_vergl = 0;
+        }
+     }
+     
+     public void fillMst56_st4(){
+         mst56_st4 = 10070*0.14;
+     }
+     
+     public void fillMst56_st5(){
+        fillUmvsp_zzx();
+        fillMst56_st3();
+        fillMst56_st4();
+         mst56_st5 = min(max(umvsp_zzx-10070,0)*0.42+mst56_st4,mst56_st3);
+     }
+     
+     public void fillMst56_reichst(){
+        fillUmvsp_zzx();
+        fillMst56_st5();
+        mst56_reichst = max(umvsp_zzx-203557,0)*0.45+mst56_st5;
+     }
+     
+     public void fillMst56_lstjahr(){
+         fillLohnst_stkl();
+         fillLohnst_faktorf();
+         fillUptab07_st();
+         fillMst56_reichst();
+         if(lohnst_stkl<5){
+             mst56_lstjahr = uptab07_st*lohnst_faktorF;
+         }else{
+             mst56_lstjahr = mst56_reichst*lohnst_faktorF;
+
+         }
+     }
+     
+     public void fillMst56_jw(){
+         fillMst56_lstjahr();
+         mst56_jw = mst56_lstjahr*100;
+     }
+     
+     public void fillMlstjahr_lstlzzsum(){
+         fillMst56_jw();
+         fillMlstjahr1_lstlzzsum();
+         fillMlstjahr2_lstlzzsum();
+         
+         mlstjahr_lstlzzSum = (mst56_jw/12)+mlstjahr1_lstlzzSum-mlstjahr2_lstlzzSum;
+     }
+     
+     public void fillMlstjahr_ztabfb(){
+         fillMztabfb_kfb();
+         fillMztabfb_ztabfb();
+         
+         mlstjahr_ztabfb = mztabfb_kfb + mztabfb_ztabfb;
+     }
+     
+     public void fillMlstjahr_zve(){
+         fillMre4_zre4();
+         fillUpevp_vspn();
+         fillMlstjahr_ztabfb();
+         mlstjahr_zve = mre4_zre4-upevp_vspn-mlstjahr_ztabfb; 
+     }
+     
+     public void fillMlstjahr_zvex(){
+         fillMlstjahr_zve();
+         fillMztabfb_kztab();
+         
+         if(mlstjahr_zve<36){
+             mlstjahr_zveX = 0;
+         }else{
+             mlstjahr_zveX = mlstjahr_zve/mztabfb_kztab;
+         }
+     }
+     public void fillMlstjahr_st(){
+          fillMlstjahr_zvex();
+        
+         if(mlstjahr_zveX<= 8652){
+             mlstjahr_st = 0 * mztabfb_anp;
+         }else if(mlstjahr_zveX <= 13669){
+             mlstjahr_st = ((993.62*(mlstjahr_zveX-8652)/10000+1400)*(mlstjahr_zveX-8652)/10000)* mztabfb_anp;
+         }else if(mlstjahr_zveX <= 53665){
+             mlstjahr_st = ((225.4*(mlstjahr_zveX-13669)/10000+2397)*(mlstjahr_zveX-13669)/10000+952.48)* mztabfb_anp;
+         }else if(mlstjahr_zveX <= 254446){
+             mlstjahr_st = ((mlstjahr_zveX * 0.42-8394.14)* mztabfb_anp);
+         }else{
+             mlstjahr_st = ((mlstjahr_zveX * 0.45-16027.52)* mztabfb_anp);
+         }
+     }
+     
+     public void fillMlstjahr_jbmg(){
+         fillLohnst_zkf();
+         fillLohnst_faktorf();
+         fillMst56_lstjahr();
+         fillMlstjahr_st();
+         
+         if(lohnst_zkf > 0){
+            mlstjahr_jbmg = mlstjahr_st*lohnst_faktorF;
+         }else{
+             mlstjahr_jbmg = mst56_lstjahr;
+         }
+     }
+     
+     public void fillMsolz_solzfrei(){
+         fillMztabfb_kztab();
+         msolz_solzfrei = 972*mztabfb_kztab;
+     }
+     
+     public void fillMsolz_solzj(){
+         fillMlstjahr_st();
+         msolz_solzj =(mlstjahr_st*5.5)/100;
+     }
+     
+     public void fillMsolz_solzmin(){
+         fillMlstjahr_jbmg();
+         fillMsolz_solzfrei();
+         msolz_solzmin = ((mlstjahr_jbmg-msolz_solzfrei)*20)/100;
+     }
      
     /*
     public void calcRVPflichtigerBeitrag(){
