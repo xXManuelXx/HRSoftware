@@ -1,10 +1,13 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.ConversationScoped;
 import javax.faces.bean.ManagedBean;
  
 @ManagedBean
-public class MonthView {
+@ConversationScoped
+public class MonthView implements Serializable{
     private String month;
     private List<String> months;  
 

@@ -29,4 +29,7 @@ public class GehaltFacade extends AbstractFacade<Gehalt> {
         super(Gehalt.class);
     }
     
+    public Gehalt findGehaltByID(int id){
+        return (Gehalt) getEntityManager().createNamedQuery("Gehalt.findById").setParameter("id",id).getSingleResult();     
+    }
 }

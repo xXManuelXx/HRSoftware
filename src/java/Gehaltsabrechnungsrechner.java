@@ -9,11 +9,22 @@
  * @author mfehrenbach
  */
 import com.hrsoftware.jpa.Gehaltsabrechnungvariableeingaben;
+import com.hrsoftware.jpa.Mitarbeiter;
 import com.hrsoftware.jpa.Stammdaten;
 import com.hrsoftware.jpacontroller.StammdatenFacade;
 import java.io.Serializable;
+import static java.lang.Math.min;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Period;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.ConversationScoped;
@@ -26,8 +37,10 @@ import javax.inject.Named;
 public class Gehaltsabrechnungsrechner implements Serializable {
    
     //Stammdaten
-    private Stammdaten stammdaten;
-    
+    private Stammdaten baseData;
+    private OptionalSalaryStatement optionalSalaryStatement;
+    private Mitarbeiter employee;
+    private double employeeSalaryYear;
     //Lohnsteuer
    private double lohnst_alter1;
    private double lohnst_zkf;
@@ -54,9 +67,13 @@ public class Gehaltsabrechnungsrechner implements Serializable {
    //laufender geltw.Vorteil
    private double laufenderGeltwVorteil;
    
+   private double rvPflichtigerBeitrag;
+   
+   private int miniJobFlatrate = 0;
+   
    //MRE4ALTE
    private double mre4alte_tab4;
-   private double mre4alte_tav5;
+   private double mre4alte_tab5;
    private double mre4alte_alteanteil;
    private double mre4alte_alte;
    private double mre4alte_zre4;
@@ -68,7 +85,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
    
    //MZTABFB
    private double mztabfb_kztab;
-   private double mztabfb_anp;
+   private double mztabfb_anp = 1000;
    private double mztabfb_efa;
    private double mztabfb_sap;
    private double mztabfb_kfb;
@@ -350,7 +367,6 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     
    
    //RV-pflichtiger Beitrag
-   private double rvPflichtigerBeitrag;
    private double kvPflichtigerBeitrag;
    
    
@@ -384,10 +400,40 @@ public class Gehaltsabrechnungsrechner implements Serializable {
    private double pflege_pflegeSachsen;
    private double pflege_pflegeArbeitgeber;
 
+    public double getEmployeeSalaryYear() {
+        return employeeSalaryYear;
+    }
+
+    public void setEmployeeSalaryYear(double employeeSalaryYear) {
+        this.employeeSalaryYear = employeeSalaryYear;
+    }
    
-   public void setStammdaten(Stammdaten stammdaten){
-       this.stammdaten = stammdaten;
+   
+   
+
+    public OptionalSalaryStatement getOptionalSalaryStatement() {
+        return optionalSalaryStatement;
+    }
+
+    public void setOptionalSalaryStatement(OptionalSalaryStatement optionalSalaryStatement) {
+        this.optionalSalaryStatement = optionalSalaryStatement;
+    }
+
+   
+   
+   
+   public void setStammdaten(Stammdaten baseData){
+       this.baseData = baseData;
    }
+
+    public Mitarbeiter getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Mitarbeiter employee) {
+        this.employee = employee;
+    }
+   
    
    
     public double getLohnst_alter1() {
@@ -526,12 +572,12 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         this.mre4alte_tab4 = mre4alte_tab4;
     }
 
-    public double getMre4alte_tav5() {
-        return mre4alte_tav5;
+    public double getMre4alte_tab5() {
+        return mre4alte_tab5;
     }
 
-    public void setMre4alte_tav5(double mre4alte_tav5) {
-        this.mre4alte_tav5 = mre4alte_tav5;
+    public void setMre4alte_tab5(double mre4alte_tab5) {
+        this.mre4alte_tab5 = mre4alte_tab5;
     }
 
     public double getMre4alte_alteanteil() {
@@ -2374,8 +2420,343 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         this.pflege_pflegeArbeitgeber = pflege_pflegeArbeitgeber;
     }
    
-    public void calcLSTALTER1(){
+    public void calcLohnst_alter1(){
+        try {
+            String inputDateOld = "1940-12-31";
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+            Date dateOld = dateFormat.parse(inputDateOld);
+            
+            String inputDateMittleOld = "1952-12-31";
+            DateFormat dateFormatMittle = new SimpleDateFormat("yyyy-mm-dd");
+            Date dateMittleOld = dateFormat.parse(inputDateMittleOld);
+            
+            if(employee.getGeburtsdatum().before(dateOld)){
+                lohnst_alter1 = 1;
+            }else if(employee.getGeburtsdatum().before(dateMittleOld)){
+                lohnst_alter1 = -1;
+            }else{
+                int diffYears = (getYearFromDate(employee.getGeburtsdatum())-1940) +1;
+                lohnst_alter1 = diffYears;
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(Gehaltsabrechnungsrechner.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void fillLohnst_zkf(){
+        if(baseData.getSteuerklasse() >4){
+            lohnst_zkf = 0;
+        }else{
+            lohnst_zkf = baseData.getSteuerklasse();
+        }
+    }
+    
+    public void fillLohnst_lzz(){
+        lohnst_lzz = 2;
+    }
+    
+    public void fillLohnst_krv(){
+        calcLohnst_alter1();
+        if(lohnst_alter1 == 1){
+            lohnst_krv =1;
+        }else if(baseData.getRentenversichert() == 1){
+            lohnst_krv = 0; 
+        }else{
+            lohnst_krv = 1;
+        }
+    }
+    
+    public void fillLohnst_zre4j(){
+        clacOneTimePayment();
+        lohnst_zre4j =( calcBruttoTaxes()*100-einmalzahlung)*12;
+    }
+    
+    public void fillLohnst_stkl(){
+        if(miniJobFlatrate == 0 && baseData.getSteuerklasse() == 6){
+            lohnst_stkl = 0;
+        } else{
+            lohnst_stkl = baseData.getSteuerklasse();
+        }
+    }
+    
+    public void fillLohnst_jlfreib(){
+        lohnst_jlfreib = baseData.getLohnsteuerfreibetrag()*100;
+    }
+    
+    public void fillLohnst_jlhinzu(){
+        fillLohnst_stkl();
+        lohnst_jlhinzu = baseData.getHinzurechnungsbetrag()*100;
+    }
+    
+    public void fillLohnst_rvbemes(){
+        if(baseData.getStelleImOsten() == 0){
+            lohnst_rvbemes = 74400;
+        }else{
+            lohnst_rvbemes = 64800;
+        }
+    }
+    
+    public void fillLohnst_pkv(){
+        fillMztabfb_kztab();
+        fillUpevp_vhb();
+        
+        if(baseData.getKrankenversicherung() > 20){
+            if(upevp_vhb >(baseData.getKvzuschlag()*12)){
+                if(baseData.getArbeitgeberzuschussKvPv()>0){
+                    if(baseData.getStelleImOsten() == 1){
+                        lohnst_pkv = upevp_vhb - (0.07675 * min(lohnst_zre4j/100,50850));
+                    }else{
+                        lohnst_pkv = upevp_vhb - (0.08175 * min(lohnst_zre4j/100,50850));
+                    }
+                }else{
+                    lohnst_pkv = upevp_vhb -0;
+                }
+            }else{
+                 if(baseData.getArbeitgeberzuschussKvPv()>0){
+                    if(baseData.getStelleImOsten() == 1){
+                        lohnst_pkv = (baseData.getKvzuschlag()*12) - (0.07675 * min(lohnst_zre4j/100,50850));
+                    }else{
+                        lohnst_pkv = (baseData.getKvzuschlag()*12)  - (0.08175 * min(lohnst_zre4j/100,50850));
+                    }
+                }else{
+                    lohnst_pkv = (baseData.getKvzuschlag()*12)  -0;
+                }
+            }
+        }else{
+            lohnst_pkv = 0;
+        }
+    }
+    
+    public void fillLohnst_pv(){
+        double wert1;
+        double wert2;
+        
+        if(baseData.getStelleInSachsen() == 0){
+            wert1 = 0.01175;
+        }else{
+            wert1 = 0.01675;
+        }
+        
+        if(baseData.getKinderlos() == 1){
+            wert2 = 0.0025;
+        }else{
+            wert2 = 0;
+        }
+        
+        lohnst_pv = wert1 + wert2;
+    }
+    
+    public void fillLohnst_faktorf(){
+        if( (baseData.getEhegattenfaktor() == 0 || baseData.getEhegattenfaktor() > 1 ) || baseData.getSteuerklasse() != 4){
+            lohnst_faktorF = 1;
+        }else{
+            lohnst_faktorF = baseData.getEhegattenfaktor();
+        }
+    }
+    public void fillUpevp_vhb(){
+        if(mztabfb_kztab == 1){
+            upevp_vhb = 1900;
+        }else{
+            upevp_vhb = 3000;
+        }
+    }
+    
+    public void fillMre4Alte_tab5(){
+        
+        double wert1 = 0;
+        
+        if(lohnst_alter1 == 9){
+             wert1 = 129200;
+        }else if(lohnst_alter1 == 10){
+             wert1 = 121600;
+        }else if(lohnst_alter1 == 11){
+             wert1 = 114000;
+        }else if(lohnst_alter1 == 12){
+             wert1 = 106400;
+        }
+        
+        if(lohnst_alter1 == 1){
+            mre4alte_tab5 = 190000 + wert1;
+        }else if(lohnst_alter1 == 2){
+             mre4alte_tab5 = 182400 + wert1;
+        }else if(lohnst_alter1 == 3){
+             mre4alte_tab5 = 174200 + wert1;
+        }else if(lohnst_alter1 == 4){
+             mre4alte_tab5 = 167200 + wert1;
+        }else if(lohnst_alter1 == 5){
+             mre4alte_tab5 = 159600 + wert1;
+        }else if(lohnst_alter1 == 6){
+             mre4alte_tab5 = 152000 + wert1;
+        }else if(lohnst_alter1 == 7){
+             mre4alte_tab5 = 144400 + wert1;
+        }else if(lohnst_alter1 == 8){
+             mre4alte_tab5 = 136800 + wert1;
+        }
+    }
+    
+    public void fillMre4alte_tab4(){
+           double wert1 = 0;
+        
+        if(lohnst_alter1 == 9){
+             wert1 = 0.272;
+        }else if(lohnst_alter1 == 10){
+             wert1 = 0.256;
+        }else if(lohnst_alter1 == 11){
+             wert1 = 0.24;
+        }else if(lohnst_alter1 == 12){
+             wert1 = 0.224;
+        }
+        
+        if(lohnst_alter1 == 1){
+            mre4alte_tab4 = 0.4 + wert1;
+        }else if(lohnst_alter1 == 2){
+             mre4alte_tab4 = 0.384 + wert1;
+        }else if(lohnst_alter1 == 3){
+             mre4alte_tab4 = 0.368 + wert1;
+        }else if(lohnst_alter1 == 4){
+             mre4alte_tab4 = 0.352 + wert1;
+        }else if(lohnst_alter1 == 5){
+             mre4alte_tab4 = 0.336 + wert1;
+        }else if(lohnst_alter1 == 6){
+             mre4alte_tab4 = 0.32 + wert1;
+        }else if(lohnst_alter1 == 7){
+             mre4alte_tab4 = 0.304 + wert1;
+        }else if(lohnst_alter1 == 8){
+             mre4alte_tab4 = 0.288 + wert1;
+        }
+    }
+    
+    public void fillMztabfb_kztab(){
+        fillLohnst_stkl();
+        if(lohnst_stkl == 3){
+            mztabfb_kztab = 2;
+        }else{
+            mztabfb_kztab = 1;
+        }
         
     }
+    
+    
+    public void fillMre4alte_alteanteil(){
+        fillMre4Alte_tab5();
+        mre4alte_alteanteil = mre4alte_tab5;
+    }
+    
+    public void fillMre4alte_alte(){
+        fillLohnst_zre4j();
+        fillMre4alte_alteanteil();
+        if(lohnst_alter1 == 0){
+            mre4alte_alte = 0;
+        }else if((lohnst_zre4j*mre4alte_tab4)>mre4alte_alteanteil){
+            mre4alte_alte = mre4alte_alteanteil;
+        }else{
+            mre4alte_alte = (lohnst_zre4j*mre4alte_tab4);
+        }
+    }
+    
+    public void fillMre4alte_zre4(){
+        fillLohnst_zre4j();
+        fillLohnst_jlfreib();
+        fillLohnst_jlhinzu();
+        fillMre4alte_alte();
+        mre4alte_zre4 = lohnst_zre4j - (lohnst_jlfreib + lohnst_jlhinzu) - mre4alte_alte;
+    }
+    
+    public void fillMre4alte_zre4vp(){
+        fillLohnst_zre4j();
+        mre4alte_zre4vp = lohnst_zre4j;
+    }
+    
+    public void fillMre4_zre4(){
+        fillMre4alte_zre4();
+        mre4_zre4 = mre4alte_zre4/100;
+    }
+    
+     public void fillMre4_zre4vp(){
+        fillMre4alte_zre4vp();
+        mre4_zre4vp = mre4alte_zre4vp/100;
+    }
+     
+     public void fillMztabfb_efa(){
+         fillLohnst_stkl();
+         if(lohnst_stkl == 2){
+             mztabfb_efa = 1908;
+         }else{
+             mztabfb_efa = 0;
+         }
+     }
+     
+     public void fillMztabfb_sap(){
+         fillLohnst_stkl();
+         if(lohnst_stkl > 5){
+             mztabfb_sap = 0;
+         }else{
+             mztabfb_sap = 36;
+         }
+     }
+     
+     public void fillMztabfb_kfb(){
+        fillLohnst_stkl();
+        fillLohnst_zkf();
+        
+        if(lohnst_stkl<4){
+            mztabfb_kfb = lohnst_zkf*7248;
+        }else if(lohnst_stkl == 4){
+             mztabfb_kfb = lohnst_zkf*3624;
+        }else{
+             mztabfb_kfb = 0;
+        }
+     }
+     
+     public void fillMztabfb_ztabfb(){
+        fillLohnst_stkl();
+        fillMztabfb_efa();
+        fillMztabfb_sap();
+
+         if(lohnst_stkl == 6){
+             mztabfb_ztabfb = 0;
+         }else{
+             mztabfb_ztabfb = mztabfb_efa + mztabfb_sap + mztabfb_anp;
+         }
+     }
+     
+     
+    /*
+    public void calcRVPflichtigerBeitrag(){
+        
+    }
+    */
+    public double calcBruttoTaxes(){
+        double salaryMonth = employeeSalaryYear/12;
+        double bavDiscount = 0.0d;
+        
+        if(optionalSalaryStatement.getBav() < 398){
+            bavDiscount = optionalSalaryStatement.getBav();
+        }else{
+            bavDiscount = 398;
+        }
+        
+        double taxBrutto = salaryMonth -(optionalSalaryStatement.getHolidayMoney() 
+                + optionalSalaryStatement.getBonus()
+                + optionalSalaryStatement.getCompanyCar1()
+                + optionalSalaryStatement.getCompanyCarWayToWork() + bavDiscount);
+        return taxBrutto;
+    }
+    
+    public void clacOneTimePayment(){
+        einmalzahlung = optionalSalaryStatement.getHolidayMoney()
+                + optionalSalaryStatement.getBonus()
+                + optionalSalaryStatement.getCompanyCar1()
+                + optionalSalaryStatement.getCompanyCarWayToWork();
+    }
+    
+    public int getYearFromDate(Date date) throws ParseException{
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            int year = cal.get(Calendar.YEAR);
+            return year;
+    }
+    
+   
 
 }

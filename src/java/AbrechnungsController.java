@@ -9,6 +9,7 @@
  * @author mfehrenbach
  */
 import com.hrsoftware.jpa.Abteilung;
+import com.hrsoftware.jpa.Gehalt;
 import com.hrsoftware.jpa.Gehaltsabrechnungvariableeingaben;
 import com.hrsoftware.jpa.Mitarbeiter;
 import com.hrsoftware.jpa.Stammdaten;
@@ -42,10 +43,22 @@ public class AbrechnungsController  implements Serializable {
     @Inject
     Gehaltsabrechnungsrechner gehaltsabrechnungsrechner;
     
+    @Inject
+    OptionalSalaryStatement optionalSalaryStatement;
+    
+    @Inject
+    MonthView monthView;
+
+    
+    
+    
     @EJB
     private com.hrsoftware.jpacontroller.StammdatenFacade ejbFacadeBasedata;
     private Stammdaten selectedBasedata;
 
+    @EJB
+    private com.hrsoftware.jpacontroller.GehaltFacade ejbFacadeSalary;
+    private Gehalt selectedSalary;
     
     @EJB
     private com.hrsoftware.jpacontroller.MitarbeiterFacade ejbFacadeEmployee;
@@ -66,6 +79,14 @@ public class AbrechnungsController  implements Serializable {
   public AbrechnungsController() {
   }
 
+  public MonthView getMonthView() {
+        return monthView;
+    }
+
+    public OptionalSalaryStatement getOptionalSalaryStatement() {
+        return optionalSalaryStatement;
+    }
+  
     
     public Mitarbeiter getSelectedEmployee() {
         return selectedEmployee;
@@ -117,19 +138,19 @@ public class AbrechnungsController  implements Serializable {
     }
     
     public void createSalaryStatement(){
-      // System.out.println("onDepartmentChange wird ausgeführt: " + selectedEmployee.getNachname() + " maid: " + selectedBasedata.getMitarbeiterid());
-           
+         System.out.println("onDepartmentChange wird ausgeführt: " + selectedEmployee.getNachname() + "  optional €  " + optionalSalaryStatement.getExpensesRefund() + " Object ausgabe: " +optionalSalaryStatement+ " Month: " + monthView.getMonth());
          Stammdaten stamm = ejbFacadeBasedata.getBaseDataFromEmployeeId(selectedEmployee.getId());
-         
          if(stamm == null){
-             
-              System.out.println("Stammdaten sind null");
+            System.out.println("Stammdaten sind null");
          }else{
-                           System.out.println("Stammdaten sind nicht  null: " + stamm.getId());
-
+            System.out.println("Stammdaten sind nicht  null: " + stamm.getId());
          }
          selectedBasedata = stamm;//ejbFacadeBasedata.getBaseDataFromEmployeeId(selectedBasedata.getMitarbeiterid());
-         if(selectedBasedata != null){
+         if(selectedBasedata != null && optionalSalaryStatement != null){
+             selectedSalary = ejbFacadeSalary.findGehaltByID(selectedEmployee.getIdGehalt().getId());
+             gehaltsabrechnungsrechner.setEmployeeSalaryYear(selectedSalary.getGehalt());
+             gehaltsabrechnungsrechner.setEmployee(selectedEmployee);
+             gehaltsabrechnungsrechner.setOptionalSalaryStatement(optionalSalaryStatement);
              gehaltsabrechnungsrechner.setStammdaten(selectedBasedata);
          }else{
              System.out.println("Stammdaten nicht geladen " );

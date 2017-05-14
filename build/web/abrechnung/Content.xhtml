@@ -49,11 +49,11 @@
                             <p:commandButton value="Ajax Submit" id="ajax" update=":mainForm:MitarbeiterListForm:growl" actionListener="#{abrechnungsController.createSalaryStatement}" styleClass="ui-priority-primary" />
                             <p:commandButton id="chooseButton" icon="ui-icon-plus"   value="Auswählen"
                                              actionListener="#{abrechnungsController.createSalaryStatement}"  
-                                             update=":mainForm:AbrechnungErstellen" />
+                                             update=":mainForm:MitarbeiterListForm:AbrechnungErstellen" />
                             </f:facet>
                     </p:dataTable>
                 </p:panel>
-            </h:form>
+            <!--</h:form>-->
             
   
                  
@@ -63,12 +63,12 @@
             <h3>Abrechnungszeitraum</h3>
             <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
                 <p:outputLabel for="month" value="Monat: " />
-                <p:selectOneRadio id="month" value="#{monthView.month}"  layout="grid" columns="3">
-                    <f:selectItems value="#{monthView.months}" var="c" itemLabel="#{month}" itemValue="#{month}"/>
+                <p:selectOneRadio id="month" value="#{abrechnungsController.monthView.month}"  layout="grid" columns="3">
+                    <f:selectItems value="#{abrechnungsController.monthView.months}" var="c" itemLabel="#{month}" itemValue="#{month}"/>
                 </p:selectOneRadio>
             </h:panelGrid>
       
-            <h:form id="AbrechnungErstellen">
+           <h:form id="AbrechnungErstellen">
                 <br />
 
                  <p:panelGrid style="margin-top:20px">
@@ -83,40 +83,40 @@
                      </f:facet>
 
                      <p:row>
-                         <p:column >Urlaubsgeld</p:column>
-                         <p:column ><p:inputText  id="holydaymoney"  size="5" type="number"/></p:column>
+                         <p:column >Urlaubsgeld (€)</p:column>
+                         <p:column ><p:inputText  id="holydaymoney"  size="5" type="number" value="#{abrechnungsController.optionalSalaryStatement.holidayMoney}"/></p:column>
 
-                        <p:column >Zeitzuschläge(Stunden Nachschicht)</p:column>
-                        <p:column ><p:inputText  id="timebonus" size="5"  type="number"/></p:column>
+                        <p:column >Zeitzuschläge(Stunden Nachschicht) (€)</p:column>
+                        <p:column ><p:inputText  id="timebonus" size="5"  type="number" value="#{abrechnungsController.optionalSalaryStatement.hoursAtNight}"/></p:column>
 
                         
                      </p:row>
 
                      <p:row>
-                         <p:column >Prämie</p:column>
-                         <p:column ><p:inputText  id="bonus"  size="5" type="number"/></p:column>
+                         <p:column >Prämie (€)</p:column>
+                         <p:column ><p:inputText  id="bonus"  size="5" type="number" value="#{abrechnungsController.optionalSalaryStatement.bonus}"/></p:column>
                          
-                         <p:column >Zeitzuschläge(Stunden Sonntag)</p:column>
-                        <p:column ><p:inputText  id="timeSunday" size="5"  type="number"/></p:column>
+                         <p:column >Zeitzuschläge(Stunden Sonntag) (€)</p:column>
+                         <p:column ><p:inputText  id="timeSunday" size="5"  type="number" value="#{abrechnungsController.optionalSalaryStatement.hoursSunday}"/></p:column>
                      </p:row>
 
                   
 
                      <p:row>
-                         <p:column >Dienstwagen 1%</p:column>
-                         <p:column ><p:inputText  id="companycar" size="5"  type="number"/></p:column>
+                         <p:column >Dienstwagen 1% (€)</p:column>
+                         <p:column ><p:inputText  id="companycar" size="5"  type="number" value="#{abrechnungsController.optionalSalaryStatement.companyCar1}"/></p:column>
                          
-                          <p:column >Zeitzuschläge(Stunden Feiertage)</p:column>
-                        <p:column ><p:inputText  id="timeHolyday" size="5"  type="number"/></p:column>
+                          <p:column >Zeitzuschläge(Stunden Feiertage) (€)</p:column>
+                          <p:column ><p:inputText  id="timeHolyday" size="5"  type="number" value="#{abrechnungsController.optionalSalaryStatement.hoursOnHoliday}"/></p:column>
                      
                      </p:row>
 
                      <p:row>
-                          <p:column >Dienstwagen, Weg zur Arbeit</p:column>
-                         <p:column ><p:inputText  id="companycarRoadToCompany"  size="5" type="number"/></p:column>
+                          <p:column >Dienstwagen, Weg zur Arbeit (€)</p:column>
+                          <p:column ><p:inputText  id="companycarRoadToCompany"  size="5" type="number" value="#{abrechnungsController.optionalSalaryStatement.companyCarWayToWork}"/></p:column>
                          
-                          <p:column >Zeitzuschläge(Stunden Sondervergütung)</p:column>
-                          <p:column ><p:inputText  id="timeExtraBenous" size="5" type="number"/></p:column>
+                          <p:column >Zeitzuschläge(Stunden Sondervergütung) (€)</p:column>
+                          <p:column ><p:inputText  id="timeExtraBenous" size="5" type="number" value="#{abrechnungsController.optionalSalaryStatement.holidayExtraBonus}"/></p:column>
                      
                      </p:row>
 
@@ -127,19 +127,20 @@
                      </p:row>
 
                      <p:row>
-                         <p:column></p:column>
-                         <p:column></p:column>
+                          <p:column >Beitrag zur baV/Gehaltsumwandlung (€)</p:column>
+                          <p:column ><p:inputText  id="bav" size="5" type="number" value="#{abrechnungsController.optionalSalaryStatement.bav}"/></p:column>
 
-                         <p:column >Auslagen-Erstattung</p:column>
-                         <p:column ><p:inputText  id="employeeInsuranceBonus" size="5" type="number"/></p:column>
+
+                         <p:column >Auslagen-Erstattung (€)</p:column>
+                         <p:column ><p:inputText  id="employeeInsuranceBonus" size="5" type="number" value="#{abrechnungsController.optionalSalaryStatement.expensesRefund}"/></p:column>
 
                      </p:row>
 
                      <p:row>
                          <p:column></p:column>
                          <p:column ></p:column>
-                          <p:column >Fahrtgeld</p:column>
-                         <p:column ><p:inputText  id="roadMoney" size="5" type="number"/></p:column>
+                          <p:column >Fahrtgeld (€)</p:column>
+                          <p:column ><p:inputText  id="roadMoney" size="5" type="number" value="#{abrechnungsController.optionalSalaryStatement.rideMoney}"/></p:column>
 
                      </p:row>
 
@@ -147,8 +148,8 @@
                          <p:column></p:column>
                          <p:column></p:column>
                          
-                         <p:column >AG-Zuschuss zur baV</p:column>
-                         <p:column ><p:inputText  id="adBonusBav" size="5" type="number"/></p:column>
+                         <p:column >AG-Zuschuss zur baV (€)</p:column>
+                         <p:column ><p:inputText  id="adBonusBav" size="5" type="number" value="#{abrechnungsController.optionalSalaryStatement.bonusbaV}"/></p:column>
 
                       
                      </p:row>
@@ -405,5 +406,7 @@
                      </p:row>
                  </p:panelGrid>
             </h:form> 
+                        </h:form> 
+
 	</ui:define>
 </ui:composition>
