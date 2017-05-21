@@ -28,8 +28,7 @@ import javax.validation.constraints.NotNull;
  * @author Manu
  */
 @Entity
-@Table(catalog = "hrsystem", schema = "", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"ma_id"})})
+@Table(catalog = "hrsystem", schema = "")
 @NamedQueries({
     @NamedQuery(name = "Arbeitszeit.findAll", query = "SELECT a FROM Arbeitszeit a")
     , @NamedQuery(name = "Arbeitszeit.findById", query = "SELECT a FROM Arbeitszeit a WHERE a.id = :id")

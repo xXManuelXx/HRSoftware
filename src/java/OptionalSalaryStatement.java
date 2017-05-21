@@ -28,6 +28,7 @@ public class OptionalSalaryStatement implements Serializable{
     private double rideMoney;
     private double bonusbaV;
     private double bav;
+    private double sunHolidayNightMoney;
 
     public double getBav() {
         return bav;
@@ -35,6 +36,10 @@ public class OptionalSalaryStatement implements Serializable{
 
     public void setBav(double bav) {
         this.bav = bav;
+    }
+
+    public void setSunHolidayNightMoney(double sunHolidayNightMoney) {
+        this.sunHolidayNightMoney = sunHolidayNightMoney;
     }
     
     
@@ -128,7 +133,10 @@ public class OptionalSalaryStatement implements Serializable{
         this.bonusbaV = bonusbaV;
     }
     
-    
+    public double getSunHolidayNightMoney(){
+        this.sunHolidayNightMoney = hoursAtNight+hoursOnHoliday+hoursSunday+hoursOnHoliday;
+        return this.sunHolidayNightMoney;
+    }
 
     @Override
     public String toString(){

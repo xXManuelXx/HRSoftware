@@ -9,6 +9,7 @@
  * @author mfehrenbach
  */
 import com.hrsoftware.jpa.Gehaltsabrechnungvariableeingaben;
+import com.hrsoftware.jpa.Lohnkonto;
 import com.hrsoftware.jpa.Mitarbeiter;
 import com.hrsoftware.jpa.Stammdaten;
 import com.hrsoftware.jpacontroller.StammdatenFacade;
@@ -41,21 +42,39 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     private Stammdaten baseData;
     private OptionalSalaryStatement optionalSalaryStatement;
     private Mitarbeiter employee;
+    
+    //Andere Daten die Benötigt werden
     private double employeeSalaryYear;
+    private double employeeSalaryMonth;
+    private String month = "";
+    private Lohnkonto lohnkonto;    
+    private double payAmount;
+    private double sumDiscount;
+    private double sVBruttoRv;
+    private double svBruttoKv;
+    private double sumSteuerBruttoBisher;
+    private double arbeitgeberzuschussPrivateKv;
+    private String zusatzbeitrag;
+    private String krankenversicherung;
+    private String avpflichtig;
+    
     //Lohnsteuer
-   private double lohnst_alter1;
-   private double lohnst_zkf;
-   private double lohnst_lzz;
-   private double lohnst_krv;
-   private double lohnst_zre4j;
-   private double lohnst_stkl;
-   private double lohnst_jlfreib;
-   private double lohnst_jlhinzu;
-   private double lohnst_rvbemes;
-   private double lohnst_pkv;
-   private double lohnst_pv;
-   private double lohnst_faktorF;
+    private double lohnst_alter1;
+    private double lohnst_zkf;
+    private double lohnst_lzz;
+    private double lohnst_krv;
+    private double lohnst_zre4j;
+    private double lohnst_stkl;
+    private double lohnst_jlfreib;
+    private double lohnst_jlhinzu;
+    private double lohnst_rvbemes;
+    private double lohnst_pkv;
+    private double lohnst_pv;
+    private double lohnst_faktorF;
    
+   private double taxBrutto;
+   
+   private double steuerfreiebezuege;
    //Einmalzahlungen
    private double einmalzahlung;
    
@@ -164,28 +183,28 @@ public class Gehaltsabrechnungsrechner implements Serializable {
    private double solzvers_pvAg;
    
    //SozV Gleitzone
-   private double sozgleit_sozVEntgelt;
-   private double sozgleit_rvAn;
-   private double sozgleit_avAn;
-   private double sozgleit_kvAn;
-   private double sozgleit_kvZusatz;
-   private double sozgleit_pvAn;
+   private double sozgleit_sozVEntgelt = 0;
+   private double sozgleit_rvAn= 0;
+   private double sozgleit_avAn= 0;
+   private double sozgleit_kvAn= 0;
+   private double sozgleit_kvZusatz= 0;
+   private double sozgleit_pvAn= 0;
    
    
    //Gleitzone 400-450
-   private double gleitzone_sozVEntgelt;
-   private double gleitzone_rvAn;
-   private double gleitzone_avAn;
-   private double gleitzone_kvAn;
-   private double gleitzone_kvZusatz;
-   private double gleitzone_pvAn;
+   private double gleitzone_sozVEntgelt= 0;
+   private double gleitzone_rvAn= 0;
+   private double gleitzone_avAn= 0;
+   private double gleitzone_kvAn= 0;
+   private double gleitzone_kvZusatz= 0;
+   private double gleitzone_pvAn= 0;
    
    //Ãœbertragswerte
-    private double uebertragw_rvAn;
-    private double uebertragw_avAn;
-    private double uebertragw_kvAn;
-    private double uebertragw_kvZusatz;
-    private double uebertragw_pvAn;
+    private double uebertragw_rvAn= 0;
+    private double uebertragw_avAn= 0;
+    private double uebertragw_kvAn= 0;
+    private double uebertragw_kvZusatz= 0;
+    private double uebertragw_pvAn= 0;
     
     //jahreslohn+abger.EinmZ
     private double jahreslohn_alter1;
@@ -400,6 +419,162 @@ public class Gehaltsabrechnungsrechner implements Serializable {
    private double pflege_pflegeversicherung;
    private double pflege_pflegeSachsen;
    private double pflege_pflegeArbeitgeber;
+
+    public String getAvpflichtig() {
+        if(uebertragw_rvAn > 0)
+            return avpflichtig = "RV-pflichtig";
+        else
+            return avpflichtig = "RV-frei";
+    }
+
+    public void setAvpflichtig(String avpflichtig) {
+        this.avpflichtig = avpflichtig;
+    }
+
+   
+   
+   
+    public String getZusatzbeitrag() {
+        if(baseData != null){
+        if(baseData.getKrankenversicherung() > 20){
+            return zusatzbeitrag = "privat";
+        }else{
+            return zusatzbeitrag = Double.toString(baseData.getKvzuschlag()/100);
+        }
+        }else{
+            return "";
+        }
+        
+    }
+
+    public void setZusatzbeitrag(String zusatzbeitrag) {
+        this.zusatzbeitrag = zusatzbeitrag;
+    }
+
+    public String getKrankenversicherung() {
+        if(baseData != null){
+          if(baseData.getKrankenversicherung() > 20){
+            return krankenversicherung = "privat";
+        }else{
+            return krankenversicherung = Double.toString(baseData.getKvzuschlag()/100);
+        }
+        }else{
+            return "";
+        }
+    }
+
+    public void setKrankenversicherung(String krankenversicherung) {
+        this.krankenversicherung = krankenversicherung;
+    }
+
+   
+   
+   
+    public double getSumSteuerBruttoBisher() {
+        return sumSteuerBruttoBisher;
+    }
+
+    public void setSumSteuerBruttoBisher(double sumSteuerBruttoBisher) {
+        this.sumSteuerBruttoBisher = sumSteuerBruttoBisher;
+    }
+
+   
+   
+   
+    public double getSumDiscount() {
+        return sumDiscount;
+    }
+
+    public void setSumDiscount(double sumDiscount) {
+        this.sumDiscount = sumDiscount;
+    }
+
+    public double getsVBruttoRv() {
+        return sVBruttoRv;
+    }
+
+    public void setsVBruttoRv(double sVBruttoRv) {
+        this.sVBruttoRv = sVBruttoRv;
+    }
+
+    public double getSvBruttoKv() {
+        return svBruttoKv;
+    }
+
+    public void setSvBruttoKv(double svBruttoKv) {
+        this.svBruttoKv = svBruttoKv;
+    }
+   
+   
+   
+   
+
+    public double getSteuerfreiebezuege() {
+        return steuerfreiebezuege;
+    }
+
+    public void setSteuerfreiebezuege(double steuerfreiebezuege) {
+        this.steuerfreiebezuege = steuerfreiebezuege;
+    }
+
+    public double getPayAmount() {
+        return payAmount;
+    }
+
+    public void setPayAmount(double payAmount) {
+        this.payAmount = payAmount;
+    }
+
+   
+   
+   
+    public Lohnkonto getLohnkonto() {
+        return lohnkonto;
+    }
+
+    public void setLohnkonto(Lohnkonto lohnkonto) {
+        this.lohnkonto = lohnkonto;
+    }
+
+    public double getArbeitgeberzuschussPrivateKv() {
+        return arbeitgeberzuschussPrivateKv;
+    }
+
+    public void setArbeitgeberzuschussPrivateKv(double arbeitgeberzuschussPrivateKv) {
+        this.arbeitgeberzuschussPrivateKv = arbeitgeberzuschussPrivateKv;
+    }
+   
+   
+
+    public String getMonth() {
+        return month;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
+    }
+   
+   
+   
+
+    public double getTaxBrutto() {
+        return taxBrutto;
+    }
+
+    public void setTaxBrutto(double taxBrutto) {
+        this.taxBrutto = taxBrutto;
+    }
+
+    public double getEmployeeSalaryMonth() {
+        return employeeSalaryMonth;
+    }
+
+    public void setEmployeeSalaryMonth(double employeeSalaryMonth) {
+        this.employeeSalaryMonth = employeeSalaryMonth;
+    }
+   
+   
+   
 
     public double getEmployeeSalaryYear() {
         return employeeSalaryYear;
@@ -4321,10 +4496,10 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
     
     public void clacOneTimePayment(){
-        einmalzahlung = optionalSalaryStatement.getHolidayMoney()
+        einmalzahlung = (optionalSalaryStatement.getHolidayMoney()
                 + optionalSalaryStatement.getBonus()
                 + optionalSalaryStatement.getCompanyCar1()
-                + optionalSalaryStatement.getCompanyCarWayToWork();
+                + optionalSalaryStatement.getCompanyCarWayToWork())*100;
     }
     
     public int getYearFromDate(Date date) throws ParseException{
@@ -4334,6 +4509,879 @@ public class Gehaltsabrechnungsrechner implements Serializable {
             return year;
     }
     
+    public int getMonthFromDate(Date date){
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            int month = cal.get(Calendar.MONTH);
+            return month;
+    }
+    
+    public void fillSolzvers_kvbemes(){
+        solzvers_kvBemes = 4125;
+    }
+    
+    public void fillSolzvers_rvbemes(){
+        fillLohnst_rvbemes();
+        solzvers_rvBemes = lohnst_rvbemes/12 ;
+    }
+    
+    public void fillSolzvers_rvan(){
+        if((lohnst_alter1>0 && lohnst_alter1<9)||(lohnst_alter1 == 9 && changeMonthInNumberGehaltsrechnung() > (getMonthFromDate(employee.getGeburtsdatum())+2))){
+            solzvers_rvAn = 0; 
+        }else if(baseData.getRentenversichert()==1){
+           // solzvers_rvAn = min(solzAnteilBaV_sozVpflichtBrut,solzAnteilBaV_sozVpflichtBrut-(calcTaxBrutto()-solzvers_rvBemes));
+           solzvers_rvAn = rvPflichtigerBeitrag*baseData.getRentenversicherung()/200;
+        }
+    }
+    
+    public void fillSolzvers_avan(){
+        
+        if((lohnst_alter1>0 && lohnst_alter1<9)||(lohnst_alter1 == 9 && changeMonthInNumberGehaltsrechnung() > (getMonthFromDate(employee.getGeburtsdatum())+2))){
+            solzvers_avAn = 0; 
+        }else if(baseData.getArbeitslosenversicherungspflichtig()==1){
+           // solzvers_rvAn = min(solzAnteilBaV_sozVpflichtBrut,solzAnteilBaV_sozVpflichtBrut-(calcTaxBrutto()-solzvers_rvBemes));
+           solzvers_avAn = rvPflichtigerBeitrag*0.015;
+        }
+    }
+    
+    public void fillSolzvers_kvan(){
+        if(baseData.getKrankenversicherung()>20){
+            if(baseData.getArbeitgeberzuschussKvPv()>0){
+                solzvers_kvAn = baseData.getKrankenversicherung()-baseData.getArbeitgeberzuschussKvPv();
+            }else{
+                solzvers_kvAn = baseData.getKrankenversicherung();
+            }
+        }else if(baseData.getKrankenversicherung() <= 14){
+            solzvers_kvAn = kvPflichtigerBeitrag*0.07;
+        }else{
+            solzvers_kvAn = kvPflichtigerBeitrag*(baseData.getKrankenversicherung()/2)/100;
+        }
+    }
+    
+    public void fillSolzvers_kvzusatz(){
+        if(baseData.getKrankenversicherung()>20){
+            solzvers_kvZusatz = 0;
+        }else if(baseData.getKrankenversicherung() <= 14){
+            solzvers_kvZusatz = baseData.getKvzuschlag()/100;
+        }else{
+            solzvers_kvZusatz = kvPflichtigerBeitrag*(baseData.getKvzuschlag()/100);
+        }
+    }
+    
+    public void fillSolzvers_pvan(){
+        if(baseData.getKrankenversicherung()>20){
+            solzvers_pvAn = 0;
+        }else if(baseData.getStelleInSachsen() == 1 && baseData.getKinderlos() == 1){
+            solzvers_pvAn = kvPflichtigerBeitrag*(baseData.getPflegeversicherungsachsen()+0.0025);
+        }else{
+            solzvers_pvAn = kvPflichtigerBeitrag;
+        }
+    }
+    
+    public void fillSolzvers_rvag(){
+        solzvers_rvAg = rvPflichtigerBeitrag*baseData.getRentenversicherung()/200;
+    }
+    
+    public void fillSolzvers_avag(){
+        solzvers_avAg = rvPflichtigerBeitrag*0.015;
+    }
+    
+    public void fillSolzvers_kvag(){
+        if(baseData.getKrankenversicherung()>20){
+            if(baseData.getArbeitgeberzuschussKvPv() == 0){
+                solzvers_kvAg = 0;
+            }else{
+                solzvers_kvAg = baseData.getArbeitgeberzuschussKvPv();
+            }
+        }else if(baseData.getKrankenversicherung() <= 14){
+            solzvers_kvAg = kvPflichtigerBeitrag*0.07;
+        }else{
+                solzvers_kvAg = kvPflichtigerBeitrag*0.073;
+        }
+    }
+    
+    public void fillSolzvers_pvag(){
+        if(baseData.getKrankenversicherung()>20){
+            solzvers_pvAg = 0;
+        }else if(baseData.getStelleInSachsen() == 1){
+            solzvers_pvAg = kvPflichtigerBeitrag*baseData.getPflegeversicherungarbeitgeber();
+        }else{
+            solzvers_pvAg = kvPflichtigerBeitrag*baseData.getPflegeversicherungallgemein();
+        }
+    }
+    
+    
+    public void fillSolzAnteilBaV_bavBeitrag(){
+        solzAnteilBaV_bavBeitrag = min(optionalSalaryStatement.getBav(),398);
+        
+    }
+    
+    public void fillSolzAnteilBav_sozVPflicht(){
+        fillSolzAnteilBaV_bavBeitrag();
+        if(solzAnteilBaV_bavBeitrag > 248){
+            solzAnteilBaV_sozVPflicht = min(optionalSalaryStatement.getBav()-248,150);
+        }else{
+            solzAnteilBaV_sozVPflicht = 0;
+            
+        }
+    }
+    
+    public void fillSolzAnteilBaV_sozVpflichtBrut(){
+        calcTaxBrutto();
+        solzAnteilBaV_sozVpflichtBrut = taxBrutto + solzAnteilBaV_sozVPflicht;
+    }
+    
+    
+    public void fillArbeitgeberzuschussPrivateKv(){
+        if(lohnst_pkv > 0 && baseData.getArbeitgeberzuschussKvPv() == 1){
+            arbeitgeberzuschussPrivateKv = baseData.getKrankenversicherung()/2;
+        }else{
+            arbeitgeberzuschussPrivateKv = 0;
+        }
+    }
+    public int changeMonthInNumberGehaltsrechnung(){
+        switch(month){
+            case "Januar":{
+                return 1;
+            }
+            case "Februar":{
+                return 2;
+            }
+            case "März":{
+                return 3;
+            }
+            case "April":{
+                return 4;
+            }
+            case "Mai":{
+                return 5;
+            }
+            case "Juni":{
+              return 6; 
+            }
+            case "Juli":{
+               return 7;
+            }
+            case "August":{
+                return 8;
+            }
+            case "September":{
+                return 9;
+            }
+            case "Oktober":{
+                return 10;
+            }
+            case "November":{
+                return 11;
+            }
+            default:{
+                return 12;
+            }
+            
+        }
+    }
+  
+    
+    public void calcSalaryMonthWithOneTimePayment(){
+        employeeSalaryMonth = employeeSalaryYear/12 + (einmalzahlung/100);
+    }
+    public double calcTaxBrutto(){
+        double salaryMonth = employeeSalaryYear/12;
+
+        return salaryMonth +(optionalSalaryStatement.getHolidayMoney() 
+                + optionalSalaryStatement.getBonus()
+                + optionalSalaryStatement.getCompanyCar1()
+                + optionalSalaryStatement.getCompanyCarWayToWork());
+    }
+
+    public void calcSteuerfreiebezuege(){
+        steuerfreiebezuege = optionalSalaryStatement.getRideMoney() + optionalSalaryStatement.getBonusbaV() + optionalSalaryStatement.getExpensesRefund() + optionalSalaryStatement.getSunHolidayNightMoney();
+    }
+    
+    public void calcPayAmount(){
+        
+        payAmount = employeeSalaryMonth - min(optionalSalaryStatement.getBav(),398)- sumDiscount + steuerfreiebezuege;
+    }
+    
+    public void calcSumDiscount(){
+        sumDiscount = mlstjahr_lstlzzSum + bk_kistSum + solz_solzSum 
+                + uebertragw_kvAn + uebertragw_kvZusatz + uebertragw_avAn
+                + uebertragw_rvAn + uebertragw_pvAn;
+        
+    }
+    
    
+  
+    
+    public void calcAllValues(){
+        taxBrutto = calcTaxBrutto();
+        fillBk1_anteil1();
+        fillBk1_bk();
+        fillBk1_bkeinmal();
+        fillBk1_kist();
+        fillBk2_anteil1();
+        fillBk2_bk();
+        fillBk_anteil1();
+        fillBk_bk();
+        fillBk_kistsum();
+        fillJahreslohn1_faktorf();
+        fillJahreslohn1_jlfreib();
+        fillJahreslohn1_jlhinzu();
+        fillJahreslohn1_krv();
+        fillJahreslohn1_lzz();
+        fillJahreslohn1_pkv();
+        fillJahreslohn1_pv();
+        fillJahreslohn1_rvbemes();
+        fillJahreslohn1_stkl();
+        fillJahreslohn1_zkf();
+        fillJahreslohn1_zre4j();
+        fillJahreslohn_faktorf();
+        fillJahreslohn_jlfreib();
+        fillJahreslohn_jlhinzu();
+        fillJahreslohn_krv();
+        fillJahreslohn_lzz();
+        fillJahreslohn_pkv();
+        fillJahreslohn_pv();
+        fillJahreslohn_rvbemes();
+        fillJahreslohn_stkl();
+        fillJahreslohn_zkf();
+        fillJahreslohn_zre4j();
+        fillLohnst_faktorf();
+        fillLohnst_jlfreib();
+        fillLohnst_jlhinzu();
+        fillLohnst_krv();
+        fillLohnst_pkv();
+        fillLohnst_lzz();
+        fillLohnst_pv();
+        fillLohnst_rvbemes();
+        fillLohnst_stkl();
+        fillLohnst_zkf();
+        fillLohnst_zre4j();
+        fillMlstjahr1_jbmg();
+        fillMlstjahr1_lstlzz();
+        fillMlstjahr1_st();
+        fillMlstjahr1_ztabfb();
+        fillMlstjahr1_zve();
+        fillMlstjahr1_zvex();
+        fillMlstjahr2_jbmg();
+        fillMlstjahr2_lstlzz();
+        fillMlstjahr2_st();
+        fillMlstjahr2_ztabfb();
+        fillMlstjahr2_zve();
+        fillMlstjahr2_zvex();
+        fillMlstjahr_jbmg();
+        fillMlstjahr_lstlzzsum();
+        fillMlstjahr_st();
+        fillMlstjahr_ztabfb();
+        fillMlstjahr_zve();
+        fillMlstjahr_zvex();
+        fillMre41_zre4();
+        fillMre41_zre4vp();
+        fillMre42_zre4();
+        fillMre42_zre4vp();
+        fillMre4Alte1_tab5();
+        fillMre4Alte2_tab5();
+        fillMre4Alte_tab5();
+        fillMre4_zre4();
+        fillMre4_zre4vp();
+        fillMre4alte1_alte();
+        fillMre4alte1_alteanteil();
+        fillMre4alte1_tab4();
+        fillMre4alte1_zre4();
+        fillMre4alte1_zre4vp();
+        fillMre4alte2_alte();
+        fillMre4alte2_alteanteil();
+        fillMre4alte2_tab4();
+        fillMre4alte2_zre4();
+        fillMre4alte2_zre4vp();
+        fillMre4alte_alte();
+        fillMre4alte_tab4();
+        fillMre4alte_zre4();
+        fillMre4alte_zre4vp();
+        fillMsolz1_solzeinmal();
+        fillMsolz1_solzfrei();
+        fillMsolz1_solzj();
+        fillMsolz2_solzfrei();
+        fillMsolz2_solzj();
+        fillMsolz_jw();
+        fillMsolz_solzfrei();
+        fillMsolz_solzj();
+        fillMsolz_solzj1();
+        fillMsolz_solzmin();
+        fillMst561_diff();
+        fillMst561_jw();
+        fillMst561_lstjahr();
+        fillMst561_mist();
+        fillMst561_reichst();
+        fillMst561_st();
+        fillMst561_st1();
+        fillMst561_st2();
+        fillMst561_st3();
+        fillMst561_st4();
+        fillMst561_st5();
+        fillMst561_vergl();
+        fillMst561_x();
+        fillMst561_x1();
+        fillMst562_diff();
+        fillMst562_jw();
+        fillMst562_lstjahr();
+        fillMst562_mist();
+        fillMst562_reichst();
+        fillMst562_st();
+        fillMst562_st1();
+        fillMst562_st2();
+        fillMst562_st3();
+        fillMst562_st4();
+        fillMst562_st5();
+        fillMst562_vergl();
+        fillMst562_x1();
+        fillMst562_x();
+        fillMst56_diff();
+        fillMst56_jw();
+        fillMst56_lstjahr();
+        fillMst56_mist();
+        fillMst56_reichst();
+        fillMst56_st();
+        fillMst56_st1();
+        fillMst56_st2();
+        fillMst56_st3();
+        fillMst56_st4();
+        fillMst56_st5();
+        fillMst56_vergl();
+        fillMst56_x();
+        fillMst56_x1();
+        fillMztabfb1_efa();
+        fillMztabfb1_kfb();
+        fillMztabfb1_kztab();
+        fillMztabfb1_sap();
+        fillMztabfb1_ztabfb();
+        fillMztabfb2_efa();
+        fillMztabfb2_kfb();
+        fillMztabfb2_kztab();
+        fillMztabfb2_sap();
+        fillMztabfb2_ztabfb();
+        fillMztabfb_efa();
+        fillMztabfb_kfb();
+        fillMztabfb_kztab();
+        fillMztabfb_sap();
+        fillMztabfb_ztabfb();
+        fillSolz_anteil1();
+        fillSolz_jw();
+        fillSolz_solzsum();
+        fillSolzvers_avan();
+        fillSolzvers_kvan();
+        fillSolzvers_kvbemes();
+        fillSolzvers_kvzusatz();
+        fillSolzvers_pvan();
+        fillSolzvers_rvan();
+        fillSolzvers_rvbemes();
+        fillUmvsp1_zve();
+        fillUmvsp1_zzx();
+        fillUmvsp2_zve();
+        fillUmvsp2_zzx();
+        fillUmvsp_zve();
+        fillUmvsp_zzx();
+        fillUpevp1_kv();
+        fillUpevp1_kvvhb();
+        fillUpevp1_vhb();
+        fillUpevp1_vsp1();
+        fillUpevp1_vsp2();
+        fillUpevp1_vspn();
+        fillUpevp1_zre4vp();
+        fillUpevp1_zukvpv();
+        fillUpevp2_kv();
+        fillUpevp2_kvvhb();
+        fillUpevp2_vhb();
+        fillUpevp2_vsp1();
+        fillUpevp2_vsp2();
+        fillUpevp2_zre4vp();
+        fillUpevp2_zukvpv();
+        fillUpevp_kv();
+        fillUpevp_kvvhb();
+        fillUpevp_vhb();
+        fillUpevp_vsp1();
+        fillUpevp_vsp2();
+        fillUpevp_vspn();
+        fillUpevp_zre4vp();
+        fillUpevp_zukvpv();
+        fillUptab071_st();
+        fillUptab072_st();
+        fillUptab07_st(); 
+        fillSolzAnteilBaV_bavBeitrag();
+        fillSolzAnteilBav_sozVPflicht();
+        fillSolzAnteilBaV_sozVpflichtBrut();
+        calcSalaryMonthWithOneTimePayment();
+        calcSteuerfreiebezuege();
+        calcSumDiscount();
+        calcPayAmount();
+        calcSvBruttoRv();
+        calcSvBruttoKv();
+        fillArbeitgeberzuschussPrivateKv();
+        //Lohnkonto werte setzen
+        lohnkonto.setBruttolohn(employeeSalaryMonth);
+        lohnkonto.setGeltwertevorteilelaufend(0.0);
+        lohnkonto.setEinmalbezuegeimbruttolohn(einmalzahlung/100);
+        lohnkonto.setGeltwertevorteileeinmalig(0.0);
+        lohnkonto.setSteuerfreiebezuege(steuerfreiebezuege);
+        lohnkonto.setLohnsteuer(mlstjahr_lstlzzSum);
+        lohnkonto.setSolidaritaetszuschlag(solz_solzSum);
+        lohnkonto.setKirchensteuer(bk_kistSum);
+        lohnkonto.setKvan(uebertragw_kvAn);
+        lohnkonto.setKvzusatzbeitrag(uebertragw_kvZusatz);
+        lohnkonto.setRvan(uebertragw_rvAn);
+        lohnkonto.setAvan(uebertragw_avAn);
+        lohnkonto.setPvan(uebertragw_pvAn);
+        lohnkonto.setKvag(solzvers_kvAg);
+        lohnkonto.setRvag(solzvers_rvAg);
+        lohnkonto.setAvag(solzvers_avAg);
+        lohnkonto.setPvag(solzvers_pvAg);
+        lohnkonto.setUmlage1(uebWerte_u1);
+        lohnkonto.setUmlage2(uebWerte_u2);
+        lohnkonto.setInsolvenzumlage(uebWerte_insolvenz);
+        lohnkonto.setBeitragzurbav(optionalSalaryStatement.getBav());
+        lohnkonto.setDavonsozvpflichtig(solzAnteilBaV_sozVPflicht);
+        lohnkonto.setSteuerbrutto(calcTaxBrutto());
+        
+        lohnkonto.setSvbruttorv(taxBrutto);
+        lohnkonto.setSvbruttokv(taxBrutto);
+        lohnkonto.setGesamtnetto(payAmount);
+        lohnkonto.setSvbruttokv(svBruttoKv);
+        lohnkonto.setSvbruttorv(sVBruttoRv);
+        
+        
+        System.out.println("alles wurde gerechnet)");
+       
+        
+         //Andere Daten die Benötigt werden
+        System.out.println("employeeSalaryYear: " +employeeSalaryYear);
+        System.out.println("employeeSalaryMonth: " +employeeSalaryMonth);
+	  System.out.println("month: " +	month);
+
+   System.out.println("payAmount: " +    payAmount);
+  System.out.println("sumDiscount: " +     sumDiscount);
+    System.out.println("sVBruttoRv: " +   sVBruttoRv);
+   System.out.println("svBruttoKv: " +    svBruttoKv);
+  System.out.println("sumSteuerBruttoBisher: " +     sumSteuerBruttoBisher);
+  System.out.println("arbeitgeberzuschussPrivateKv: " +     arbeitgeberzuschussPrivateKv);
+   System.out.println("zusatzbeitrag: " +  zusatzbeitrag);
+    System.out.println("krankenversicherung: " + krankenversicherung);
+    System.out.println("avpflichtig: " +avpflichtig);
+    
+    //Lohnsteuer
+  System.out.println("lohnst_alter1: " +     lohnst_alter1);
+   System.out.println("lohnst_zkf: " +    lohnst_zkf);
+  System.out.println("lohnst_lzz: " +     lohnst_lzz);
+       System.out.println("lohnst_krv: " + lohnst_krv);
+        System.out.println("lohnst_zre4j: " +lohnst_zre4j);
+       System.out.println("lohnst_stkl: " + lohnst_stkl);
+       System.out.println("lohnst_jlfreib: " + lohnst_jlfreib);
+       System.out.println("lohnst_jlhinzu: " + lohnst_jlhinzu);
+        System.out.println("lohnst_rvbemes: " +lohnst_rvbemes);
+        System.out.println("lohnst_pkv: " +lohnst_pkv);
+        System.out.println("lohnst_pv: " +lohnst_pv);
+        System.out.println("lohnst_faktorF: " +lohnst_faktorF);
+   
+       System.out.println("taxBrutto: " +taxBrutto);
+   
+       System.out.println("steuerfreiebezuege: " +steuerfreiebezuege);
+   //Einmalzahlungen
+       System.out.println("einmalzahlung: " +einmalzahlung);
+   
+   //laufende zahlungen
+      System.out.println("laufendezahlungen: " + laufendezahlungen);
+   
+   //einmaliger geltw. Vorteil
+      System.out.println("einmaligerGeltwVorteil: " + einmaligerGeltwVorteil);
+   
+   //laufender geltw.Vorteil
+      System.out.println("laufenderGeltwVorteil: " + laufenderGeltwVorteil);
+   
+      System.out.println("rvPflichtigerBeitrag: " + rvPflichtigerBeitrag);
+   
+   
+   //MRE4ALTE
+      System.out.println("mre4alte_tab4: " + mre4alte_tab4);
+      System.out.println("mre4alte_tab5: " + mre4alte_tab5);
+      System.out.println("mre4alte_alteanteil: " + mre4alte_alteanteil);
+      System.out.println("mre4alte_alte: " + mre4alte_alte);
+      System.out.println("mre4alte_zre4: " + mre4alte_zre4);
+      System.out.println("mre4alte_zre4vp: " + mre4alte_zre4vp);
+   
+   //MRE4
+      System.out.println("mre4_zre4: " + mre4_zre4);
+      System.out.println("mre4_zre4vp: " + mre4_zre4vp);
+   
+   //MZTABFB
+      System.out.println("mztabfb_kztab: " + mztabfb_kztab);
+      System.out.println("mztabfb_anp: " + mztabfb_anp);
+      System.out.println("mztabfb_efa: " + mztabfb_efa);
+      System.out.println("mztabfb_sap: " + mztabfb_sap);
+      System.out.println("mztabfb_kfb: " + mztabfb_kfb);
+       System.out.println("mztabfb_ztabfb: " +mztabfb_ztabfb);
+   
+   //UPEVP
+       System.out.println("upevp_zre4vp: " +upevp_zre4vp);
+       System.out.println("upevp_vsp1: " +upevp_vsp1);
+       System.out.println("upevp_vhb: " +upevp_vhb);
+       System.out.println("upevp_vsp2: " +upevp_vsp2);
+       System.out.println("v: " +upevp_zukvPv);
+       System.out.println("upevp_kv: " +upevp_kv);
+       System.out.println("upevp_kvVhb: " +upevp_kvVhb);
+       System.out.println("upevp_vspn: " +upevp_vspn);
+   
+   //UMVSP
+       System.out.println("umvsp_zve: " +umvsp_zve);
+       System.out.println("umvsp_zzx: " +umvsp_zzx);
+   
+   //UPTAB07
+       System.out.println("uptab07_st: " +uptab07_st);
+   
+   //MST5-6
+      System.out.println("mst56_x: " + mst56_x);
+      System.out.println("mst56_st1: " + mst56_st1);
+      System.out.println("mst56_x1: " + mst56_x1);
+      System.out.println("mst56_st2: " + mst56_st2);
+      System.out.println("mst56_diff: " + mst56_diff);
+      System.out.println("mst56_mist: " + mst56_mist);
+       System.out.println("mst56_st: " +mst56_st);
+       System.out.println("mst56_st3: " +mst56_st3);
+      System.out.println("mst56_vergl: " + mst56_vergl);
+      System.out.println("mst56_st4: " + mst56_st4);
+       System.out.println("mst56_st5: " +mst56_st5);
+       System.out.println("mst56_reichst: " +mst56_reichst);
+      System.out.println("mst56_lstjahr: " + mst56_lstjahr);
+       System.out.println("mst56_jw: " +mst56_jw);
+   
+   //MLSTJAHR
+      System.out.println("mlstjahr_lstlzzSum: " + mlstjahr_lstlzzSum);
+       System.out.println("mlstjahr_ztabfb: " +mlstjahr_ztabfb);
+      System.out.println("mlstjahr_zve: " + mlstjahr_zve);
+      System.out.println("mlstjahr_zveX: " + mlstjahr_zveX);
+      System.out.println("mlstjahr_st: " + mlstjahr_st);
+      System.out.println("mlstjahr_jbmg: " + mlstjahr_jbmg);
+   
+   //MSOLZ
+      System.out.println("msolz_solzfrei: " + msolz_solzfrei);
+      System.out.println("msolz_solzj: " + msolz_solzj);
+      System.out.println("msolz_solzmin: " + msolz_solzmin);
+      System.out.println("msolz_solzj1: " + msolz_solzj1);
+      System.out.println("msolz_jw: " +  msolz_jw);
+   
+   //SOLZ
+       System.out.println("solz_anteil1: " +solz_anteil1);
+       System.out.println("solz_solzSum: " +solz_solzSum);
+       System.out.println("solz_jw: " +solz_jw);
+   
+   //BK
+      System.out.println("bk_anteil1: " + bk_anteil1);
+      System.out.println("bk_bk: " + bk_bk);
+       System.out.println("bk_kistSum: " + bk_kistSum);
+   
+   //Sozialversicherung
+      System.out.println("solzvers_kvBemes: " + solzvers_kvBemes);
+      System.out.println("solzvers_rvBemes: " + solzvers_rvBemes);
+      System.out.println("solzvers_rvAn: " + solzvers_rvAn);
+      System.out.println("solzvers_avAn: " + solzvers_avAn);
+      System.out.println("solzvers_kvAn: " + solzvers_kvAn);
+      System.out.println("solzvers_kvZusatz: " + solzvers_kvZusatz);
+       System.out.println("solzvers_pvAn: " +solzvers_pvAn);
+       System.out.println("solzvers_rvAg: " +solzvers_rvAg);
+       System.out.println("solzvers_avAg: " +solzvers_avAg);
+       System.out.println("solzvers_kvAg: " +solzvers_kvAg);
+      System.out.println("solzvers_pvAg: " + solzvers_pvAg);
+   
+   //SozV Gleitzone
+     System.out.println("sozgleit_sozVEntgelt: " +  sozgleit_sozVEntgelt );
+      System.out.println("sozgleit_rvAn: " + sozgleit_rvAn);
+      System.out.println("sozgleit_avAn: " + sozgleit_avAn);
+      System.out.println("sozgleit_kvAn: " + sozgleit_kvAn);
+      System.out.println("sozgleit_kvZusatz: " + sozgleit_kvZusatz);
+      System.out.println("sozgleit_pvAn: " + sozgleit_pvAn);
+   
+   
+   //Gleitzone 400-450
+       System.out.println("gleitzone_sozVEntgelt: " +gleitzone_sozVEntgelt);
+      System.out.println("gleitzone_rvAn: " + gleitzone_rvAn);
+      System.out.println("gleitzone_avAn: " + gleitzone_avAn);
+      System.out.println("gleitzone_kvAn: " + gleitzone_kvAn);
+      System.out.println("gleitzone_kvZusatz: " + gleitzone_kvZusatz);
+       System.out.println("gleitzone_pvAn: " +gleitzone_pvAn);
+   
+   //Ãœbertragswerte
+        System.out.println("uebertragw_rvAn: " +uebertragw_rvAn);
+        System.out.println("uebertragw_avAn: " +uebertragw_avAn);
+        System.out.println("uebertragw_kvAn: " +uebertragw_kvAn);
+       System.out.println("uebertragw_kvZusatz: " + uebertragw_kvZusatz);
+       System.out.println("uebertragw_pvAn: " + uebertragw_pvAn);
+    
+    //jahreslohn+abger.EinmZ
+        System.out.println("jahreslohn_alter1: " +jahreslohn_alter1);
+        System.out.println("jahreslohn_zkf: " +jahreslohn_zkf);
+       System.out.println("jahreslohn_lzz: " + jahreslohn_lzz);
+       System.out.println("jahreslohn_krv: " + jahreslohn_krv);
+       System.out.println("jahreslohn_zre4j: " + jahreslohn_zre4j);
+       System.out.println("jahreslohn_stkl: " + jahreslohn_stkl);
+       System.out.println("jahreslohn_jlfreib: " + jahreslohn_jlfreib);
+       System.out.println("jahreslohn_jlhinzu: " + jahreslohn_jlhinzu);
+        System.out.println("jahreslohn_rvBemes: " +jahreslohn_rvBemes);
+        System.out.println("jahreslohn_pkv: " +jahreslohn_pkv);
+        System.out.println("jahreslohn_pv: " +jahreslohn_pv);
+        System.out.println("jahreslohn_faktorF: " +jahreslohn_faktorF);
+    
+    //MRE4ALTE
+       System.out.println("mre4alte1_tab4: " + mre4alte1_tab4);
+       System.out.println("mre4alte1_tab5: " + mre4alte1_tab5);
+       System.out.println("mre4alte1_alteanteil: " + mre4alte1_alteanteil);
+       System.out.println("mre4alte1_alte: " + mre4alte1_alte);
+       System.out.println("mre4alte1_zre4: " + mre4alte1_zre4);
+       System.out.println("mre4alte1_zre4vp: " + mre4alte1_zre4vp);
+    
+    //MRE41
+       System.out.println("mre41_zre4: " + mre41_zre4);
+       System.out.println("mre41_zre4vp: " + mre41_zre4vp);
+    
+    
+    //MZTABFB
+      System.out.println("mztabfb1_kztab: " + mztabfb1_kztab);
+      System.out.println("mztabfb1_anp: " + mztabfb1_anp);
+      System.out.println("mztabfb1_efa: " + mztabfb1_efa);
+      System.out.println("mztabfb1_sap: " + mztabfb1_sap);
+      System.out.println("mztabfb1_kfb: " + mztabfb1_kfb);
+      System.out.println(mztabfb1_ztabfb);
+   
+   //UPEVP
+       System.out.println("upevp1_zre4vp: " +upevp1_zre4vp);
+       System.out.println("upevp1_vsp1: " +upevp1_vsp1);
+       System.out.println("upevp1_vhb: " +upevp1_vhb);
+       System.out.println("upevp1_vsp2: " +upevp1_vsp2);
+       System.out.println("upevp1_zukvPv: " +upevp1_zukvPv);
+       System.out.println("upevp1_kv: " +upevp1_kv);
+       System.out.println("upevp1_kvVhb: " +upevp1_kvVhb);
+       System.out.println("upevp1_vspn: " +upevp1_vspn);
+   
+   //UMVSP
+       System.out.println("umvsp1_zve: " +umvsp1_zve);
+       System.out.println("umvsp1_zzx: " +umvsp1_zzx);
+   
+   //UPTAB07
+       System.out.println("uptab071_st: " +uptab071_st);
+   
+   //MST5-6
+       System.out.println("mst561_x: " +mst561_x);
+       System.out.println("mst561_st1: " +mst561_st1);
+       System.out.println("mst561_x1: " +mst561_x1);
+       System.out.println("mst561_st2: " +mst561_st2);
+       System.out.println("mst561_diff: " +mst561_diff);
+       System.out.println("mst561_mist: " +mst561_mist);
+      System.out.println("mst561_st: " + mst561_st);
+      System.out.println("mst561_st3: " + mst561_st3);
+       System.out.println("mst561_vergl: " +mst561_vergl);
+      System.out.println("mst561_st4: " + mst561_st4);
+       System.out.println("mst561_st5: " +mst561_st5);
+       System.out.println("mst561_reichst: " +mst561_reichst);
+      System.out.println("mst561_lstjahr: " + mst561_lstjahr);
+       System.out.println("mst561_jw: " +mst561_jw);
+   
+   //MLSTJAHR
+      System.out.println("mlstjahr1_lstlzzSum: " + mlstjahr1_lstlzzSum);
+      System.out.println("mlstjahr1_ztabfb: " + mlstjahr1_ztabfb);
+     System.out.println("mlstjahr1_zve: " + mlstjahr1_zve);
+      System.out.println("mlstjahr1_zveX: " + mlstjahr1_zveX);
+      System.out.println("mlstjahr1_st: " + mlstjahr1_st);
+      System.out.println("mlstjahr1_jbmg: " + mlstjahr1_jbmg);
+   
+   //MSOLZ
+      System.out.println("msolz1_solzfrei: " + msolz1_solzfrei);
+      System.out.println("msolz1_solzj: " + msolz1_solzj);
+      System.out.println("msolz1_solzeinmal: " + msolz1_solzeinmal);
+   
+   //BK
+       System.out.println("bk1_anteil1: " +bk1_anteil1);
+       System.out.println("bk1_bk: " +bk1_bk);
+      System.out.println("bk1_bkeinmal: " + bk1_bkeinmal);
+       System.out.println("bk1_kist: " +bk1_kist);
+    
+   
+   
+   //jahreslohn+alle .EinmZ
+        System.out.println("jahreslohn1_alter1: " +jahreslohn1_alter1);
+        System.out.println("jahreslohn1_zkf: " +jahreslohn1_zkf);
+        System.out.println("jahreslohn1_lzz: " +jahreslohn1_lzz);
+        System.out.println("jahreslohn1_krv: " +jahreslohn1_krv);
+        System.out.println("jahreslohn1_zre4j: " +jahreslohn1_zre4j);
+        System.out.println("jahreslohn1_stkl: " +jahreslohn1_stkl);
+        System.out.println("jahreslohn1_jlfreib: " +jahreslohn1_jlfreib);
+        System.out.println("jahreslohn1_jlhinzu: " +jahreslohn1_jlhinzu);
+        System.out.println("jahreslohn1_rvBemes: " +jahreslohn1_rvBemes);
+        System.out.println("jahreslohn1_pkv: " +jahreslohn1_pkv);
+        System.out.println("jahreslohn1_pv: " +jahreslohn1_pv);
+        System.out.println("jahreslohn1_faktorF: " +jahreslohn1_faktorF);
+    
+    //MRE4ALTE
+      System.out.println("mre4alte2_tab4: " +  mre4alte2_tab4);
+       System.out.println("mre4alte2_tab5: " + mre4alte2_tab5);
+       System.out.println("mre4alte2_alteanteil: " + mre4alte2_alteanteil);
+       System.out.println("mre4alte2_alte: " + mre4alte2_alte);
+        System.out.println("mre4alte2_zre4: " +mre4alte2_zre4);
+       System.out.println("mre4alte2_zre4vp: " + mre4alte2_zre4vp);
+    
+    //MRE41
+       System.out.println("mre42_zre4: " + mre42_zre4);
+       System.out.println("mre42_zre4vp: " + mre42_zre4vp);
+    
+    
+    //MZTABFB
+      System.out.println("mztabfb2_kztab: " + mztabfb2_kztab);
+      System.out.println("mztabfb2_anp: " + mztabfb2_anp);
+      System.out.println("mztabfb2_efa: " + mztabfb2_efa);
+      System.out.println("mztabfb2_sap: " + mztabfb2_sap);
+      System.out.println("mztabfb2_kfb: " + mztabfb2_kfb);
+      System.out.println("mztabfb2_ztabfb: " + mztabfb2_ztabfb);
+   
+   //UPEVP
+      System.out.println("upevp2_zre4vp: " + upevp2_zre4vp);
+      System.out.println("upevp2_vsp1: " + upevp2_vsp1);
+      System.out.println("upevp2_vhb: " + upevp2_vhb);
+       System.out.println("upevp2_vsp2: " +upevp2_vsp2);
+      System.out.println("upevp2_zukvPv: " + upevp2_zukvPv);
+      System.out.println("upevp2_kv: " + upevp2_kv);
+       System.out.println("upevp2_kvVhb: " +upevp2_kvVhb);
+      System.out.println("upevp2_vspn: " + upevp2_vspn);
+  
+   //UMVSP
+       System.out.println("umvsp2_zve: " +umvsp2_zve);
+      System.out.println("umvsp2_zzx: " + umvsp2_zzx);
+   
+   //UPTAB07
+      System.out.println("uptab072_st: " + uptab072_st);
+   
+   //MST5-6
+      System.out.println("mst562_x: " + mst562_x);
+      System.out.println("mst562_st1: " + mst562_st1);
+      System.out.println("mst562_x1: " + mst562_x1);
+      System.out.println("mst562_st2: " + mst562_st2);
+      System.out.println("mst562_diff: " + mst562_diff);
+      System.out.println("mst562_mist: " + mst562_mist);
+      System.out.println("mst562_st: " + mst562_st);
+      System.out.println("mst562_st3: " + mst562_st3);
+      System.out.println("mst562_vergl: " + mst562_vergl);
+       System.out.println("mst562_st4: " +mst562_st4);
+      System.out.println("mst562_st5: " + mst562_st5);
+      System.out.println("mst562_reichst: " + mst562_reichst);
+      System.out.println("mst562_lstjahr: " + mst562_lstjahr);
+      System.out.println("mst562_jw: " + mst562_jw);
+   
+   //MLSTJAHR
+      System.out.println("mlstjahr2_lstlzzSum: " + mlstjahr2_lstlzzSum);
+      System.out.println("mlstjahr2_ztabfb: " + mlstjahr2_ztabfb);
+      System.out.println("mlstjahr2_zve: " + mlstjahr2_zve);
+     System.out.println("mlstjahr2_zveX: " +  mlstjahr2_zveX);
+      System.out.println("mlstjahr2_st: " + mlstjahr2_st);
+      System.out.println("mlstjahr2_jbmg: " + mlstjahr2_jbmg);
+   
+   //MSOLZ
+      System.out.println("msolz2_solzfrei: " + msolz2_solzfrei);
+      System.out.println("msolz2_solzj: " + msolz2_solzj);
+
+   
+   //BK
+      System.out.println("bk2_anteil1: " + bk2_anteil1);
+      System.out.println("bk2_bk: " + bk2_bk);
+   
+   //sozialversichungspflichtiger Anteil des baV-Beitrags
+      System.out.println("solzAnteilBaV_bavBeitrag: " + solzAnteilBaV_bavBeitrag);
+      System.out.println("solzAnteilBaV_sozVPflicht: " + solzAnteilBaV_sozVPflicht);
+     System.out.println("solzAnteilBaV_sozVpflichtBrut: " +  solzAnteilBaV_sozVpflichtBrut);
+    
+   
+   //RV-pflichtiger Beitrag
+      System.out.println("kvPflichtigerBeitrag: " + kvPflichtigerBeitrag);
+   
+   
+   //Umlagen
+      System.out.println("u1: " + u1);
+      System.out.println("u2: " + u2);
+      System.out.println("insolvenz: " + insolvenz);
+   
+   //UmschlÃ¤ge Minijob/Gleitzone
+     System.out.println("mini_u1: " + mini_u1);
+     System.out.println("mini_u2: " +  mini_u2);
+     System.out.println("mini_insolvenz: " +  mini_insolvenz);
+   
+   //Ãœbergabewerte
+      System.out.println("uebWerte_u1: " + uebWerte_u1);
+      System.out.println("uebWerte_u2: " + uebWerte_u2);
+      System.out.println("uebWerte_insolvenz: " + uebWerte_insolvenz);
+   
+   //U1 und U2 bei Minijob
+      System.out.println("minijob_u1: " + minijob_u1);
+     System.out.println("minijob_u2: " +  minijob_u2);
+   
+   //MiniJob % Pauschale
+     System.out.println("minijobpausch_miniJob: " +  minijobpausch_miniJob);
+      System.out.println("minijobpausch_kv: " + minijobpausch_kv);
+      System.out.println("minijobpausch_lst: " + minijobpausch_lst);
+      System.out.println("minijobpausch_berueck: " + minijobpausch_berueck);
+   
+   //Pflege
+       System.out.println("pflege_pflegeversicherung: " +pflege_pflegeversicherung);
+      System.out.println("pflege_pflegeSachsen: " + pflege_pflegeSachsen);
+      System.out.println("pflege_pflegeArbeitgeber: " +pflege_pflegeArbeitgeber);
+    }
+    
+    
+    
+      //Berechnungen für Lohnkonto
+    public void calcSvBruttoRv(){
+        switch(month){
+            case "Januar":{
+                calcSvBruttoRvJanuar();
+            }break;
+            default:{
+                calcSvBruttoRvOtherMonths();
+            }break;
+            
+        }
+    }
+    
+    public void calcSvBruttoKv(){
+        switch(month){
+            case "Januar":{
+                calcSvBruttoKvJanuar();
+            }break;
+            default:{
+                calcSvBruttoKvOtherMonths();
+            }break;
+        }
+    }  
+
+    private void calcSvBruttoRvJanuar() {
+        sVBruttoRv = min(solzAnteilBaV_sozVpflichtBrut, solzAnteilBaV_sozVpflichtBrut-(lohnkonto.getSteuerbrutto()-(solzvers_rvBemes)));
+    }
+
+    private void calcSvBruttoRvOtherMonths() {
+        if(lohnkonto.getEinmalbezuegeimbruttolohn() > 0){
+            sVBruttoRv = min(solzAnteilBaV_sozVpflichtBrut,max(solzvers_rvBemes,solzAnteilBaV_sozVpflichtBrut-sumSteuerBruttoBisher - (solzvers_rvBemes*changeMonthInNumberGehaltsrechnung())));
+        }else{
+            sVBruttoRv = min(solzAnteilBaV_sozVpflichtBrut,lohnst_rvbemes/12);
+        }
+    }
+
+   
+    
+    
+    
+    private void calcSvBruttoKvJanuar() {
+                sVBruttoRv = min(solzAnteilBaV_sozVpflichtBrut, solzAnteilBaV_sozVpflichtBrut-(lohnkonto.getSteuerbrutto()-(solzvers_kvBemes)));
+
+    }
+
+    private void calcSvBruttoKvOtherMonths() {
+         if(lohnkonto.getEinmalbezuegeimbruttolohn() > 0){
+            sVBruttoRv = min(solzAnteilBaV_sozVpflichtBrut,max(solzvers_kvBemes,solzAnteilBaV_sozVpflichtBrut-sumSteuerBruttoBisher - (solzvers_kvBemes*changeMonthInNumberGehaltsrechnung())));
+        }else{
+            sVBruttoRv = min(solzAnteilBaV_sozVpflichtBrut,solzvers_kvBemes);
+        }
+    }
 
 }

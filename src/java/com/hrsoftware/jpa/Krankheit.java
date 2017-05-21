@@ -28,8 +28,7 @@ import javax.validation.constraints.NotNull;
  * @author Manu
  */
 @Entity
-@Table(catalog = "hrsystem", schema = "", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"ma_id"})})
+@Table(catalog = "hrsystem", schema = "")
 @NamedQueries({
     @NamedQuery(name = "Krankheit.findAll", query = "SELECT k FROM Krankheit k")
     , @NamedQuery(name = "Krankheit.findById", query = "SELECT k FROM Krankheit k WHERE k.id = :id")

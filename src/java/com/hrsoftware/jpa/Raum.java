@@ -26,8 +26,7 @@ import javax.validation.constraints.Size;
  * @author Manu
  */
 @Entity
-@Table(catalog = "hrsystem", schema = "", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"abteilungs_id"})})
+@Table(catalog = "hrsystem", schema = "")
 @NamedQueries({
     @NamedQuery(name = "Raum.findAll", query = "SELECT r FROM Raum r")
     , @NamedQuery(name = "Raum.findById", query = "SELECT r FROM Raum r WHERE r.id = :id")

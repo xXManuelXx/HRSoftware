@@ -121,7 +121,23 @@ public class Stammdaten implements Serializable {
     @NotNull
     @Column(name = "mitarbeiterid")
     private int mitarbeiterid;
-
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "rentenversicherung")
+    private double rentenversicherung;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "pflegeversicherungallgemein")
+    private double pflegeversicherungallgemein;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "pflegeversicherungsachsen")
+    private double pflegeversicherungsachsen;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "pflegeversicherungarbeitgeber")
+    private double pflegeversicherungarbeitgeber;
+    
     public Stammdaten() {
     }
 
@@ -129,7 +145,7 @@ public class Stammdaten implements Serializable {
         this.id = id;
     }
 
-    public Stammdaten(Integer id, int steuerklasse, int ehegattenfaktor, int rentenversichert, int arbeitslosenversicherungspflichtig, long kinderfreibetrag, double krankenversicherung, double kvzuschlag, double arbeitgeberzuschussKvPv, int kinderlos, int stelleImOsten, int stelleInSachsen, double kirchensteuer, int lohnsteuerfreibetrag, int hinzurechnungsbetrag, int minijobGleizonenberechnung, int rentenanwartschaft, int mitarbeiterid) {
+    public Stammdaten(Integer id, int steuerklasse, int ehegattenfaktor, int rentenversichert, int arbeitslosenversicherungspflichtig, long kinderfreibetrag, double krankenversicherung, double kvzuschlag, double arbeitgeberzuschussKvPv, int kinderlos, int stelleImOsten, int stelleInSachsen, double kirchensteuer, int lohnsteuerfreibetrag, int hinzurechnungsbetrag, int minijobGleizonenberechnung, int rentenanwartschaft, int mitarbeiterid, double rentenversicherung, double pflegeversicherungallgemein, double pflegeversicherungsachsen, double pflegeversicherungarbeitgeber) {
         this.id = id;
         this.steuerklasse = steuerklasse;
         this.ehegattenfaktor = ehegattenfaktor;
@@ -148,8 +164,13 @@ public class Stammdaten implements Serializable {
         this.minijobGleizonenberechnung = minijobGleizonenberechnung;
         this.rentenanwartschaft = rentenanwartschaft;
         this.mitarbeiterid = mitarbeiterid;
+        this.rentenversicherung = rentenversicherung;
+        this.pflegeversicherungallgemein = pflegeversicherungallgemein;
+        this.pflegeversicherungsachsen = pflegeversicherungsachsen;
+        this.pflegeversicherungarbeitgeber = pflegeversicherungarbeitgeber;
     }
-
+    
+    
     public Integer getId() {
         return id;
     }
@@ -293,6 +314,40 @@ public class Stammdaten implements Serializable {
     public void setMitarbeiterid(int mitarbeiterid) {
         this.mitarbeiterid = mitarbeiterid;
     }
+
+    public double getRentenversicherung() {
+        return rentenversicherung;
+    }
+
+    public void setRentenversicherung(double rentenversicherung) {
+        this.rentenversicherung = rentenversicherung;
+    }
+
+    public double getPflegeversicherungallgemein() {
+        return pflegeversicherungallgemein;
+    }
+
+    public void setPflegeversicherungallgemein(double pflegeversicherungallgemein) {
+        this.pflegeversicherungallgemein = pflegeversicherungallgemein;
+    }
+
+    public double getPflegeversicherungsachsen() {
+        return pflegeversicherungsachsen;
+    }
+
+    public void setPflegeversicherungsachsen(double pflegeversicherungsachsen) {
+        this.pflegeversicherungsachsen = pflegeversicherungsachsen;
+    }
+
+    public double getPflegeversicherungarbeitgeber() {
+        return pflegeversicherungarbeitgeber;
+    }
+
+    public void setPflegeversicherungarbeitgeber(double pflegeversicherungarbeitgeber) {
+        this.pflegeversicherungarbeitgeber = pflegeversicherungarbeitgeber;
+    }
+    
+    
 
     @Override
     public int hashCode() {

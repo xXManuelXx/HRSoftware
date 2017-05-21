@@ -11,6 +11,7 @@
 import com.hrsoftware.jpa.Abteilung;
 import com.hrsoftware.jpa.Gehalt;
 import com.hrsoftware.jpa.Gehaltsabrechnungvariableeingaben;
+import com.hrsoftware.jpa.Lohnkonto;
 import com.hrsoftware.jpa.Mitarbeiter;
 import com.hrsoftware.jpa.Stammdaten;
 import com.hrsoftware.jpacontroller.AbteilungFacade;
@@ -19,7 +20,10 @@ import com.hrsoftware.jpacontroller.StammdatenFacade;
 import com.hrsoftware.jsf.AbteilungController;
 import com.hrsoftware.jsf.MitarbeiterController;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,6 +43,9 @@ import javax.inject.Named;
 public class AbrechnungsController  implements Serializable {
     private boolean all = true; 
     private Stammdaten stammdaten;
+    private boolean lohnkontoVorhanden = false;
+    private static final DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    private String datum;
     
     @Inject
     Gehaltsabrechnungsrechner gehaltsabrechnungsrechner;
@@ -50,22 +57,26 @@ public class AbrechnungsController  implements Serializable {
     MonthView monthView;
 
     
+    @Inject
+    private com.hrsoftware.jpacontroller.LohnkontoFacade ejbFacadeLohnkonto;
+    private Lohnkonto lohnkonto;
     
     
-    @EJB
+    
+    @Inject
     private com.hrsoftware.jpacontroller.StammdatenFacade ejbFacadeBasedata;
     private Stammdaten selectedBasedata;
 
-    @EJB
+    @Inject
     private com.hrsoftware.jpacontroller.GehaltFacade ejbFacadeSalary;
     private Gehalt selectedSalary;
     
-    @EJB
+    @Inject
     private com.hrsoftware.jpacontroller.MitarbeiterFacade ejbFacadeEmployee;
     private List<Mitarbeiter> itemsEmployee = null;
     private Mitarbeiter selectedEmployee;
     //@Inject
-    @EJB
+    @Inject
     private com.hrsoftware.jpacontroller.AbteilungFacade ejbFacadeDepartment;
     private List<Abteilung> itemsDepartment = null;
     private Abteilung selectedDepartment;
@@ -121,6 +132,23 @@ public class AbrechnungsController  implements Serializable {
     public void setSelectedDepartment(Abteilung selected) {
         this.selectedDepartment = selected;
     }
+
+    public Stammdaten getStammdaten() {
+        return stammdaten;
+    }
+
+    public void setStammdaten(Stammdaten stammdaten) {
+        this.stammdaten = stammdaten;
+    }
+
+    public Gehalt getSelectedSalary() {
+        return selectedSalary;
+    }
+
+    public void setSelectedSalary(Gehalt selectedSalary) {
+        this.selectedSalary = selectedSalary;
+    }
+    
     
     
      protected void setEmbeddableKeys() {
@@ -135,6 +163,20 @@ public class AbrechnungsController  implements Serializable {
     
     private AbteilungFacade getFacadeDepartment() {
         return ejbFacadeDepartment;
+    }
+    
+    private Lohnkonto loadLohnkonto(){
+        lohnkonto = ejbFacadeLohnkonto.getLohnkontoDatenVonMonat(changeMonth(monthView.getMonth()));
+        
+        if(lohnkonto == null){
+            System.out.println("Lohnkonto ist null");
+            lohnkonto = new Lohnkonto();
+            lohnkontoVorhanden = false;
+        }else{
+            System.out.println("Lohnkonto nicht null: " + lohnkonto.getEinmalbezuegeimbruttolohn());
+            lohnkontoVorhanden = true;
+        }
+        return lohnkonto;
     }
     
     public void createSalaryStatement(){
@@ -152,6 +194,13 @@ public class AbrechnungsController  implements Serializable {
              gehaltsabrechnungsrechner.setEmployee(selectedEmployee);
              gehaltsabrechnungsrechner.setOptionalSalaryStatement(optionalSalaryStatement);
              gehaltsabrechnungsrechner.setStammdaten(selectedBasedata);
+             
+             gehaltsabrechnungsrechner.setMonth(monthView.getMonth());
+             gehaltsabrechnungsrechner.setLohnkonto(loadLohnkonto());
+             gehaltsabrechnungsrechner.setSumSteuerBruttoBisher(ejbFacadeLohnkonto.getSumSteuerBruttoBisher(selectedEmployee,changeMonth(monthView.getMonth())-1));
+             gehaltsabrechnungsrechner.setRvPflichtigerBeitrag(ejbFacadeLohnkonto.getSumSVBruttoRV(selectedEmployee));
+             gehaltsabrechnungsrechner.setKvPflichtigerBeitrag(ejbFacadeLohnkonto.getSumSVBruttoKV(selectedEmployee));
+             gehaltsabrechnungsrechner.calcAllValues();
          }else{
              System.out.println("Stammdaten nicht geladen " );
          }
@@ -163,6 +212,59 @@ public class AbrechnungsController  implements Serializable {
              itemsEmployee.remove(1);
          }*/
     }
+    private int changeMonth(String month){
+         switch(month){
+            case "Januar":{
+                return 1;
+            }
+            case "Februar":{
+                return 2;
+            }
+            case "März":{
+                return 3;
+            }
+            case "April":{
+                return 4;
+            }
+            case "Mai":{
+                return 5;
+            }
+            case "Juni":{
+              return 6; 
+            }
+            case "Juli":{
+               return 7;
+            }
+            case "August":{
+                return 8;
+            }
+            case "September":{
+                return 9;
+            }
+            case "Oktober":{
+                return 10;
+            }
+            case "November":{
+                return 11;
+            }
+            default:{
+                return 12;
+            }
+            
+        }
+    }
+
+    public String getDatum() {
+        Date date = new Date();
+        datum = sdf.format(date);
+
+        return datum;
+    }
+
+    public void setDatum(String datum) {
+        this.datum = datum;
+    }
+    
     
    
 } 

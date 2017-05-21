@@ -33,14 +33,7 @@ import javax.validation.constraints.Size;
  * @author Manu
  */
 @Entity
-@Table(catalog = "hrsystem", schema = "", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"id_gehalt"})
-    , @UniqueConstraint(columnNames = {"land"})
-    , @UniqueConstraint(columnNames = {"id_user"})
-    , @UniqueConstraint(columnNames = {"positions_id"})
-    , @UniqueConstraint(columnNames = {"plz"})
-    , @UniqueConstraint(columnNames = {"abteilungs_id"})
-    , @UniqueConstraint(columnNames = {"info_id"})})
+@Table(catalog = "hrsystem", schema = "")
 @NamedQueries({
     @NamedQuery(name = "Mitarbeiter.findAll", query = "SELECT m FROM Mitarbeiter m")
     , @NamedQuery(name = "Mitarbeiter.findById", query = "SELECT m FROM Mitarbeiter m WHERE m.id = :id")
