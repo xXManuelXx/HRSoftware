@@ -2670,7 +2670,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         if(baseData.getSteuerklasse() >4){
             lohnst_zkf = 0;
         }else{
-            lohnst_zkf = baseData.getSteuerklasse();
+            lohnst_zkf = baseData.getKinderfreibetrag();
         }
     }
     
@@ -2678,7 +2678,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         if(baseData.getSteuerklasse() >4){
             jahreslohn_zkf = 0;
         }else{
-            jahreslohn_zkf = baseData.getSteuerklasse();
+            jahreslohn_zkf = baseData.getKinderfreibetrag();
         }
     }
     
@@ -2686,7 +2686,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         if(baseData.getSteuerklasse() >4){
             jahreslohn1_zkf = 0;
         }else{
-            jahreslohn1_zkf = baseData.getSteuerklasse();
+            jahreslohn1_zkf = baseData.getKinderfreibetrag();
         }
     }
     
@@ -3718,7 +3718,14 @@ public class Gehaltsabrechnungsrechner implements Serializable {
      public void fillUmvsp_zzx(){
          fillUmvsp_zve();
          fillMztabfb_kztab();
-         umvsp1_zzx = max(0,umvsp_zve/mztabfb_kztab);
+        /* if(0 > (umvsp_zve/mztabfb_kztab)){
+             System.out.println("umvsp1_zzx 0 ist größer warum auch immer");
+             umvsp_zzx = 0;
+         }else{
+             System.out.println("umvsp1_zzx 0 ist größer warum auch immer");
+             umvsp_zzx  = umvsp_zve/mztabfb_kztab;
+         }*/
+         umvsp_zzx = max(0,umvsp_zve/mztabfb_kztab);
      }
      
       public void fillUmvsp1_zzx(){
@@ -3739,15 +3746,15 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         
          //uptab07_st;
          if(umvsp_zzx<= 8652){
-             uptab07_st = 0 * mztabfb_anp;
+             uptab07_st = 0;
          }else if(umvsp_zzx <= 13669){
-             uptab07_st = ((993.62*(umvsp_zzx-8652)/10000+1400)*(umvsp_zzx-8652)/10000)* mztabfb_anp;
+             uptab07_st = ((993.62*(umvsp_zzx-8652)/10000+1400)*(umvsp_zzx-8652)/10000);
          }else if(umvsp_zzx <= 53665){
-             uptab07_st = ((225.4*(umvsp_zzx-13669)/10000+2397)*(umvsp_zzx-13669)/10000+952.48)* mztabfb_anp;
+             uptab07_st = ((225.4*(umvsp_zzx-13669)/10000+2397)*(umvsp_zzx-13669)/10000+952.48);
          }else if(umvsp_zzx <= 254446){
-             uptab07_st = ((umvsp_zzx * 0.42-8394.14)* mztabfb_anp);
+             uptab07_st = ((umvsp_zzx * 0.42-8394.14));
          }else{
-             uptab07_st = ((umvsp_zzx * 0.45-16027.52)* mztabfb_anp);
+             uptab07_st = ((umvsp_zzx * 0.45-16027.52)* mztabfb_kztab);
          }
      }
      
@@ -3757,15 +3764,15 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         
          //uptab07_st;
          if(umvsp1_zzx<= 8652){
-             uptab071_st = 0 * mztabfb1_anp;
+             uptab071_st = 0;
          }else if(umvsp1_zzx <= 13669){
-             uptab071_st = ((993.62*(umvsp1_zzx-8652)/10000+1400)*(umvsp1_zzx-8652)/10000)* mztabfb1_anp;
+             uptab071_st = ((993.62*(umvsp1_zzx-8652)/10000+1400)*(umvsp1_zzx-8652)/10000);
          }else if(umvsp1_zzx <= 53665){
-             uptab071_st = ((225.4*(umvsp1_zzx-13669)/10000+2397)*(umvsp1_zzx-13669)/10000+952.48)* mztabfb1_anp;
+             uptab071_st = ((225.4*(umvsp1_zzx-13669)/10000+2397)*(umvsp1_zzx-13669)/10000+952.48);
          }else if(umvsp1_zzx <= 254446){
-             uptab071_st = ((umvsp1_zzx * 0.42-8394.14)* mztabfb1_anp);
+             uptab071_st = ((umvsp1_zzx * 0.42-8394.14));
          }else{
-             uptab071_st = ((umvsp1_zzx * 0.45-16027.52)* mztabfb1_anp);
+             uptab071_st = ((umvsp1_zzx * 0.45-16027.52)* mztabfb_kztab);
          }
      }
       
@@ -3774,15 +3781,15 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         
          //uptab07_st;
          if(umvsp2_zzx<= 8652){
-             uptab072_st = 0 * mztabfb2_anp;
+             uptab072_st = 0;
          }else if(umvsp2_zzx <= 13669){
              uptab072_st = ((993.62*(umvsp2_zzx-8652)/10000+1400)*(umvsp2_zzx-8652)/10000)* mztabfb2_anp;
          }else if(umvsp2_zzx <= 53665){
              uptab072_st = ((225.4*(umvsp2_zzx-13669)/10000+2397)*(umvsp2_zzx-13669)/10000+952.48)* mztabfb2_anp;
          }else if(umvsp2_zzx <= 254446){
-             uptab072_st = ((umvsp2_zzx * 0.42-8394.14)* mztabfb2_anp);
+             uptab072_st = ((umvsp2_zzx * 0.42-8394.14));
          }else{
-             uptab072_st = ((umvsp2_zzx * 0.45-16027.52)* mztabfb2_anp);
+             uptab072_st = ((umvsp2_zzx * 0.45-16027.52)* mztabfb_kztab);
          }
      }
      
@@ -3807,15 +3814,15 @@ public class Gehaltsabrechnungsrechner implements Serializable {
           fillMst56_x();
         
          if(mst56_x<= 8652){
-             mst56_st = 0 * mztabfb_anp;
+             mst56_st = 0* mztabfb1_kztab;
          }else if(mst56_x <= 13669){
-             mst56_st = ((993.62*(mst56_x-8652)/10000+1400)*(mst56_x-8652)/10000)* mztabfb_anp;
+             mst56_st = ((993.62*(mst56_x-8652)/10000+1400)*(mst56_x-8652)/10000)* mztabfb1_kztab;
          }else if(mst56_x <= 53665){
-             mst56_st = ((225.4*(mst56_x-13669)/10000+2397)*(mst56_x-13669)/10000+952.48)* mztabfb_anp;
+             mst56_st = ((((((225.4*(33540-13669))/10000)+2397)*(33540-13669))/10000)+952.48)* mztabfb1_kztab;
          }else if(mst56_x <= 254446){
-             mst56_st = ((mst56_x * 0.42-8394.14)* mztabfb_anp);
+             mst56_st = ((mst56_x * 0.42-8394.14)* mztabfb1_kztab);
          }else{
-             mst56_st = ((mst56_x * 0.45-16027.52)* mztabfb_anp);
+             mst56_st = ((mst56_x * 0.45-16027.52)* mztabfb_kztab);
          }
      }
      
@@ -3825,15 +3832,15 @@ public class Gehaltsabrechnungsrechner implements Serializable {
           fillMst561_x();
         
          if(mst561_x<= 8652){
-             mst561_st = 0 * mztabfb1_anp;
+             mst561_st = 0;
          }else if(mst561_x <= 13669){
-             mst561_st = ((993.62*(mst561_x-8652)/10000+1400)*(mst561_x-8652)/10000)* mztabfb1_anp;
+             mst561_st = ((993.62*(mst561_x-8652)/10000+1400)*(mst561_x-8652)/10000)* mztabfb1_kztab;
          }else if(mst561_x <= 53665){
-             mst561_st = ((225.4*(mst561_x-13669)/10000+2397)*(mst561_x-13669)/10000+952.48)* mztabfb1_anp;
+             mst561_st = ((225.4*(mst561_x-13669)/10000+2397)*(mst561_x-13669)/10000+952.48)* mztabfb1_kztab;
          }else if(mst561_x <= 254446){
-             mst561_st = ((mst561_x * 0.42-8394.14)* mztabfb1_anp);
+             mst561_st = ((mst561_x * 0.42-8394.14)* mztabfb1_kztab);
          }else{
-             mst561_st = ((mst561_x * 0.45-16027.52)* mztabfb1_anp);
+             mst561_st = ((mst561_x * 0.45-16027.52)*mztabfb_kztab);
          }
      }
      
@@ -3843,15 +3850,15 @@ public class Gehaltsabrechnungsrechner implements Serializable {
           fillMst562_x();
         
          if(mst562_x<= 8652){
-             mst562_st = 0 * mztabfb2_anp;
+             mst562_st = 0* mztabfb1_kztab;
          }else if(mst562_x <= 13669){
-             mst562_st = ((993.62*(mst562_x-8652)/10000+1400)*(mst562_x-8652)/10000)* mztabfb2_anp;
+             mst562_st = ((993.62*(mst562_x-8652)/10000+1400)*(mst562_x-8652)/10000)* mztabfb1_kztab;
          }else if(mst562_x <= 53665){
-             mst562_st = ((225.4*(mst562_x-13669)/10000+2397)*(mst562_x-13669)/10000+952.48)* mztabfb2_anp;
+             mst562_st = ((225.4*(mst562_x-13669)/10000+2397)*(mst562_x-13669)/10000+952.48)* mztabfb1_kztab;
          }else if(mst562_x <= 254446){
-             mst562_st = ((mst562_x * 0.42-8394.14)* mztabfb2_anp);
+             mst562_st = ((mst562_x * 0.42-8394.14)* mztabfb1_kztab);
          }else{
-             mst562_st = ((mst562_x * 0.45-16027.52)* mztabfb2_anp);
+             mst562_st = ((mst562_x * 0.45-16027.52)*mztabfb_kztab);
          }
      }
      
@@ -3875,15 +3882,15 @@ public class Gehaltsabrechnungsrechner implements Serializable {
           fillMst56_x1();
         
          if(mst56_x1<= 8652){
-             mst56_st1 = 0 * mztabfb_anp;
+             mst56_st1 = 0;
          }else if(mst56_x1 <= 13669){
-             mst56_st2 = ((993.62*(mst56_x1-8652)/10000+1400)*(mst56_x1-8652)/10000)* mztabfb_anp;
+             mst56_st2 = ((993.62*(mst56_x1-8652)/10000+1400)*(mst56_x1-8652)/10000)* mztabfb1_kztab;
          }else if(mst56_x1 <= 53665){
-             mst56_st1 = ((225.4*(mst56_x1-13669)/10000+2397)*(mst56_x1-13669)/10000+952.48)* mztabfb_anp;
+             mst56_st1 = ((225.4*(mst56_x1-13669)/10000+2397)*(mst56_x1-13669)/10000+952.48)* mztabfb1_kztab;
          }else if(mst56_x1 <= 254446){
-             mst56_st1 = ((mst56_x1 * 0.42-8394.14)* mztabfb_anp);
+             mst56_st1 = ((mst56_x1 * 0.42-8394.14))* mztabfb1_kztab;
          }else{
-             mst56_st1 = ((mst56_x1 * 0.45-16027.52)* mztabfb_anp);
+             mst56_st1 = ((mst56_x1 * 0.45-16027.52)* mztabfb_kztab);
          }
      }
      
@@ -3893,15 +3900,15 @@ public class Gehaltsabrechnungsrechner implements Serializable {
           fillMst561_x1();
         
          if(mst561_x1<= 8652){
-             mst561_st1 = 0 * mztabfb1_anp;
+             mst561_st1 = 0* mztabfb1_kztab;
          }else if(mst561_x1 <= 13669){
-             mst561_st2 = ((993.62*(mst561_x1-8652)/10000+1400)*(mst561_x1-8652)/10000)* mztabfb1_anp;
+             mst561_st2 = ((993.62*(mst561_x1-8652)/10000+1400)*(mst561_x1-8652)/10000)* mztabfb1_kztab;
          }else if(mst561_x1 <= 53665){
-             mst561_st1 = ((225.4*(mst561_x1-13669)/10000+2397)*(mst561_x1-13669)/10000+952.48)* mztabfb1_anp;
+             mst561_st1 = ((225.4*(mst561_x1-13669)/10000+2397)*(mst561_x1-13669)/10000+952.48)* mztabfb1_kztab;
          }else if(mst561_x1 <= 254446){
-             mst561_st1 = ((mst561_x1 * 0.42-8394.14)* mztabfb1_anp);
+             mst561_st1 = ((mst561_x1 * 0.42-8394.14)* mztabfb1_kztab);
          }else{
-             mst561_st1 = ((mst561_x1 * 0.45-16027.52)* mztabfb1_anp);
+             mst561_st1 = ((mst561_x1 * 0.45-16027.52)* mztabfb1_kztab);
          }
      }
      
@@ -3926,19 +3933,19 @@ public class Gehaltsabrechnungsrechner implements Serializable {
      public void fillMst56_diff(){
          fillMst56_st();
          fillMst56_st1();
-         mst56_diff = mst56_st-mst56_st1;
+         mst56_diff = (mst56_st-mst56_st1)*2;
      }
      
      public void fillMst561_diff(){
          fillMst561_st();
          fillMst561_st1();
-         mst561_diff = mst561_st-mst561_st1;
+         mst561_diff = (mst561_st-mst561_st1)*2;
      }
      
        public void fillMst562_diff(){
          fillMst562_st();
          fillMst562_st1();
-         mst562_diff = mst562_st-mst562_st1;
+         mst562_diff = (mst562_st-mst562_st1)*2;
      }
      
      public void fillMst56_mist(){
@@ -4254,15 +4261,15 @@ public class Gehaltsabrechnungsrechner implements Serializable {
           fillMlstjahr_zvex();
         
          if(mlstjahr_zveX<= 8652){
-             mlstjahr_st = 0 * mztabfb_anp;
+             mlstjahr_st = 0 * mztabfb_kztab;
          }else if(mlstjahr_zveX <= 13669){
-             mlstjahr_st = ((993.62*(mlstjahr_zveX-8652)/10000+1400)*(mlstjahr_zveX-8652)/10000)* mztabfb_anp;
+             mlstjahr_st = ((993.62*(mlstjahr_zveX-8652)/10000+1400)*(mlstjahr_zveX-8652)/10000)* mztabfb_kztab;
          }else if(mlstjahr_zveX <= 53665){
-             mlstjahr_st = ((225.4*(mlstjahr_zveX-13669)/10000+2397)*(mlstjahr_zveX-13669)/10000+952.48)* mztabfb_anp;
+             mlstjahr_st = ((225.4*(mlstjahr_zveX-13669)/10000+2397)*(mlstjahr_zveX-13669)/10000+952.48)* mztabfb_kztab;
          }else if(mlstjahr_zveX <= 254446){
-             mlstjahr_st = ((mlstjahr_zveX * 0.42-8394.14)* mztabfb_anp);
+             mlstjahr_st = ((mlstjahr_zveX * 0.42-8394.14)* mztabfb_kztab);
          }else{
-             mlstjahr_st = ((mlstjahr_zveX * 0.45-16027.52)* mztabfb_anp);
+             mlstjahr_st = ((mlstjahr_zveX * 0.45-16027.52)* mztabfb_kztab);
          }
      }
      
@@ -4270,15 +4277,15 @@ public class Gehaltsabrechnungsrechner implements Serializable {
           fillMlstjahr1_zvex();
         
          if(mlstjahr1_zveX<= 8652){
-             mlstjahr1_st = 0 * mztabfb1_anp;
+             mlstjahr1_st = 0 * mztabfb_kztab;
          }else if(mlstjahr1_zveX <= 13669){
-             mlstjahr1_st = ((993.62*(mlstjahr1_zveX-8652)/10000+1400)*(mlstjahr1_zveX-8652)/10000)* mztabfb1_anp;
+             mlstjahr1_st = ((993.62*(mlstjahr1_zveX-8652)/10000+1400)*(mlstjahr1_zveX-8652)/10000)* mztabfb_kztab;
          }else if(mlstjahr1_zveX <= 53665){
-             mlstjahr1_st = ((225.4*(mlstjahr1_zveX-13669)/10000+2397)*(mlstjahr1_zveX-13669)/10000+952.48)* mztabfb1_anp;
+             mlstjahr1_st = ((225.4*(mlstjahr1_zveX-13669)/10000+2397)*(mlstjahr1_zveX-13669)/10000+952.48)* mztabfb_kztab;
          }else if(mlstjahr1_zveX <= 254446){
-             mlstjahr1_st = ((mlstjahr1_zveX * 0.42-8394.14)* mztabfb1_anp);
+             mlstjahr1_st = ((mlstjahr1_zveX * 0.42-8394.14)* mztabfb_kztab);
          }else{
-             mlstjahr1_st = ((mlstjahr1_zveX * 0.45-16027.52)* mztabfb1_anp);
+             mlstjahr1_st = ((mlstjahr1_zveX * 0.45-16027.52)* mztabfb_kztab);
          }
      }
      
@@ -4286,15 +4293,15 @@ public class Gehaltsabrechnungsrechner implements Serializable {
           fillMlstjahr2_zvex();
         
          if(mlstjahr2_zveX<= 8652){
-             mlstjahr2_st = 0 * mztabfb2_anp;
+             mlstjahr2_st = 0 * mztabfb_kztab;
          }else if(mlstjahr2_zveX <= 13669){
-             mlstjahr2_st = ((993.62*(mlstjahr2_zveX-8652)/10000+1400)*(mlstjahr2_zveX-8652)/10000)* mztabfb2_anp;
+             mlstjahr2_st = ((993.62*(mlstjahr2_zveX-8652)/10000+1400)*(mlstjahr2_zveX-8652)/10000)* mztabfb_kztab;
          }else if(mlstjahr2_zveX <= 53665){
-             mlstjahr2_st = ((225.4*(mlstjahr2_zveX-13669)/10000+2397)*(mlstjahr2_zveX-13669)/10000+952.48)* mztabfb2_anp;
+             mlstjahr2_st = ((225.4*(mlstjahr2_zveX-13669)/10000+2397)*(mlstjahr2_zveX-13669)/10000+952.48)* mztabfb_kztab;
          }else if(mlstjahr2_zveX <= 254446){
-             mlstjahr2_st = ((mlstjahr2_zveX * 0.42-8394.14)* mztabfb2_anp);
+             mlstjahr2_st = ((mlstjahr2_zveX * 0.42-8394.14)* mztabfb_kztab);
          }else{
-             mlstjahr2_st = ((mlstjahr2_zveX * 0.45-16027.52)* mztabfb2_anp);
+             mlstjahr2_st = ((mlstjahr2_zveX * 0.45-16027.52)* mztabfb_kztab);
          }
      }
      
@@ -5038,12 +5045,12 @@ public class Gehaltsabrechnungsrechner implements Serializable {
    
    //MST5-6
       System.out.println("mst56_x: " + mst56_x);
-      System.out.println("mst56_st1: " + mst56_st1);
+      System.out.println("mst56_st: " + mst56_st);
       System.out.println("mst56_x1: " + mst56_x1);
-      System.out.println("mst56_st2: " + mst56_st2);
+      System.out.println("mst56_st1: " + mst56_st1);
       System.out.println("mst56_diff: " + mst56_diff);
       System.out.println("mst56_mist: " + mst56_mist);
-       System.out.println("mst56_st: " +mst56_st);
+       System.out.println("mst56_st2: " +mst56_st2);
        System.out.println("mst56_st3: " +mst56_st3);
       System.out.println("mst56_vergl: " + mst56_vergl);
       System.out.println("mst56_st4: " + mst56_st4);
@@ -5113,7 +5120,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         System.out.println("uebertragw_kvAn: " +uebertragw_kvAn);
        System.out.println("uebertragw_kvZusatz: " + uebertragw_kvZusatz);
        System.out.println("uebertragw_pvAn: " + uebertragw_pvAn);
-    
+    /*
     //jahreslohn+abger.EinmZ
         System.out.println("jahreslohn_alter1: " +jahreslohn_alter1);
         System.out.println("jahreslohn_zkf: " +jahreslohn_zkf);
@@ -5326,7 +5333,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
    //Pflege
        System.out.println("pflege_pflegeversicherung: " +pflege_pflegeversicherung);
       System.out.println("pflege_pflegeSachsen: " + pflege_pflegeSachsen);
-      System.out.println("pflege_pflegeArbeitgeber: " +pflege_pflegeArbeitgeber);
+      System.out.println("pflege_pflegeArbeitgeber: " +pflege_pflegeArbeitgeber);*/
     }
     
     
