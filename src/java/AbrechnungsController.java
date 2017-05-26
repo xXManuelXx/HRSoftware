@@ -200,6 +200,7 @@ public class AbrechnungsController  implements Serializable {
              gehaltsabrechnungsrechner.setSumSteuerBruttoBisher(ejbFacadeLohnkonto.getSumSteuerBruttoBisher(selectedEmployee,changeMonth(monthView.getMonth())-1));
              gehaltsabrechnungsrechner.setRvPflichtigerBeitrag(ejbFacadeLohnkonto.getSumSVBruttoRV(selectedEmployee));
              gehaltsabrechnungsrechner.setKvPflichtigerBeitrag(ejbFacadeLohnkonto.getSumSVBruttoKV(selectedEmployee));
+             gehaltsabrechnungsrechner.setEinmalbezuegeimbruttolohn(ejbFacadeLohnkonto.getEinmalbezuegeimbruttolohn(selectedEmployee));
              gehaltsabrechnungsrechner.calcAllValues();
          }else{
              System.out.println("Stammdaten nicht geladen " );

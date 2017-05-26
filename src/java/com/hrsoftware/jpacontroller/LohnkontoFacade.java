@@ -67,4 +67,11 @@ public class LohnkontoFacade extends AbstractFacade<Lohnkonto> {
         }
     }
     
+    public double getEinmalbezuegeimbruttolohn(Mitarbeiter maid){
+        try{
+        return (double) getEntityManager().createNamedQuery("Lohnkonto.findByJahresEinmalbezuege").setParameter("maid",maid).getSingleResult();     
+        }catch(NullPointerException e){
+            return 0.0;
+        }
+    }
 }

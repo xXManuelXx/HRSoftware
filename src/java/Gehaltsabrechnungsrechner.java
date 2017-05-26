@@ -57,7 +57,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     private String zusatzbeitrag;
     private String krankenversicherung;
     private String avpflichtig;
-    
+    private double einmalbezuegeimbruttolohn;
     //Lohnsteuer
     private double lohnst_alter1;
     private double lohnst_zkf;
@@ -126,7 +126,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
    private double umvsp_zzx;
    
    //UPTAB07
-   private double uptab07_st;
+   private int uptab07_st;
    
    //MST5-6
    private double mst56_x;
@@ -429,6 +429,14 @@ public class Gehaltsabrechnungsrechner implements Serializable {
 
     public void setAvpflichtig(String avpflichtig) {
         this.avpflichtig = avpflichtig;
+    }
+
+    public double getEinmalbezuegeimbruttolohn() {
+        return einmalbezuegeimbruttolohn;
+    }
+
+    public void setEinmalbezuegeimbruttolohn(double einmalbezuegeimbruttolohn) {
+        this.einmalbezuegeimbruttolohn = einmalbezuegeimbruttolohn;
     }
 
    
@@ -932,11 +940,11 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         this.umvsp_zzx = umvsp_zzx;
     }
 
-    public double getUptab07_st() {
+    public int getUptab07_st() {
         return uptab07_st;
     }
 
-    public void setUptab07_st(double uptab07_st) {
+    public void setUptab07_st(int uptab07_st) {
         this.uptab07_st = uptab07_st;
     }
 
@@ -2741,17 +2749,18 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     
     public void fillLohnst_zre4j(){
         clacOneTimePayment();
-        lohnst_zre4j =( calcBruttoTaxes()*100-einmalzahlung)*12;
+        System.out.println("SteuerbRutto bei der berechnung:  " + taxBrutto);
+        lohnst_zre4j =(( taxBrutto*100-einmalzahlung)*12)-1;
     }
     
     public void fillJahreslohn_zre4j(){
         clacOneTimePayment();
-        jahreslohn_zre4j =( calcBruttoTaxes()*100-einmalzahlung)*12 + ((einmalzahlung*12)*100-einmalzahlung);
+        jahreslohn_zre4j =( taxBrutto*100-einmalzahlung)*12 + ((einmalbezuegeimbruttolohn+(einmalzahlung/100))*100-einmalzahlung);
     }
     
     public void fillJahreslohn1_zre4j(){
         clacOneTimePayment();
-        jahreslohn1_zre4j =( calcBruttoTaxes()*100-einmalzahlung)*12 + ((einmalzahlung*12)*100-einmalzahlung);
+        jahreslohn1_zre4j =( taxBrutto*100-einmalzahlung)*12 + ((einmalbezuegeimbruttolohn+(einmalzahlung/100))*100);
     }
     
     public void fillLohnst_stkl(){
@@ -3681,40 +3690,41 @@ public class Gehaltsabrechnungsrechner implements Serializable {
      public void fillUpevp_vspn(){
          fillUpevp_vsp1();
          fillUpevp_kvvhb();
-         upevp_vspn = upevp_vsp1 + upevp_kvVhb;
+         upevp_vspn = Math.ceil(upevp_vsp1 + upevp_kvVhb);
      }
      
      public void fillUpevp1_vspn(){
          fillUpevp1_vsp1();
          fillUpevp1_kvvhb();
-         upevp1_vspn = upevp1_vsp1 + upevp1_kvVhb;
+         upevp1_vspn =  Math.ceil(upevp1_vsp1 + upevp1_kvVhb);
      }
      
       public void fillUpevp2_vspn(){
          fillUpevp2_vsp1();
          fillUpevp2_kvvhb();
-         upevp2_vspn = upevp2_vsp1 + upevp2_kvVhb;
+         upevp2_vspn =  Math.ceil(upevp2_vsp1 + upevp2_kvVhb);
      }
      
      public void fillUmvsp_zve(){
          fillMre4_zre4();
          fillMztabfb_ztabfb();
          fillUpevp_vspn();
-         umvsp_zve = mre4_zre4 -mztabfb_ztabfb - upevp_vspn;
+         umvsp_zve = Math.floor(mre4_zre4 -mztabfb_ztabfb - upevp_vspn);
      }
      
       public void fillUmvsp1_zve(){
          fillMre41_zre4();
          fillMztabfb1_ztabfb();
          fillUpevp1_vspn();
-         umvsp1_zve = mre41_zre4 -mztabfb1_ztabfb - upevp1_vspn;
+         System.out.println("fillUmvsp1_zve: " + (mre41_zre4 -mztabfb1_ztabfb - upevp1_vspn));
+         umvsp1_zve = Math.floor( mre41_zre4 -mztabfb1_ztabfb - upevp1_vspn)-1;
      }
       
        public void fillUmvsp2_zve(){
          fillMre42_zre4();
          fillMztabfb2_ztabfb();
          fillUpevp2_vspn();
-         umvsp2_zve = mre42_zre4 -mztabfb2_ztabfb - upevp2_vspn;
+         umvsp2_zve = Math.floor( mre42_zre4 -mztabfb2_ztabfb - upevp2_vspn)-1;
      }
      
      public void fillUmvsp_zzx(){
@@ -3745,18 +3755,19 @@ public class Gehaltsabrechnungsrechner implements Serializable {
       
      public void fillUptab07_st(){
          fillUmvsp_zzx();
-        
+         Double c= 1.0;
+         int b = c.intValue();
          //uptab07_st;
          if(umvsp_zzx<= 8652){
              uptab07_st = 0;
          }else if(umvsp_zzx <= 13669){
-             uptab07_st = ((993.62*(umvsp_zzx-8652)/10000+1400)*(umvsp_zzx-8652)/10000)*mztabfb_kztab;
+             uptab07_st = new Double(((993.62*(umvsp_zzx-8652)/10000+1400)*(umvsp_zzx-8652)/10000)*mztabfb_kztab).intValue();
          }else if(umvsp_zzx <= 53665){
-             uptab07_st = ((225.4*(umvsp_zzx-13669)/10000+2397)*(umvsp_zzx-13669)/10000+952.48)*mztabfb_kztab;
+             uptab07_st =new Double(((225.4*(umvsp_zzx-13669)/10000+2397)*(umvsp_zzx-13669)/10000+952.48)*mztabfb_kztab).intValue();
          }else if(umvsp_zzx <= 254446){
-             uptab07_st = ((umvsp_zzx * 0.42-8394.14))*mztabfb_kztab;
+             uptab07_st = new Double(((umvsp_zzx * 0.42-8394.14))*mztabfb_kztab).intValue();
          }else{
-             uptab07_st = ((umvsp_zzx * 0.45-16027.52)* mztabfb_kztab);
+             uptab07_st =new Double(((umvsp_zzx * 0.45-16027.52)* mztabfb_kztab)).intValue();
          }
      }
      
@@ -3768,14 +3779,15 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          if(umvsp1_zzx<= 8652){
              uptab071_st = 0;
          }else if(umvsp1_zzx <= 13669){
-             uptab071_st = ((993.62*(umvsp1_zzx-8652)/10000+1400)*(umvsp1_zzx-8652)/10000)*mztabfb_kztab;
+             uptab071_st = new Double(((993.62*(umvsp1_zzx-8652)/10000+1400)*(umvsp1_zzx-8652)/10000)*mztabfb_kztab).intValue();
          }else if(umvsp1_zzx <= 53665){
-             uptab071_st = ((225.4*(umvsp1_zzx-13669)/10000+2397)*(umvsp1_zzx-13669)/10000+952.48)*mztabfb_kztab;
+             uptab071_st = new Double(((225.4*(umvsp1_zzx-13669)/10000+2397)*(umvsp1_zzx-13669)/10000+952.48)*mztabfb_kztab).intValue();
          }else if(umvsp1_zzx <= 254446){
-             uptab071_st = ((umvsp1_zzx * 0.42-8394.14))*mztabfb_kztab;
+             uptab071_st = new Double(((umvsp1_zzx * 0.42-8394.14))*mztabfb_kztab).intValue();
          }else{
-             uptab071_st = ((umvsp1_zzx * 0.45-16027.52)* mztabfb_kztab);
+             uptab071_st = Math.floor(((umvsp1_zzx * 0.45-16027.52)* mztabfb_kztab));
          }
+ 
      }
       
         public void fillUptab072_st(){
@@ -3785,14 +3797,16 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          if(umvsp2_zzx<= 8652){
              uptab072_st = 0;
          }else if(umvsp2_zzx <= 13669){
-             uptab072_st = ((993.62*(umvsp2_zzx-8652)/10000+1400)*(umvsp2_zzx-8652)/10000)* mztabfb_kztab;
+             uptab072_st =  new Double(((993.62*(umvsp2_zzx-8652)/10000+1400)*(umvsp2_zzx-8652)/10000)* mztabfb_kztab).intValue();
          }else if(umvsp2_zzx <= 53665){
-             uptab072_st = ((225.4*(umvsp2_zzx-13669)/10000+2397)*(umvsp2_zzx-13669)/10000+952.48)* mztabfb_kztab;
+             uptab072_st =  new Double(((225.4*(umvsp2_zzx-13669)/10000+2397)*(umvsp2_zzx-13669)/10000+952.48)* mztabfb_kztab).intValue();
          }else if(umvsp2_zzx <= 254446){
-             uptab072_st = ((umvsp2_zzx * 0.42-8394.14))*mztabfb_kztab;
+             uptab072_st =  new Double(((umvsp2_zzx * 0.42-8394.14))*mztabfb_kztab).intValue();
          }else{
-             uptab072_st = ((umvsp2_zzx * 0.45-16027.52)* mztabfb_kztab);
+             uptab072_st =  new Double(((umvsp2_zzx * 0.45-16027.52)* mztabfb_kztab)).intValue();
          }
+         
+         
      }
      
      
@@ -4115,9 +4129,9 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          fillUptab07_st();
          fillMst56_reichst();
          if(lohnst_stkl<5){
-             mst56_lstjahr = uptab07_st*lohnst_faktorF;
+             mst56_lstjahr =Math.floor(uptab07_st*lohnst_faktorF);
          }else{
-             mst56_lstjahr = mst56_reichst*lohnst_faktorF;
+             mst56_lstjahr = Math.floor(mst56_reichst*lohnst_faktorF);
 
          }
      }
@@ -4128,11 +4142,13 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          fillUptab071_st();
          fillMst561_reichst();
          if(jahreslohn_stkl<5){
-             mst561_lstjahr = uptab071_st*jahreslohn_faktorF;
+             mst561_lstjahr = Math.floor(uptab071_st*jahreslohn_faktorF);
          }else{
-             mst561_lstjahr = mst561_reichst*jahreslohn_faktorF;
+             mst561_lstjahr = Math.floor(mst561_reichst*jahreslohn_faktorF);
 
          }
+         
+ 
      }
      
       public void fillMst562_lstjahr(){
@@ -4141,11 +4157,12 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          fillUptab072_st();
          fillMst562_reichst();
          if(jahreslohn1_stkl<5){
-             mst562_lstjahr = uptab072_st*jahreslohn1_faktorF;
+             mst562_lstjahr = Math.floor(uptab072_st*jahreslohn1_faktorF);
          }else{
-             mst562_lstjahr = mst562_reichst*jahreslohn1_faktorF;
+             mst562_lstjahr = Math.floor(mst562_reichst*jahreslohn1_faktorF);
 
          }
+         
      }
       
       
@@ -4181,8 +4198,9 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          fillMst56_jw();
          fillMlstjahr1_lstlzz();
          fillMlstjahr2_lstlzz();
-         
-         mlstjahr_lstlzzSum = (mst56_jw/12)+mlstjahr1_lstlzzSum-mlstjahr2_lstlzzSum;
+          System.out.println("Rechnung: " + (Math.floor((mst56_jw/12))+mlstjahr1_lstlzzSum-mlstjahr2_lstlzzSum));
+         mlstjahr_lstlzzSum = Math.floor((mst56_jw/12))+mlstjahr2_lstlzzSum-mlstjahr1_lstlzzSum;
+         System.out.println("fillmlstjahr_lstlzzSum mlstjahr_lstlzzSum: " + mlstjahr_lstlzzSum);
      }
      
      public void fillMlstjahr_ztabfb(){
@@ -4274,6 +4292,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          }else{
              mlstjahr_st = ((mlstjahr_zveX * 0.45-16027.52)* mztabfb_kztab);
          }
+         mlstjahr_st -=1;
      }
      
      public void fillMlstjahr1_st(){
@@ -4290,6 +4309,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          }else{
              mlstjahr1_st = ((mlstjahr1_zveX * 0.45-16027.52)* mztabfb_kztab);
          }
+       mlstjahr1_st -=1;
      }
      
       public void fillMlstjahr2_st(){
@@ -4306,6 +4326,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          }else{
              mlstjahr2_st = ((mlstjahr2_zveX * 0.45-16027.52)* mztabfb_kztab);
          }
+         mlstjahr2_st -=1;
      }
      
      public void fillMlstjahr_jbmg(){
@@ -4412,6 +4433,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
      
      public void fillBk1_kist(){
          fillBk1_bkeinmal();
+         System.out.println("bk1_kist bk1_bkeinmal: " + bk1_bkeinmal + " basedata.kirchensteuer: " +(baseData.getKirchensteuer()/100) );
          bk1_kist = baseData.getKirchensteuer()/100*bk1_bkeinmal;
      }
      public void fillMsolz_solzmin(){
@@ -4481,7 +4503,8 @@ public class Gehaltsabrechnungsrechner implements Serializable {
      public void fillBk_kistsum(){
          fillBk_bk();
          fillBk1_bkeinmal();
-         bk_kistSum = (baseData.getKirchensteuer()/100*bk_bk/100)+bk1_bkeinmal;
+         System.out.println("fillBk_kistsumm => basedata.getKirchensteuer/100: " + baseData.getKirchensteuer()/100 + " bk_bk/100: " + bk_bk/100 + " bk1_bkeinmal: " + bk1_bkeinmal);
+         bk_kistSum = ((baseData.getKirchensteuer()/100)*(bk_bk/100))+bk1_kist;
      }
     
     public void calcRVPflichtigerBeitrag(){
@@ -4496,7 +4519,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         System.out.println("SvBruttoKv in clacKvplfichtigerbeitrag ist: " + svBruttoKv);
         kvPflichtigerBeitrag = svBruttoKv;
     }
-    
+    /*
     public double calcBruttoTaxes(){
         double salaryMonth = employeeSalaryYear/12;
         double bavDiscount = 0.0d;
@@ -4513,7 +4536,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
                 + optionalSalaryStatement.getCompanyCarWayToWork() + bavDiscount);
         return taxBrutto;
     }
-    
+    */
     public void clacOneTimePayment(){
         einmalzahlung = (optionalSalaryStatement.getHolidayMoney()
                 + optionalSalaryStatement.getBonus()
@@ -4747,11 +4770,17 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
     public double calcTaxBrutto(){
         double salaryMonth = employeeSalaryYear/12;
-
+        double bav = 0.0d;
+        
+        if(optionalSalaryStatement.getBav() < 398){
+            bav = optionalSalaryStatement.getBav();
+        }else{
+            bav = 398;
+        }
         return salaryMonth +(optionalSalaryStatement.getHolidayMoney() 
                 + optionalSalaryStatement.getBonus()
                 + optionalSalaryStatement.getCompanyCar1()
-                + optionalSalaryStatement.getCompanyCarWayToWork());
+                + optionalSalaryStatement.getCompanyCarWayToWork())-bav;
     }
 
     public void calcSteuerfreiebezuege(){
@@ -4776,15 +4805,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     public void calcAllValues(){
         taxBrutto = calcTaxBrutto();
       
-        fillBk1_anteil1();
-        fillBk1_bk();
-        fillBk1_bkeinmal();
-        fillBk1_kist();
-        fillBk2_anteil1();
-        fillBk2_bk();
-        fillBk_anteil1();
-        fillBk_bk();
-        fillBk_kistsum();
+       
         fillJahreslohn1_faktorf();
         fillJahreslohn1_jlfreib();
         fillJahreslohn1_jlhinzu();
@@ -4987,7 +5008,15 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         fillSolzvers_kvag();
         fillSolzvers_rvag();
         fillSolzvers_pvag();
-        
+         fillBk1_anteil1();
+        fillBk1_bk();
+        fillBk1_bkeinmal();
+        fillBk1_kist();
+        fillBk2_anteil1();
+        fillBk2_bk();
+        fillBk_anteil1();
+        fillBk_bk();
+        fillBk_kistsum();
         calcSumDiscount();
         calcPayAmount();
         //Lohnkonto werte setzen
@@ -5024,7 +5053,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         
         System.out.println("alles wurde gerechnet)");
        
-        /*
+        
 
         
     
@@ -5127,8 +5156,8 @@ public class Gehaltsabrechnungsrechner implements Serializable {
    
   
         
-        */
-    /*
+        
+    
     //jahreslohn+abger.EinmZ
         System.out.println("jahreslohn_alter1: " +jahreslohn_alter1);
         System.out.println("jahreslohn_zkf: " +jahreslohn_zkf);
@@ -5216,8 +5245,8 @@ public class Gehaltsabrechnungsrechner implements Serializable {
       System.out.println("bk1_bkeinmal: " + bk1_bkeinmal);
        System.out.println("bk1_kist: " +bk1_kist);
     
-   */
-   /*
+   
+   
    //jahreslohn+alle .EinmZ
         System.out.println("jahreslohn1_alter1: " +jahreslohn1_alter1);
         System.out.println("jahreslohn1_zkf: " +jahreslohn1_zkf);
@@ -5302,7 +5331,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
    //BK
       System.out.println("bk2_anteil1: " + bk2_anteil1);
       System.out.println("bk2_bk: " + bk2_bk);
-   */
+   
    
             //Andere Daten die Benötigt werden
         System.out.println("employeeSalaryYear: " +employeeSalaryYear);
