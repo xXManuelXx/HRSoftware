@@ -2607,10 +2607,12 @@ public class Gehaltsabrechnungsrechner implements Serializable {
             Date dateMittleOld = dateFormat.parse(inputDateMittleOld);
             
             if(employee.getGeburtsdatum().before(dateOld)){
-                lohnst_alter1 = 1;
-            }else if(employee.getGeburtsdatum().before(dateMittleOld)){
-                lohnst_alter1 = -1;
+                lohnst_alter1 = 1+1;
+            }else if(employee.getGeburtsdatum().after(dateMittleOld)){
+                //System.out.println("else if: Employee: "+employee.getGeburtsdatum() + " mittleold: " + dateMittleOld );
+                lohnst_alter1 = -1+1;
             }else{
+                 //System.out.println("Else Zweig: Employee: "+employee.getGeburtsdatum() + " mittleold: " + dateMittleOld );
                 int diffYears = (getYearFromDate(employee.getGeburtsdatum())-1940) +1;
                 lohnst_alter1 = diffYears;
             }
@@ -2630,9 +2632,9 @@ public class Gehaltsabrechnungsrechner implements Serializable {
             Date dateMittleOld = dateFormat.parse(inputDateMittleOld);
             
             if(employee.getGeburtsdatum().before(dateOld)){
-                jahreslohn_alter1 = 1;
-            }else if(employee.getGeburtsdatum().before(dateMittleOld)){
-                jahreslohn_alter1 = -1;
+                jahreslohn_alter1 = 1 +1;
+            }else if(employee.getGeburtsdatum().after(dateMittleOld)){
+                jahreslohn_alter1 = -1+1;
             }else{
                 int diffYears = (getYearFromDate(employee.getGeburtsdatum())-1940) +1;
                 jahreslohn_alter1 = diffYears;
@@ -2653,9 +2655,9 @@ public class Gehaltsabrechnungsrechner implements Serializable {
             Date dateMittleOld = dateFormat.parse(inputDateMittleOld);
             
             if(employee.getGeburtsdatum().before(dateOld)){
-                jahreslohn1_alter1 = 1;
-            }else if(employee.getGeburtsdatum().before(dateMittleOld)){
-                jahreslohn1_alter1 = -1;
+                jahreslohn1_alter1 = 1 +1;
+            }else if(employee.getGeburtsdatum().after(dateMittleOld)){
+                jahreslohn1_alter1 = -1 +1;
             }else{
                 int diffYears = (getYearFromDate(employee.getGeburtsdatum())-1940) +1;
                 jahreslohn1_alter1 = diffYears;
@@ -3748,11 +3750,11 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          if(umvsp_zzx<= 8652){
              uptab07_st = 0;
          }else if(umvsp_zzx <= 13669){
-             uptab07_st = ((993.62*(umvsp_zzx-8652)/10000+1400)*(umvsp_zzx-8652)/10000);
+             uptab07_st = ((993.62*(umvsp_zzx-8652)/10000+1400)*(umvsp_zzx-8652)/10000)*mztabfb_kztab;
          }else if(umvsp_zzx <= 53665){
-             uptab07_st = ((225.4*(umvsp_zzx-13669)/10000+2397)*(umvsp_zzx-13669)/10000+952.48);
+             uptab07_st = ((225.4*(umvsp_zzx-13669)/10000+2397)*(umvsp_zzx-13669)/10000+952.48)*mztabfb_kztab;
          }else if(umvsp_zzx <= 254446){
-             uptab07_st = ((umvsp_zzx * 0.42-8394.14));
+             uptab07_st = ((umvsp_zzx * 0.42-8394.14))*mztabfb_kztab;
          }else{
              uptab07_st = ((umvsp_zzx * 0.45-16027.52)* mztabfb_kztab);
          }
@@ -3766,11 +3768,11 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          if(umvsp1_zzx<= 8652){
              uptab071_st = 0;
          }else if(umvsp1_zzx <= 13669){
-             uptab071_st = ((993.62*(umvsp1_zzx-8652)/10000+1400)*(umvsp1_zzx-8652)/10000);
+             uptab071_st = ((993.62*(umvsp1_zzx-8652)/10000+1400)*(umvsp1_zzx-8652)/10000)*mztabfb_kztab;
          }else if(umvsp1_zzx <= 53665){
-             uptab071_st = ((225.4*(umvsp1_zzx-13669)/10000+2397)*(umvsp1_zzx-13669)/10000+952.48);
+             uptab071_st = ((225.4*(umvsp1_zzx-13669)/10000+2397)*(umvsp1_zzx-13669)/10000+952.48)*mztabfb_kztab;
          }else if(umvsp1_zzx <= 254446){
-             uptab071_st = ((umvsp1_zzx * 0.42-8394.14));
+             uptab071_st = ((umvsp1_zzx * 0.42-8394.14))*mztabfb_kztab;
          }else{
              uptab071_st = ((umvsp1_zzx * 0.45-16027.52)* mztabfb_kztab);
          }
@@ -3783,11 +3785,11 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          if(umvsp2_zzx<= 8652){
              uptab072_st = 0;
          }else if(umvsp2_zzx <= 13669){
-             uptab072_st = ((993.62*(umvsp2_zzx-8652)/10000+1400)*(umvsp2_zzx-8652)/10000)* mztabfb2_anp;
+             uptab072_st = ((993.62*(umvsp2_zzx-8652)/10000+1400)*(umvsp2_zzx-8652)/10000)* mztabfb_kztab;
          }else if(umvsp2_zzx <= 53665){
-             uptab072_st = ((225.4*(umvsp2_zzx-13669)/10000+2397)*(umvsp2_zzx-13669)/10000+952.48)* mztabfb2_anp;
+             uptab072_st = ((225.4*(umvsp2_zzx-13669)/10000+2397)*(umvsp2_zzx-13669)/10000+952.48)* mztabfb_kztab;
          }else if(umvsp2_zzx <= 254446){
-             uptab072_st = ((umvsp2_zzx * 0.42-8394.14));
+             uptab072_st = ((umvsp2_zzx * 0.42-8394.14))*mztabfb_kztab;
          }else{
              uptab072_st = ((umvsp2_zzx * 0.45-16027.52)* mztabfb_kztab);
          }
@@ -3904,6 +3906,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          }else if(mst561_x1 <= 13669){
              mst561_st2 = ((993.62*(mst561_x1-8652)/10000+1400)*(mst561_x1-8652)/10000)* mztabfb1_kztab;
          }else if(mst561_x1 <= 53665){
+             System.out.println("Berechnung st1: " +((225.4*(mst561_x1-13669)/10000+2397)*(mst561_x1-13669)/10000+952.48)* mztabfb1_kztab );
              mst561_st1 = ((225.4*(mst561_x1-13669)/10000+2397)*(mst561_x1-13669)/10000+952.48)* mztabfb1_kztab;
          }else if(mst561_x1 <= 254446){
              mst561_st1 = ((mst561_x1 * 0.42-8394.14)* mztabfb1_kztab);
@@ -3918,15 +3921,15 @@ public class Gehaltsabrechnungsrechner implements Serializable {
           fillMst562_x1();
         
          if(mst562_x1<= 8652){
-             mst562_st1 = 0 * mztabfb2_anp;
+             mst562_st1 = 0 * mztabfb1_kztab;
          }else if(mst562_x1 <= 13669){
-             mst562_st2 = ((993.62*(mst562_x1-8652)/10000+1400)*(mst562_x1-8652)/10000)* mztabfb2_anp;
+             mst562_st2 = ((993.62*(mst562_x1-8652)/10000+1400)*(mst562_x1-8652)/10000)* mztabfb1_kztab;
          }else if(mst562_x1 <= 53665){
-             mst562_st1 = ((225.4*(mst562_x1-13669)/10000+2397)*(mst562_x1-13669)/10000+952.48)* mztabfb2_anp;
+             mst562_st1 = ((225.4*(mst562_x1-13669)/10000+2397)*(mst562_x1-13669)/10000+952.48)* mztabfb1_kztab;
          }else if(mst561_x1 <= 254446){
-             mst562_st1 = ((mst562_x1 * 0.42-8394.14)* mztabfb2_anp);
+             mst562_st1 = ((mst562_x1 * 0.42-8394.14)* mztabfb1_kztab);
          }else{
-             mst562_st1 = ((mst562_x1 * 0.45-16027.52)* mztabfb2_anp);
+             mst562_st1 = ((mst562_x1 * 0.45-16027.52)* mztabfb1_kztab);
          }
      }
      
@@ -4480,11 +4483,20 @@ public class Gehaltsabrechnungsrechner implements Serializable {
          fillBk1_bkeinmal();
          bk_kistSum = (baseData.getKirchensteuer()/100*bk_bk/100)+bk1_bkeinmal;
      }
-    /*
+    
     public void calcRVPflichtigerBeitrag(){
-        
+        calcSvBruttoRv();
+        System.out.println("beitrag von sVBruttoRV ist: " + sVBruttoRv);
+        rvPflichtigerBeitrag = sVBruttoRv;
+        System.out.println("beitrag von rvPflichtigerbeitrag nach übertrag ist: " + rvPflichtigerBeitrag);
     }
-    */
+    
+    public void calcKVPflichtigerBeitrag(){
+        calcSvBruttoKv();
+        System.out.println("SvBruttoKv in clacKvplfichtigerbeitrag ist: " + svBruttoKv);
+        kvPflichtigerBeitrag = svBruttoKv;
+    }
+    
     public double calcBruttoTaxes(){
         double salaryMonth = employeeSalaryYear/12;
         double bavDiscount = 0.0d;
@@ -4533,25 +4545,32 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
     
     public void fillSolzvers_rvan(){
+        calcRVPflichtigerBeitrag();
+        //System.out.println("Monat der Gehaltsabrechnung: " + changeMonthInNumberGehaltsrechnung() + " n23: " + (getMonthFromDate(employee.getGeburtsdatum())+2));
         if((lohnst_alter1>0 && lohnst_alter1<9)||(lohnst_alter1 == 9 && changeMonthInNumberGehaltsrechnung() > (getMonthFromDate(employee.getGeburtsdatum())+2))){
             solzvers_rvAn = 0; 
         }else if(baseData.getRentenversichert()==1){
            // solzvers_rvAn = min(solzAnteilBaV_sozVpflichtBrut,solzAnteilBaV_sozVpflichtBrut-(calcTaxBrutto()-solzvers_rvBemes));
+          System.out.println("baseData.getRentenversicherung(): " + baseData.getRentenversicherung() + " Rechnung baseData.getRentenversicherung()/200: " + baseData.getRentenversicherung()/200 + " rvPflichtigerBeitrag: " + rvPflichtigerBeitrag);
            solzvers_rvAn = rvPflichtigerBeitrag*baseData.getRentenversicherung()/200;
         }
+        
+        setUebertragw_rvAn(solzvers_rvAn);
     }
     
     public void fillSolzvers_avan(){
-        
+        calcRVPflichtigerBeitrag();
         if((lohnst_alter1>0 && lohnst_alter1<9)||(lohnst_alter1 == 9 && changeMonthInNumberGehaltsrechnung() > (getMonthFromDate(employee.getGeburtsdatum())+2))){
             solzvers_avAn = 0; 
         }else if(baseData.getArbeitslosenversicherungspflichtig()==1){
            // solzvers_rvAn = min(solzAnteilBaV_sozVpflichtBrut,solzAnteilBaV_sozVpflichtBrut-(calcTaxBrutto()-solzvers_rvBemes));
            solzvers_avAn = rvPflichtigerBeitrag*0.015;
         }
+        setUebertragw_avAn(solzvers_avAn);
     }
     
     public void fillSolzvers_kvan(){
+        calcKVPflichtigerBeitrag();
         if(baseData.getKrankenversicherung()>20){
             if(baseData.getArbeitgeberzuschussKvPv()>0){
                 solzvers_kvAn = baseData.getKrankenversicherung()-baseData.getArbeitgeberzuschussKvPv();
@@ -4563,9 +4582,11 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         }else{
             solzvers_kvAn = kvPflichtigerBeitrag*(baseData.getKrankenversicherung()/2)/100;
         }
+        setUebertragw_kvAn(solzvers_kvAn);
     }
     
     public void fillSolzvers_kvzusatz(){
+        calcKVPflichtigerBeitrag();
         if(baseData.getKrankenversicherung()>20){
             solzvers_kvZusatz = 0;
         }else if(baseData.getKrankenversicherung() <= 14){
@@ -4573,27 +4594,46 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         }else{
             solzvers_kvZusatz = kvPflichtigerBeitrag*(baseData.getKvzuschlag()/100);
         }
+        setUebertragw_kvZusatz(solzvers_kvZusatz);
     }
     
     public void fillSolzvers_pvan(){
+        calcKVPflichtigerBeitrag();
+        double prozentsatz1 = 0.0d;
+        double prozentsatz2 = 0.0d;
         if(baseData.getKrankenversicherung()>20){
             solzvers_pvAn = 0;
-        }else if(baseData.getStelleInSachsen() == 1 && baseData.getKinderlos() == 1){
-            solzvers_pvAn = kvPflichtigerBeitrag*(baseData.getPflegeversicherungsachsen()+0.0025);
-        }else{
-            solzvers_pvAn = kvPflichtigerBeitrag;
+        }else {
+            if(baseData.getStelleInSachsen() == 1 && baseData.getKinderlos() == 1){
+                prozentsatz1 = baseData.getPflegeversicherungsachsen();
+            }else{
+                prozentsatz1 = baseData.getPflegeversicherungallgemein();
+            }
+           
+            if(baseData.getKinderlos() == 1){
+                prozentsatz2 = 0.0025;
+            }else{
+                prozentsatz2 = 0;
+            }
+            
+            solzvers_pvAn = (kvPflichtigerBeitrag*(prozentsatz1 + prozentsatz2))/100;
         }
+        
+        setUebertragw_pvAn(solzvers_pvAn);
     }
     
     public void fillSolzvers_rvag(){
+        calcRVPflichtigerBeitrag();
         solzvers_rvAg = rvPflichtigerBeitrag*baseData.getRentenversicherung()/200;
     }
     
     public void fillSolzvers_avag(){
+        calcRVPflichtigerBeitrag();
         solzvers_avAg = rvPflichtigerBeitrag*0.015;
     }
     
     public void fillSolzvers_kvag(){
+        calcKVPflichtigerBeitrag();
         if(baseData.getKrankenversicherung()>20){
             if(baseData.getArbeitgeberzuschussKvPv() == 0){
                 solzvers_kvAg = 0;
@@ -4608,12 +4648,25 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
     
     public void fillSolzvers_pvag(){
+        calcKVPflichtigerBeitrag();
+        double prozentsatz1 = 0.0d;
+        double prozentsatz2 = 0.0d;
         if(baseData.getKrankenversicherung()>20){
             solzvers_pvAg = 0;
-        }else if(baseData.getStelleInSachsen() == 1){
-            solzvers_pvAg = kvPflichtigerBeitrag*baseData.getPflegeversicherungarbeitgeber();
-        }else{
-            solzvers_pvAg = kvPflichtigerBeitrag*baseData.getPflegeversicherungallgemein();
+        }else {
+            if(baseData.getStelleInSachsen() == 1 && baseData.getKinderlos() == 1){
+                prozentsatz1 = baseData.getPflegeversicherungsachsen();
+            }else{
+                prozentsatz1 = baseData.getPflegeversicherungallgemein();
+            }
+           
+            if(baseData.getKinderlos() == 1){
+                prozentsatz2 = 0.0025;
+            }else{
+                prozentsatz2 = 0;
+            }
+            
+            solzvers_pvAg = (kvPflichtigerBeitrag*(prozentsatz1 + prozentsatz2))/100;
         }
     }
     
@@ -4711,7 +4764,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
     
     public void calcSumDiscount(){
-        sumDiscount = mlstjahr_lstlzzSum + bk_kistSum + solz_solzSum 
+        sumDiscount = (mlstjahr_lstlzzSum/100) + bk_kistSum + solz_solzSum 
                 + uebertragw_kvAn + uebertragw_kvZusatz + uebertragw_avAn
                 + uebertragw_rvAn + uebertragw_pvAn;
         
@@ -4722,6 +4775,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     
     public void calcAllValues(){
         taxBrutto = calcTaxBrutto();
+      
         fillBk1_anteil1();
         fillBk1_bk();
         fillBk1_bkeinmal();
@@ -4875,12 +4929,8 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         fillSolz_anteil1();
         fillSolz_jw();
         fillSolz_solzsum();
-        fillSolzvers_avan();
-        fillSolzvers_kvan();
+       
         fillSolzvers_kvbemes();
-        fillSolzvers_kvzusatz();
-        fillSolzvers_pvan();
-        fillSolzvers_rvan();
         fillSolzvers_rvbemes();
         fillUmvsp1_zve();
         fillUmvsp1_zzx();
@@ -4917,13 +4967,29 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         fillSolzAnteilBaV_bavBeitrag();
         fillSolzAnteilBav_sozVPflicht();
         fillSolzAnteilBaV_sozVpflichtBrut();
-        calcSalaryMonthWithOneTimePayment();
+       fillArbeitgeberzuschussPrivateKv();
+          calcSalaryMonthWithOneTimePayment();
         calcSteuerfreiebezuege();
+         calcSvBruttoRv();
+        calcSvBruttoKv();
+        calcRVPflichtigerBeitrag();
+        calcKVPflichtigerBeitrag();
+        
+        
+        
+         fillSolzvers_avan();
+        fillSolzvers_kvan();
+        fillSolzvers_kvzusatz();
+        fillSolzvers_pvan();
+        fillSolzvers_rvan();
+        
+        fillSolzvers_avag();
+        fillSolzvers_kvag();
+        fillSolzvers_rvag();
+        fillSolzvers_pvag();
+        
         calcSumDiscount();
         calcPayAmount();
-        calcSvBruttoRv();
-        calcSvBruttoKv();
-        fillArbeitgeberzuschussPrivateKv();
         //Lohnkonto werte setzen
         lohnkonto.setBruttolohn(employeeSalaryMonth);
         lohnkonto.setGeltwertevorteilelaufend(0.0);
@@ -4958,21 +5024,9 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         
         System.out.println("alles wurde gerechnet)");
        
-        
-         //Andere Daten die Benötigt werden
-        System.out.println("employeeSalaryYear: " +employeeSalaryYear);
-        System.out.println("employeeSalaryMonth: " +employeeSalaryMonth);
-	  System.out.println("month: " +	month);
+        /*
 
-   System.out.println("payAmount: " +    payAmount);
-  System.out.println("sumDiscount: " +     sumDiscount);
-    System.out.println("sVBruttoRv: " +   sVBruttoRv);
-   System.out.println("svBruttoKv: " +    svBruttoKv);
-  System.out.println("sumSteuerBruttoBisher: " +     sumSteuerBruttoBisher);
-  System.out.println("arbeitgeberzuschussPrivateKv: " +     arbeitgeberzuschussPrivateKv);
-   System.out.println("zusatzbeitrag: " +  zusatzbeitrag);
-    System.out.println("krankenversicherung: " + krankenversicherung);
-    System.out.println("avpflichtig: " +avpflichtig);
+        
     
     //Lohnsteuer
   System.out.println("lohnst_alter1: " +     lohnst_alter1);
@@ -4982,29 +5036,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         System.out.println("lohnst_zre4j: " +lohnst_zre4j);
        System.out.println("lohnst_stkl: " + lohnst_stkl);
        System.out.println("lohnst_jlfreib: " + lohnst_jlfreib);
-       System.out.println("lohnst_jlhinzu: " + lohnst_jlhinzu);
-        System.out.println("lohnst_rvbemes: " +lohnst_rvbemes);
-        System.out.println("lohnst_pkv: " +lohnst_pkv);
-        System.out.println("lohnst_pv: " +lohnst_pv);
-        System.out.println("lohnst_faktorF: " +lohnst_faktorF);
-   
-       System.out.println("taxBrutto: " +taxBrutto);
-   
-       System.out.println("steuerfreiebezuege: " +steuerfreiebezuege);
-   //Einmalzahlungen
-       System.out.println("einmalzahlung: " +einmalzahlung);
-   
-   //laufende zahlungen
-      System.out.println("laufendezahlungen: " + laufendezahlungen);
-   
-   //einmaliger geltw. Vorteil
-      System.out.println("einmaligerGeltwVorteil: " + einmaligerGeltwVorteil);
-   
-   //laufender geltw.Vorteil
-      System.out.println("laufenderGeltwVorteil: " + laufenderGeltwVorteil);
-   
-      System.out.println("rvPflichtigerBeitrag: " + rvPflichtigerBeitrag);
-   
+
    
    //MRE4ALTE
       System.out.println("mre4alte_tab4: " + mre4alte_tab4);
@@ -5084,28 +5116,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
       System.out.println("bk_bk: " + bk_bk);
        System.out.println("bk_kistSum: " + bk_kistSum);
    
-   //Sozialversicherung
-      System.out.println("solzvers_kvBemes: " + solzvers_kvBemes);
-      System.out.println("solzvers_rvBemes: " + solzvers_rvBemes);
-      System.out.println("solzvers_rvAn: " + solzvers_rvAn);
-      System.out.println("solzvers_avAn: " + solzvers_avAn);
-      System.out.println("solzvers_kvAn: " + solzvers_kvAn);
-      System.out.println("solzvers_kvZusatz: " + solzvers_kvZusatz);
-       System.out.println("solzvers_pvAn: " +solzvers_pvAn);
-       System.out.println("solzvers_rvAg: " +solzvers_rvAg);
-       System.out.println("solzvers_avAg: " +solzvers_avAg);
-       System.out.println("solzvers_kvAg: " +solzvers_kvAg);
-      System.out.println("solzvers_pvAg: " + solzvers_pvAg);
-   
-   //SozV Gleitzone
-     System.out.println("sozgleit_sozVEntgelt: " +  sozgleit_sozVEntgelt );
-      System.out.println("sozgleit_rvAn: " + sozgleit_rvAn);
-      System.out.println("sozgleit_avAn: " + sozgleit_avAn);
-      System.out.println("sozgleit_kvAn: " + sozgleit_kvAn);
-      System.out.println("sozgleit_kvZusatz: " + sozgleit_kvZusatz);
-      System.out.println("sozgleit_pvAn: " + sozgleit_pvAn);
-   
-   
+ 
    //Gleitzone 400-450
        System.out.println("gleitzone_sozVEntgelt: " +gleitzone_sozVEntgelt);
       System.out.println("gleitzone_rvAn: " + gleitzone_rvAn);
@@ -5114,12 +5125,9 @@ public class Gehaltsabrechnungsrechner implements Serializable {
       System.out.println("gleitzone_kvZusatz: " + gleitzone_kvZusatz);
        System.out.println("gleitzone_pvAn: " +gleitzone_pvAn);
    
-   //Ãœbertragswerte
-        System.out.println("uebertragw_rvAn: " +uebertragw_rvAn);
-        System.out.println("uebertragw_avAn: " +uebertragw_avAn);
-        System.out.println("uebertragw_kvAn: " +uebertragw_kvAn);
-       System.out.println("uebertragw_kvZusatz: " + uebertragw_kvZusatz);
-       System.out.println("uebertragw_pvAn: " + uebertragw_pvAn);
+  
+        
+        */
     /*
     //jahreslohn+abger.EinmZ
         System.out.println("jahreslohn_alter1: " +jahreslohn_alter1);
@@ -5175,12 +5183,12 @@ public class Gehaltsabrechnungsrechner implements Serializable {
    
    //MST5-6
        System.out.println("mst561_x: " +mst561_x);
-       System.out.println("mst561_st1: " +mst561_st1);
+       System.out.println("mst561_st: " +mst561_st);
        System.out.println("mst561_x1: " +mst561_x1);
-       System.out.println("mst561_st2: " +mst561_st2);
+       System.out.println("mst561_st1: " +mst561_st1);
        System.out.println("mst561_diff: " +mst561_diff);
        System.out.println("mst561_mist: " +mst561_mist);
-      System.out.println("mst561_st: " + mst561_st);
+      System.out.println("mst561_st2: " + mst561_st2);
       System.out.println("mst561_st3: " + mst561_st3);
        System.out.println("mst561_vergl: " +mst561_vergl);
       System.out.println("mst561_st4: " + mst561_st4);
@@ -5208,8 +5216,8 @@ public class Gehaltsabrechnungsrechner implements Serializable {
       System.out.println("bk1_bkeinmal: " + bk1_bkeinmal);
        System.out.println("bk1_kist: " +bk1_kist);
     
-   
-   
+   */
+   /*
    //jahreslohn+alle .EinmZ
         System.out.println("jahreslohn1_alter1: " +jahreslohn1_alter1);
         System.out.println("jahreslohn1_zkf: " +jahreslohn1_zkf);
@@ -5264,12 +5272,12 @@ public class Gehaltsabrechnungsrechner implements Serializable {
    
    //MST5-6
       System.out.println("mst562_x: " + mst562_x);
-      System.out.println("mst562_st1: " + mst562_st1);
+      System.out.println("mst562_st: " + mst562_st);
       System.out.println("mst562_x1: " + mst562_x1);
-      System.out.println("mst562_st2: " + mst562_st2);
+      System.out.println("mst562_st1: " + mst562_st1);
       System.out.println("mst562_diff: " + mst562_diff);
       System.out.println("mst562_mist: " + mst562_mist);
-      System.out.println("mst562_st: " + mst562_st);
+      System.out.println("mst562_st2: " + mst562_st2);
       System.out.println("mst562_st3: " + mst562_st3);
       System.out.println("mst562_vergl: " + mst562_vergl);
        System.out.println("mst562_st4: " +mst562_st4);
@@ -5294,6 +5302,77 @@ public class Gehaltsabrechnungsrechner implements Serializable {
    //BK
       System.out.println("bk2_anteil1: " + bk2_anteil1);
       System.out.println("bk2_bk: " + bk2_bk);
+   */
+   
+            //Andere Daten die Benötigt werden
+        System.out.println("employeeSalaryYear: " +employeeSalaryYear);
+        System.out.println("employeeSalaryMonth: " +employeeSalaryMonth);
+	  System.out.println("month: " +	month);
+
+   System.out.println("payAmount: " +    payAmount);
+  System.out.println("sumDiscount: " +     sumDiscount);
+    System.out.println("sVBruttoRv: " +   sVBruttoRv);
+   System.out.println("svBruttoKv: " +    svBruttoKv);
+  System.out.println("sumSteuerBruttoBisher: " +     sumSteuerBruttoBisher);
+  System.out.println("arbeitgeberzuschussPrivateKv: " +     arbeitgeberzuschussPrivateKv);
+   System.out.println("zusatzbeitrag: " +  zusatzbeitrag);
+    System.out.println("krankenversicherung: " + krankenversicherung);
+    System.out.println("avpflichtig: " +avpflichtig);
+        
+        
+               System.out.println("lohnst_jlhinzu: " + lohnst_jlhinzu);
+        System.out.println("lohnst_rvbemes: " +lohnst_rvbemes);
+        System.out.println("lohnst_pkv: " +lohnst_pkv);
+        System.out.println("lohnst_pv: " +lohnst_pv);
+        System.out.println("lohnst_faktorF: " +lohnst_faktorF);
+   
+       System.out.println("taxBrutto: " +taxBrutto);
+   
+       System.out.println("steuerfreiebezuege: " +steuerfreiebezuege);
+   //Einmalzahlungen
+       System.out.println("einmalzahlung: " +einmalzahlung);
+   
+   //laufende zahlungen
+      System.out.println("laufendezahlungen: " + laufendezahlungen);
+   
+   //einmaliger geltw. Vorteil
+      System.out.println("einmaligerGeltwVorteil: " + einmaligerGeltwVorteil);
+   
+   //laufender geltw.Vorteil
+      System.out.println("laufenderGeltwVorteil: " + laufenderGeltwVorteil);
+   
+   
+   
+         //Ãœbertragswerte
+        System.out.println("uebertragw_rvAn: " +uebertragw_rvAn);
+        System.out.println("uebertragw_avAn: " +uebertragw_avAn);
+        System.out.println("uebertragw_kvAn: " +uebertragw_kvAn);
+       System.out.println("uebertragw_kvZusatz: " + uebertragw_kvZusatz);
+       System.out.println("uebertragw_pvAn: " + uebertragw_pvAn);
+   
+     //Sozialversicherung
+      System.out.println("solzvers_kvBemes: " + solzvers_kvBemes);
+      System.out.println("solzvers_rvBemes: " + solzvers_rvBemes);
+      System.out.println("solzvers_rvAn: " + solzvers_rvAn);
+      System.out.println("solzvers_avAn: " + solzvers_avAn);
+      System.out.println("solzvers_kvAn: " + solzvers_kvAn);
+      System.out.println("solzvers_kvZusatz: " + solzvers_kvZusatz);
+       System.out.println("solzvers_pvAn: " +solzvers_pvAn);
+       System.out.println("solzvers_rvAg: " +solzvers_rvAg);
+       System.out.println("solzvers_avAg: " +solzvers_avAg);
+       System.out.println("solzvers_kvAg: " +solzvers_kvAg);
+      System.out.println("solzvers_pvAg: " + solzvers_pvAg);
+   
+   //SozV Gleitzone
+     System.out.println("sozgleit_sozVEntgelt: " +  sozgleit_sozVEntgelt );
+      System.out.println("sozgleit_rvAn: " + sozgleit_rvAn);
+      System.out.println("sozgleit_avAn: " + sozgleit_avAn);
+      System.out.println("sozgleit_kvAn: " + sozgleit_kvAn);
+      System.out.println("sozgleit_kvZusatz: " + sozgleit_kvZusatz);
+      System.out.println("sozgleit_pvAn: " + sozgleit_pvAn);
+   
+   
+   
    
    //sozialversichungspflichtiger Anteil des baV-Beitrags
       System.out.println("solzAnteilBaV_bavBeitrag: " + solzAnteilBaV_bavBeitrag);
@@ -5303,7 +5382,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
    
    //RV-pflichtiger Beitrag
       System.out.println("kvPflichtigerBeitrag: " + kvPflichtigerBeitrag);
-   
+   System.out.println("rvPflichtigerBeitrag: " + rvPflichtigerBeitrag);
    
    //Umlagen
       System.out.println("u1: " + u1);
@@ -5331,9 +5410,13 @@ public class Gehaltsabrechnungsrechner implements Serializable {
       System.out.println("minijobpausch_berueck: " + minijobpausch_berueck);
    
    //Pflege
+   
        System.out.println("pflege_pflegeversicherung: " +pflege_pflegeversicherung);
       System.out.println("pflege_pflegeSachsen: " + pflege_pflegeSachsen);
-      System.out.println("pflege_pflegeArbeitgeber: " +pflege_pflegeArbeitgeber);*/
+      System.out.println("pflege_pflegeArbeitgeber: " +pflege_pflegeArbeitgeber);
+      System.out.println("BK: " +bk_bk);
+      System.out.println("BKeinmal: " +bk1_bkeinmal);
+ System.out.println("BKKist: " +bk1_kist);
     }
     
     
@@ -5379,8 +5462,9 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     
     
     private void calcSvBruttoKvJanuar() {
-                sVBruttoRv = min(solzAnteilBaV_sozVpflichtBrut, solzAnteilBaV_sozVpflichtBrut-(lohnkonto.getSteuerbrutto()-(solzvers_kvBemes)));
-
+        
+                svBruttoKv = min(solzAnteilBaV_sozVpflichtBrut, solzAnteilBaV_sozVpflichtBrut-(lohnkonto.getSteuerbrutto()-(solzvers_kvBemes)));
+                 //System.out.println("sVBrutto")
     }
 
     private void calcSvBruttoKvOtherMonths() {
