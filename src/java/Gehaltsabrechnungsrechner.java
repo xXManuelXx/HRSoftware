@@ -2764,11 +2764,9 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
     
     public void fillLohnst_stkl(){
-        if(miniJobFlatrate == 0 && baseData.getSteuerklasse() == 6){
-            lohnst_stkl = 0;
-        } else{
+       
             lohnst_stkl = baseData.getSteuerklasse();
-        }
+
     }
     
     public void fillJahreslohn_stkl(){
@@ -4385,7 +4383,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
      
      public void fillMsolz_solzj(){
          fillMlstjahr_st();
-         msolz_solzj =(mlstjahr_st*5.5)/100;
+         msolz_solzj =(mlstjahr_jbmg*5.5)/100;
      }
      
      public void fillMsolz1_solzj(){

@@ -19,16 +19,19 @@ import com.hrsoftware.jpacontroller.MitarbeiterFacade;
 import com.hrsoftware.jpacontroller.StammdatenFacade;
 import com.hrsoftware.jsf.AbteilungController;
 import com.hrsoftware.jsf.MitarbeiterController;
+import com.hrsoftware.jsf.util.JsfUtil;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.component.UIComponent;
@@ -202,6 +205,7 @@ public class AbrechnungsController  implements Serializable {
              gehaltsabrechnungsrechner.setKvPflichtigerBeitrag(ejbFacadeLohnkonto.getSumSVBruttoKV(selectedEmployee));
              gehaltsabrechnungsrechner.setEinmalbezuegeimbruttolohn(ejbFacadeLohnkonto.getEinmalbezuegeimbruttolohn(selectedEmployee));
              gehaltsabrechnungsrechner.calcAllValues();
+             create();
          }else{
              System.out.println("Stammdaten nicht geladen " );
          }
@@ -213,6 +217,40 @@ public class AbrechnungsController  implements Serializable {
              itemsEmployee.remove(1);
          }*/
     }
+    
+     public void create() {
+        persist(JsfUtil.PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("LohnkontoCreated"));
+    }
+     
+     
+    private void persist(JsfUtil.PersistAction persistAction, String successMessage) {
+        if (lohnkonto != null) {
+            setEmbeddableKeys();
+            try {
+                if (persistAction != JsfUtil.PersistAction.DELETE) {
+                    ejbFacadeLohnkonto.edit(lohnkonto);
+                } else {
+                    ejbFacadeLohnkonto.remove(lohnkonto);
+                }
+                JsfUtil.addSuccessMessage(successMessage);
+            } catch (EJBException ex) {
+                String msg = "";
+                Throwable cause = ex.getCause();
+                if (cause != null) {
+                    msg = cause.getLocalizedMessage();
+                }
+                if (msg.length() > 0) {
+                    JsfUtil.addErrorMessage(msg);
+                } else {
+                    JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
+                JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            }
+        }
+    }
+    
     private int changeMonth(String month){
          switch(month){
             case "Januar":{
