@@ -219,32 +219,36 @@ public class AbrechnungsController  implements Serializable {
     }
     
      public void create() {
-        persist(JsfUtil.PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("LohnkontoCreated"));
+        persist(JsfUtil.PersistAction.CREATE);
     }
      
      
-    private void persist(JsfUtil.PersistAction persistAction, String successMessage) {
+    private void persist(JsfUtil.PersistAction persistAction) {
         if (lohnkonto != null) {
             setEmbeddableKeys();
             try {
-                if (persistAction != JsfUtil.PersistAction.DELETE) {
+                if (persistAction == JsfUtil.PersistAction.CREATE && !lohnkontoVorhanden) {
+                    ejbFacadeLohnkonto.create(lohnkonto);
+                }else if (persistAction == JsfUtil.PersistAction.CREATE && lohnkontoVorhanden) {
                     ejbFacadeLohnkonto.edit(lohnkonto);
-                } else {
-                    ejbFacadeLohnkonto.remove(lohnkonto);
                 }
-                JsfUtil.addSuccessMessage(successMessage);
+               // JsfUtil.addSuccessMessage(successMessage);
             } catch (EJBException ex) {
                 String msg = "";
                 Throwable cause = ex.getCause();
                 if (cause != null) {
                     msg = cause.getLocalizedMessage();
+                    System.out.println("msg: " + msg);
                 }
                 if (msg.length() > 0) {
                     JsfUtil.addErrorMessage(msg);
+                    
                 } else {
+                    System.out.println("persistenceErrorOccured: " + msg);
                     JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
                 }
             } catch (Exception ex) {
+                System.out.println("ex: " + ex.getMessage());
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
                 JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             }

@@ -2755,6 +2755,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     
     public void fillJahreslohn_zre4j(){
         clacOneTimePayment();
+        System.out.println("einmalbezuegeimbruttolohn ist: " + einmalbezuegeimbruttolohn + " einmalzahlung ist: " + einmalzahlung );
         jahreslohn_zre4j =( taxBrutto*100-einmalzahlung)*12 + ((einmalbezuegeimbruttolohn+(einmalzahlung/100))*100-einmalzahlung);
     }
     
@@ -3991,7 +3992,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
      public void fillMst561_st2(){
          fillMst561_mist();
          fillMst561_diff();
-         mst561_st2 = max(mst561_diff,mst561_mist);
+         mst561_st2 = Math.ceil(max(mst561_diff,mst561_mist));
      }
      
      public void fillMst562_st2(){
@@ -4388,12 +4389,12 @@ public class Gehaltsabrechnungsrechner implements Serializable {
      
      public void fillMsolz1_solzj(){
          fillMlstjahr1_st();
-         msolz1_solzj =(mlstjahr1_st*5.5)/100;
+         msolz1_solzj =(mlstjahr1_jbmg*5.5)/100;
      }
      
      public void fillMsolz2_solzj(){
          fillMlstjahr2_st();
-         msolz2_solzj =(mlstjahr2_st*5.5)/100;
+         msolz2_solzj =(mlstjahr2_jbmg*5.5)/100;
      }
      
      public void fillMsolz1_solzeinmal(){
@@ -4603,6 +4604,8 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         }else{
             solzvers_kvAn = kvPflichtigerBeitrag*(baseData.getKrankenversicherung()/2)/100;
         }
+        
+        System.out.println("kvPflichtigerBeitrag ist: " +kvPflichtigerBeitrag + " baseData.getKrankenversicherung()/2: " + (baseData.getKrankenversicherung()/2));
         setUebertragw_kvAn(solzvers_kvAn);
     }
     
@@ -5041,13 +5044,13 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         lohnkonto.setBeitragzurbav(optionalSalaryStatement.getBav());
         lohnkonto.setDavonsozvpflichtig(solzAnteilBaV_sozVPflicht);
         lohnkonto.setSteuerbrutto(calcTaxBrutto());
-        
+        lohnkonto.setMaid(employee);
         lohnkonto.setSvbruttorv(taxBrutto);
         lohnkonto.setSvbruttokv(taxBrutto);
         lohnkonto.setGesamtnetto(payAmount);
         lohnkonto.setSvbruttokv(svBruttoKv);
         lohnkonto.setSvbruttorv(sVBruttoRv);
-        
+        lohnkonto.setMonat(changeMonthInNumberGehaltsrechnung());
         
         System.out.println("alles wurde gerechnet)");
        
@@ -5496,9 +5499,9 @@ public class Gehaltsabrechnungsrechner implements Serializable {
 
     private void calcSvBruttoKvOtherMonths() {
          if(lohnkonto.getEinmalbezuegeimbruttolohn() > 0){
-            sVBruttoRv = min(solzAnteilBaV_sozVpflichtBrut,max(solzvers_kvBemes,solzAnteilBaV_sozVpflichtBrut-sumSteuerBruttoBisher - (solzvers_kvBemes*changeMonthInNumberGehaltsrechnung())));
+            svBruttoKv = min(solzAnteilBaV_sozVpflichtBrut,max(solzvers_kvBemes,solzAnteilBaV_sozVpflichtBrut-sumSteuerBruttoBisher - (solzvers_kvBemes*changeMonthInNumberGehaltsrechnung())));
         }else{
-            sVBruttoRv = min(solzAnteilBaV_sozVpflichtBrut,solzvers_kvBemes);
+            svBruttoKv = min(solzAnteilBaV_sozVpflichtBrut,solzvers_kvBemes);
         }
     }
 

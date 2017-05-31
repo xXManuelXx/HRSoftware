@@ -18,6 +18,7 @@ public class MonthView implements Serializable{
         months.add("Januar");
         months.add("Februar");
         months.add("März");
+        months.add("April");
         months.add("Mai");
         months.add("Juni");
         months.add("Juli");
