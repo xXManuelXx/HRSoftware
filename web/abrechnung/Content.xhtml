@@ -153,7 +153,9 @@
                  </p:panelGrid>
             
                 <p:commandButton value="Abrechnung erstellen" id="ajax" actionListener="#{abrechnungsController.createSalaryStatement}" update="lohnabrechnung" styleClass="ui-priority-primary" />
-          
+                <p:commandButton value="Drucken" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
+                    <p:printer target="lohnabrechnung" />
+                </p:commandButton>
             <br />
              
                  <h3>Abrechnung</h3>
@@ -400,7 +402,7 @@
                      </p:row>
                  </p:panelGrid>
             </h:form> 
-                        </h:form> 
+         </h:form> 
 
 	</ui:define>
 </ui:composition>
