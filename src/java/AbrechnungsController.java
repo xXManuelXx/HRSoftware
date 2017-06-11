@@ -78,7 +78,7 @@ public class AbrechnungsController  implements Serializable {
     private com.hrsoftware.jpacontroller.MitarbeiterFacade ejbFacadeEmployee;
     private List<Mitarbeiter> itemsEmployee = null;
     private Mitarbeiter selectedEmployee;
-    //@Inject
+   
     @Inject
     private com.hrsoftware.jpacontroller.AbteilungFacade ejbFacadeDepartment;
     private List<Abteilung> itemsDepartment = null;

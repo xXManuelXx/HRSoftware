@@ -2,14 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/mfehrenbach/Documents/NetBeansProjects/HRSoftware_Neu/src/java/com/hrsoftware/jsf/LohnkontoController.java</file>
-            <file>file:/C:/Users/mfehrenbach/Documents/NetBeansProjects/HRSoftware_Neu/src/java/MonthView.java</file>
-            <file>file:/C:/Users/mfehrenbach/Documents/NetBeansProjects/HRSoftware_Neu/src/java/Gehaltsabrechnungsrechner.java</file>
-            <file>file:/C:/Users/mfehrenbach/Documents/NetBeansProjects/HRSoftware_Neu/src/java/AbrechnungsController.java</file>
-            <file>file:/C:/Users/mfehrenbach/Documents/NetBeansProjects/HRSoftware_Neu/src/java/com/hrsoftware/jpa/Lohnkonto.java</file>
-            <file>file:/C:/Users/mfehrenbach/Documents/NetBeansProjects/HRSoftware_Neu/web/abrechnung/Content.xhtml</file>
-            <file>file:/C:/Users/mfehrenbach/Documents/NetBeansProjects/HRSoftware_Neu/src/java/com/hrsoftware/jpacontroller/LohnkontoFacade.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

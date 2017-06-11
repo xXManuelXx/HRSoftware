@@ -7,10 +7,11 @@
 	xmlns:f="http://java.sun.com/jsf/core">
     
     
-    <p:growl id="messages" showDetail="false"/>   
+    <p:growl id="messages" showDetail="false"/> 
 	<h:form>
-            <p:outputPanel id="menuPanel"  layout="block">
-                <p:menu toggleable="true" >
+           <p:outputPanel id="menuPanel"  layout="block" >
+                <p:menu toggleable="true">
+                    
                     <p:submenu label="CRUD" icon="ui-icon ui-icon-refresh" >
 			
                         <p:menuitem outcome="/abteilung/List" value="Show All Abteilung Items"/>
@@ -35,7 +36,7 @@
 			<p:menuitem outcome="/abrechnung/Content" value="Abrechnung" />
                     </p:submenu>
                 </p:menu>
-            </p:outputPanel>
+          </p:outputPanel>
 	</h:form>
 </ui:composition>
 
