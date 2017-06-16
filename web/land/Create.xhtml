@@ -16,12 +16,7 @@
                         <p:inputText id="id" value="#{landController.selected.id}" title="#{bundle.CreateLandTitle_id}" required="false" requiredMessage="#{bundle.CreateLandRequiredMessage_id}"/>
                         <p:outputLabel value="#{bundle.CreateLandLabel_name}" for="name" />
                         <p:inputText id="name" value="#{landController.selected.name}" title="#{bundle.CreateLandTitle_name}" required="true" requiredMessage="#{bundle.CreateLandRequiredMessage_name}"/>
-                        <p:outputLabel value="#{bundle.CreateLandLabel_mitarbeiter}" for="mitarbeiter" />
-                        <p:selectOneMenu id="mitarbeiter" value="#{landController.selected.mitarbeiter}" >
-                            <f:selectItems value="#{mitarbeiterController.itemsAvailableSelectOne}"
-                                           var="mitarbeiterItem"
-                                           itemValue="#{mitarbeiterItem}"/>
-                        </p:selectOneMenu>
+                       
                     </p:panelGrid>
                     <p:commandButton actionListener="#{landController.create}" value="#{bundle.Save}" update="display,:LandListForm:datalist,:growl" oncomplete="handleSubmit(args,'LandCreateDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="LandCreateDialog.hide()"/>

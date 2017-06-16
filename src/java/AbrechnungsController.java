@@ -45,26 +45,25 @@ import javax.inject.Named;
 @SessionScoped
 public class AbrechnungsController  implements Serializable {
     private boolean all = true; 
-    private Stammdaten stammdaten;
-    private boolean lohnkontoVorhanden = false;
+    private Stammdaten baseData;
+    private boolean payrollAccountExisting = false;
     private static final DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-    private String datum;
+    private String date = "";
+    private String birthdate ="";
+    private double calcSalaryMonth = 0.0d;
+    @Inject
+    Gehaltsabrechnungsrechner payrollCalculator;
     
     @Inject
-    Gehaltsabrechnungsrechner gehaltsabrechnungsrechner;
-    
-    @Inject
-    OptionalSalaryStatement optionalSalaryStatement;
+    OptionalSalaryInput optionalSalaryInput;
     
     @Inject
     MonthView monthView;
 
     
     @Inject
-    private com.hrsoftware.jpacontroller.LohnkontoFacade ejbFacadeLohnkonto;
-    private Lohnkonto lohnkonto;
-    
-    
+    private com.hrsoftware.jpacontroller.LohnkontoFacade ejbFacadePayrollAccount;
+    private Lohnkonto payrollAccount;
     
     @Inject
     private com.hrsoftware.jpacontroller.StammdatenFacade ejbFacadeBasedata;
@@ -86,8 +85,8 @@ public class AbrechnungsController  implements Serializable {
 
    
     
-     public Gehaltsabrechnungsrechner getGehaltsabrechnungsrechner() {
-        return gehaltsabrechnungsrechner;
+     public Gehaltsabrechnungsrechner getpayrollCalculator() {
+        return payrollCalculator;
     }
     
   public AbrechnungsController() {
@@ -97,8 +96,8 @@ public class AbrechnungsController  implements Serializable {
         return monthView;
     }
 
-    public OptionalSalaryStatement getOptionalSalaryStatement() {
-        return optionalSalaryStatement;
+    public OptionalSalaryInput getOptionalSalaryInput() {
+        return optionalSalaryInput;
     }
   
     
@@ -136,12 +135,12 @@ public class AbrechnungsController  implements Serializable {
         this.selectedDepartment = selected;
     }
 
-    public Stammdaten getStammdaten() {
-        return stammdaten;
+    public Stammdaten getSelectedBaseData() {
+        return selectedBasedata;
     }
 
-    public void setStammdaten(Stammdaten stammdaten) {
-        this.stammdaten = stammdaten;
+    public void setSelectedBaseData(Stammdaten baseData) {
+        this.selectedBasedata = baseData;
     }
 
     public Gehalt getSelectedSalary() {
@@ -168,46 +167,46 @@ public class AbrechnungsController  implements Serializable {
         return ejbFacadeDepartment;
     }
     
-    private Lohnkonto loadLohnkonto(){
-        lohnkonto = ejbFacadeLohnkonto.getLohnkontoDatenVonMonat(changeMonth(monthView.getMonth()));
+    private Lohnkonto loadpayrollAccount(){
+        payrollAccount = ejbFacadePayrollAccount.getLohnkontoDatenVonMonat(changeMonth(monthView.getMonth()));
         
-        if(lohnkonto == null){
-            System.out.println("Lohnkonto ist null");
-            lohnkonto = new Lohnkonto();
-            lohnkontoVorhanden = false;
+        if(payrollAccount == null){
+            System.out.println("payrollAccount ist null");
+            payrollAccount = new Lohnkonto();
+            payrollAccountExisting = false;
         }else{
-            System.out.println("Lohnkonto nicht null: " + lohnkonto.getEinmalbezuegeimbruttolohn());
-            lohnkontoVorhanden = true;
+            System.out.println("payrollAccount nicht null: " + payrollAccount.getEinmalbezuegeimbruttolohn());
+            payrollAccountExisting = true;
         }
-        return lohnkonto;
+        return payrollAccount;
     }
     
     public void createSalaryStatement(){
-         System.out.println("onDepartmentChange wird ausgeführt: " + selectedEmployee.getNachname() + "  optional €  " + optionalSalaryStatement.getExpensesRefund() + " Object ausgabe: " +optionalSalaryStatement+ " Month: " + monthView.getMonth());
+         System.out.println("onDepartmentChange wird ausgeführt: " + selectedEmployee.getNachname() + "  optional €  " + optionalSalaryInput.getExpensesRefund() + " Object ausgabe: " +optionalSalaryInput+ " Month: " + monthView.getMonth());
          Stammdaten stamm = ejbFacadeBasedata.getBaseDataFromEmployeeId(selectedEmployee.getId());
          if(stamm == null){
-            System.out.println("Stammdaten sind null");
+            System.out.println("baseData sind null");
          }else{
-            System.out.println("Stammdaten sind nicht  null: " + stamm.getId());
+            System.out.println("baseData sind nicht  null: " + stamm.getId());
          }
          selectedBasedata = stamm;//ejbFacadeBasedata.getBaseDataFromEmployeeId(selectedBasedata.getMitarbeiterid());
-         if(selectedBasedata != null && optionalSalaryStatement != null){
+         if(selectedBasedata != null && optionalSalaryInput != null){
              selectedSalary = ejbFacadeSalary.findGehaltByID(selectedEmployee.getIdGehalt().getId());
-             gehaltsabrechnungsrechner.setEmployeeSalaryYear(selectedSalary.getGehalt());
-             gehaltsabrechnungsrechner.setEmployee(selectedEmployee);
-             gehaltsabrechnungsrechner.setOptionalSalaryStatement(optionalSalaryStatement);
-             gehaltsabrechnungsrechner.setStammdaten(selectedBasedata);
+             payrollCalculator.setEmployeeSalaryYear(selectedSalary.getGehalt());
+             payrollCalculator.setEmployee(selectedEmployee);
+             payrollCalculator.setOptionalSalaryInput(optionalSalaryInput);
+             payrollCalculator.setbaseData(selectedBasedata);
              
-             gehaltsabrechnungsrechner.setMonth(monthView.getMonth());
-             gehaltsabrechnungsrechner.setLohnkonto(loadLohnkonto());
-             gehaltsabrechnungsrechner.setSumSteuerBruttoBisher(ejbFacadeLohnkonto.getSumSteuerBruttoBisher(selectedEmployee,changeMonth(monthView.getMonth())-1));
-             gehaltsabrechnungsrechner.setRvPflichtigerBeitrag(ejbFacadeLohnkonto.getSumSVBruttoRV(selectedEmployee));
-             gehaltsabrechnungsrechner.setKvPflichtigerBeitrag(ejbFacadeLohnkonto.getSumSVBruttoKV(selectedEmployee));
-             gehaltsabrechnungsrechner.setEinmalbezuegeimbruttolohn(ejbFacadeLohnkonto.getEinmalbezuegeimbruttolohn(selectedEmployee));
-             gehaltsabrechnungsrechner.calcAllValues();
+             payrollCalculator.setMonth(monthView.getMonth());
+             payrollCalculator.setPayrollAccount(loadpayrollAccount());
+             payrollCalculator.setSumTaxGrossTillNow(ejbFacadePayrollAccount.getSumSteuerBruttoBisher(selectedEmployee,changeMonth(monthView.getMonth())-1));
+             payrollCalculator.setRvPflichtigerBeitrag(ejbFacadePayrollAccount.getSumSVBruttoRV(selectedEmployee));
+             payrollCalculator.setKvPflichtigerBeitrag(ejbFacadePayrollAccount.getSumSVBruttoKV(selectedEmployee));
+             payrollCalculator.setOnetimeEarningsInTheGrossEarning(ejbFacadePayrollAccount.getEinmalbezuegeimbruttolohn(selectedEmployee));
+             payrollCalculator.calcAllValues();
              create();
          }else{
-             System.out.println("Stammdaten nicht geladen " );
+             System.out.println("baseData nicht geladen " );
          }
          /*if( selectedDepartment!=null){
              itemsEmployee.remove(0);
@@ -224,13 +223,13 @@ public class AbrechnungsController  implements Serializable {
      
      
     private void persist(JsfUtil.PersistAction persistAction) {
-        if (lohnkonto != null) {
+        if (payrollAccount != null) {
             setEmbeddableKeys();
             try {
-                if (persistAction == JsfUtil.PersistAction.CREATE && !lohnkontoVorhanden) {
-                    ejbFacadeLohnkonto.create(lohnkonto);
-                }else if (persistAction == JsfUtil.PersistAction.CREATE && lohnkontoVorhanden) {
-                    ejbFacadeLohnkonto.edit(lohnkonto);
+                if (persistAction == JsfUtil.PersistAction.CREATE && !payrollAccountExisting) {
+                    ejbFacadePayrollAccount.create(payrollAccount);
+                }else if (persistAction == JsfUtil.PersistAction.CREATE && payrollAccountExisting) {
+                    ejbFacadePayrollAccount.edit(payrollAccount);
                 }
                // JsfUtil.addSuccessMessage(successMessage);
             } catch (EJBException ex) {
@@ -297,16 +296,38 @@ public class AbrechnungsController  implements Serializable {
         }
     }
 
-    public String getDatum() {
-        Date date = new Date();
-        datum = sdf.format(date);
+    public String getdate() {
+        Date newdate = new Date();
+        date = sdf.format(newdate);
 
-        return datum;
+        return date;
+    }
+    
+    public String getBirthdate() {
+        SimpleDateFormat format = new SimpleDateFormat("dd/mm/yyyy");
+        
+       // String date = sdf.format(newdate);
+        if(selectedEmployee != null){
+            return format.format(selectedEmployee.getGeburtsdatum());
+        }else{
+            return birthdate;
+        }
     }
 
-    public void setDatum(String datum) {
-        this.datum = datum;
+    public void setdate(String date) {
+        this.date = date;
     }
+
+    public double getCalcSalaryMonth() {
+        if(selectedSalary != null)
+            calcSalaryMonth = Math.floor(((selectedSalary.getGehalt()/12)*100.0)/100.0);
+        return calcSalaryMonth;
+    }
+
+    public void setCalcSalaryMonth(double salaryMonth) {
+        this.calcSalaryMonth = salaryMonth;
+    }
+    
     
     
    

@@ -39,12 +39,7 @@
                             </f:facet>
                             <h:outputText value="#{item.beschreibung}"/>
                         </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListPositionTitle_mitarbeiter}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.mitarbeiter}"/>
-                        </p:column>
+                        
                         <f:facet name="footer">
                             <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{positionController.prepareCreate}" update=":PositionCreateForm" oncomplete="PF('PositionCreateDialog').show()"/>
                             <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":PositionViewForm" oncomplete="PF('PositionViewDialog').show()" disabled="#{empty positionController.selected}"/>

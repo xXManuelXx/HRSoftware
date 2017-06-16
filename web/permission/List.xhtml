@@ -39,12 +39,7 @@
                             </f:facet>
                             <h:outputText value="#{item.beschreibung}"/>
                         </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListPermissionTitle_user}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.user}"/>
-                        </p:column>
+                       
                         <f:facet name="footer">
                             <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{permissionController.prepareCreate}" update=":PermissionCreateForm" oncomplete="PF('PermissionCreateDialog').show()"/>
                             <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":PermissionViewForm" oncomplete="PF('PermissionViewDialog').show()" disabled="#{empty permissionController.selected}"/>

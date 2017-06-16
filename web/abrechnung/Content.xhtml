@@ -78,39 +78,39 @@
 
                      <p:row>
                          <p:column >Urlaubsgeld (€)</p:column>
-                         <p:column ><p:inputText  id="holydaymoney"  size="5" type="number" value="#{abrechnungsController.optionalSalaryStatement.holidayMoney}"/></p:column>
+                         <p:column ><p:inputText  id="holydaymoney"  size="5" type="number" value="#{abrechnungsController.optionalSalaryInput.holidayMoney}"/></p:column>
 
                         <p:column >Zeitzuschläge(Stunden Nachschicht) (€)</p:column>
-                        <p:column ><p:inputText  id="timebonus" size="5"  type="number" value="#{abrechnungsController.optionalSalaryStatement.hoursAtNight}"/></p:column>
+                        <p:column ><p:inputText  id="timebonus" size="5"  type="number" value="#{abrechnungsController.optionalSalaryInput.hoursAtNight}"/></p:column>
 
                         
                      </p:row>
 
                      <p:row>
                          <p:column >Prämie (€)</p:column>
-                         <p:column ><p:inputText  id="bonus"  size="5" type="number" value="#{abrechnungsController.optionalSalaryStatement.bonus}"/></p:column>
+                         <p:column ><p:inputText  id="bonus"  size="5" type="number" value="#{abrechnungsController.optionalSalaryInput.bonus}"/></p:column>
                          
                          <p:column >Zeitzuschläge(Stunden Sonntag) (€)</p:column>
-                         <p:column ><p:inputText  id="timeSunday" size="5"  type="number" value="#{abrechnungsController.optionalSalaryStatement.hoursSunday}"/></p:column>
+                         <p:column ><p:inputText  id="timeSunday" size="5"  type="number" value="#{abrechnungsController.optionalSalaryInput.hoursSunday}"/></p:column>
                      </p:row>
 
                   
 
                      <p:row>
                          <p:column >Dienstwagen 1% (€)</p:column>
-                         <p:column ><p:inputText  id="companycar" size="5"  type="number" value="#{abrechnungsController.optionalSalaryStatement.companyCar1}"/></p:column>
+                         <p:column ><p:inputText  id="companycar" size="5"  type="number" value="#{abrechnungsController.optionalSalaryInput.companyCar1}"/></p:column>
                          
                           <p:column >Zeitzuschläge(Stunden Feiertage) (€)</p:column>
-                          <p:column ><p:inputText  id="timeHolyday" size="5"  type="number" value="#{abrechnungsController.optionalSalaryStatement.hoursOnHoliday}"/></p:column>
+                          <p:column ><p:inputText  id="timeHolyday" size="5"  type="number" value="#{abrechnungsController.optionalSalaryInput.hoursOnHoliday}"/></p:column>
                      
                      </p:row>
 
                      <p:row>
                           <p:column >Dienstwagen, Weg zur Arbeit (€)</p:column>
-                          <p:column ><p:inputText  id="companycarRoadToCompany"  size="5" type="number" value="#{abrechnungsController.optionalSalaryStatement.companyCarWayToWork}"/></p:column>
+                          <p:column ><p:inputText  id="companycarRoadToCompany"  size="5" type="number" value="#{abrechnungsController.optionalSalaryInput.companyCarWayToWork}"/></p:column>
                          
                           <p:column >Zeitzuschläge(Stunden Sondervergütung) (€)</p:column>
-                          <p:column ><p:inputText  id="timeExtraBenous" size="5" type="number" value="#{abrechnungsController.optionalSalaryStatement.holidayExtraBonus}"/></p:column>
+                          <p:column ><p:inputText  id="timeExtraBenous" size="5" type="number" value="#{abrechnungsController.optionalSalaryInput.holidayExtraBonus}"/></p:column>
                      
                      </p:row>
 
@@ -122,11 +122,11 @@
 
                      <p:row>
                           <p:column >Beitrag zur baV/Gehaltsumwandlung (€)</p:column>
-                          <p:column ><p:inputText  id="bav" size="5" type="number" value="#{abrechnungsController.optionalSalaryStatement.bav}"/></p:column>
+                          <p:column ><p:inputText  id="bav" size="5" type="number" value="#{abrechnungsController.optionalSalaryInput.bav}"/></p:column>
 
 
                          <p:column >Auslagen-Erstattung (€)</p:column>
-                         <p:column ><p:inputText  id="employeeInsuranceBonus" size="5" type="number" value="#{abrechnungsController.optionalSalaryStatement.expensesRefund}"/></p:column>
+                         <p:column ><p:inputText  id="employeeInsuranceBonus" size="5" type="number" value="#{abrechnungsController.optionalSalaryInput.expensesRefund}"/></p:column>
 
                      </p:row>
 
@@ -134,7 +134,7 @@
                          <p:column></p:column>
                          <p:column ></p:column>
                           <p:column >Fahrtgeld (€)</p:column>
-                          <p:column ><p:inputText  id="roadMoney" size="5" type="number" value="#{abrechnungsController.optionalSalaryStatement.rideMoney}"/></p:column>
+                          <p:column ><p:inputText  id="roadMoney" size="5" type="number" value="#{abrechnungsController.optionalSalaryInput.rideMoney}"/></p:column>
 
                      </p:row>
 
@@ -143,7 +143,7 @@
                          <p:column></p:column>
                          
                          <p:column >AG-Zuschuss zur baV (€)</p:column>
-                         <p:column ><p:inputText  id="adBonusBav" size="5" type="number" value="#{abrechnungsController.optionalSalaryStatement.bonusbaV}"/></p:column>
+                         <p:column ><p:inputText  id="adBonusBav" size="5" type="number" value="#{abrechnungsController.optionalSalaryInput.bonusbaV}"/></p:column>
 
                       
                      </p:row>
@@ -163,11 +163,6 @@
                      <f:facet name="header">
                          <p:row>
                              <p:column colspan="7">Lohnabrechnung</p:column>
-                         </p:row>
-                         <p:row>
-                             <p:column >Firmenname</p:column>
-                             <p:column >Strasse der Firma</p:column>
-                             <p:column colspan="2">PLZ und Ortname der Firma</p:column>
                          </p:row>
                      </f:facet>
 
@@ -191,44 +186,44 @@
                      </p:row>
                       <p:row>
                           <p:column style="font-weight: bold;">Datum</p:column>
-                          <p:column><h:outputText value="#{abrechnungsController.datum}"/></p:column>
+                          <p:column><h:outputText value="#{abrechnungsController.date}"/></p:column>
                          <p:column style="font-weight: bold;">Geburtsdatum</p:column>
-                         <p:column><h:outputText value="#{abrechnungsController.selectedEmployee.geburtsdatum}"/></p:column>
+                         <p:column><h:outputText value="#{abrechnungsController.birthdate}"/></p:column>
                      </p:row>
                       <p:row>
                           <p:column style="font-weight: bold;">Steuerklasse</p:column>
-                          <p:column><h:outputText value="#{abrechnungsController.stammdaten.steuerklasse}"/></p:column>
+                          <p:column><h:outputText value="#{abrechnungsController.selectedBaseData.steuerklasse}"/></p:column>
                       </p:row>
                      <p:row>
                           <p:column style="font-weight: bold;">Kinder (Lohnsteuerkarte)</p:column>
-                          <p:column><h:outputText value="#{abrechnungsController.stammdaten.kinderfreibetrag}"/></p:column>
+                          <p:column><h:outputText value="#{abrechnungsController.selectedBaseData.kinderfreibetrag}"/></p:column>
                          <p:column style="font-weight: bold;">Urlaubsanspruch</p:column>
                          <p:column>25</p:column>
                      </p:row>
                      <p:row>
                          <p:column colspan="2"><p:separator style="visibility: hidden"/></p:column>
                           <p:column style="font-weight: bold;">AV-Pflichtig</p:column>
-                          <p:column><h:outputText value="#{abrechnungsController.gehaltsabrechnungsrechner.avpflichtig}"/></p:column>
+                          <p:column><h:outputText value="#{abrechnungsController.payrollCalculator.avpflichtig}"/></p:column>
                      </p:row>
                      <p:row>
                          <p:column style="font-weight: bold;">Krankenversicherung</p:column>
-                         <p:column><h:outputText value="#{abrechnungsController.gehaltsabrechnungsrechner.krankenversicherung}"/>%</p:column>
+                         <p:column><h:outputText value="#{abrechnungsController.selectedBaseData.krankenversicherung}"/>%</p:column>
                          <p:column style="font-weight: bold;">Altersfreibetrag</p:column>
-                         <p:column><h:outputText value="#{abrechnungsController.gehaltsabrechnungsrechner.mre4alte_alte}"/></p:column>
+                         <p:column><h:outputText value="#{abrechnungsController.payrollCalculator.mre4alte_alte}"/></p:column>
                      </p:row>
                      <p:row>
                          <p:column style="font-weight: bold;">Zusatzbeitrag</p:column>
-                         <p:column><h:outputText value="#{abrechnungsController.gehaltsabrechnungsrechner.zusatzbeitrag}"/>%</p:column>
+                         <p:column><h:outputText value="#{abrechnungsController.payrollCalculator.additionalContribution}"/>%</p:column>
                      </p:row>
                      <p:row>
                          <p:column style="font-weight: bold;">(Jahres)Lohnsteuerfreibetrag</p:column>
-                         <p:column><h:outputText value="#{abrechnungsController.stammdaten.lohnsteuerfreibetrag}"/></p:column>
+                         <p:column><h:outputText value="#{abrechnungsController.selectedBaseData.lohnsteuerfreibetrag}"/></p:column>
                          <p:column style="font-weight: bold;">Urlaubstage genutzt</p:column>
                          <p:column>123</p:column>
                      </p:row>
                      <p:row>
                          <p:column style="font-weight: bold;">(Jahres)hinzurechnungsbetrag</p:column>
-                         <p:column><h:outputText value="#{abrechnungsController.stammdaten.hinzurechnungsbetrag}"/></p:column>
+                         <p:column><h:outputText value="#{abrechnungsController.selectedBaseData.hinzurechnungsbetrag}"/></p:column>
                          <p:column style="font-weight: bold;">Resturlaub</p:column>
                          <p:column>123</p:column>
                      </p:row>
@@ -239,76 +234,76 @@
                      </p:row>
                      <p:row>
                          <p:column colspan="2" >Gehalt</p:column>
-                         <p:column colspan="2" style=" text-align: right;"><h:outputText value="#{abrechnungsController.selectedSalary.gehalt/12}"/></p:column>
+                         <p:column colspan="2" style=" text-align: right;"><h:outputText value="#{abrechnungsController.calcSalaryMonth}"/></p:column>
                      </p:row>
                      <p:row>
                          <p:column colspan="2" >Urlaubsgeld</p:column>
-                         <p:column colspan="2" style=" text-align: right;"><h:outputText value="#{abrechnungsController.optionalSalaryStatement.holidayMoney}"/></p:column>
+                         <p:column colspan="2" style=" text-align: right;"><h:outputText value="#{abrechnungsController.optionalSalaryInput.holidayMoney}"/></p:column>
                      </p:row>
                      <p:row>
                          <p:column colspan="2" >Prämie</p:column>
-                         <p:column colspan="2" style=" text-align: right;"><h:outputText value="#{abrechnungsController.optionalSalaryStatement.bonus}"/></p:column>
+                         <p:column colspan="2" style=" text-align: right;"><h:outputText value="#{abrechnungsController.optionalSalaryInput.bonus}"/></p:column>
                      </p:row>
                      <p:row>
                          <p:column colspan="2">Dienstwagen</p:column>
-                         <p:column colspan="2" style=" text-align: right;"><h:outputText value="#{abrechnungsController.optionalSalaryStatement.companyCar1}"/></p:column>
+                         <p:column colspan="2" style=" text-align: right;"><h:outputText value="#{abrechnungsController.optionalSalaryInput.companyCar1}"/></p:column>
                      </p:row>
                      <p:row>
                          <p:column colspan="2" >Dienstwagen, Weg zur Arbeit</p:column>
-                         <p:column colspan="2" style=" text-align: right;"><h:outputText value="#{abrechnungsController.optionalSalaryStatement.companyCarWayToWork}"/></p:column>
+                         <p:column colspan="2" style=" text-align: right;"><h:outputText value="#{abrechnungsController.optionalSalaryInput.companyCarWayToWork}"/></p:column>
                      </p:row>
                      <p:row>
                          <p:column colspan="3" style="font-weight: bold;">Steuer-Brutto</p:column>
-                         <p:column  style=" text-align: right;font-weight: bold;"><h:outputText value="#{abrechnungsController.gehaltsabrechnungsrechner.taxBrutto}"/></p:column>
+                         <p:column  style=" text-align: right;font-weight: bold;"><h:outputText value="#{abrechnungsController.payrollCalculator.taxBrutto}"/></p:column>
                      </p:row>
                      
                      <p:row>
                          <p:column colspan="3" styleClass="ui-widget-header" style="font-weight: bold;">Bruttoarbeitsentgelt (ohne geltwerte Vorteile)</p:column>
-                         <p:column  styleClass="ui-widget-header" style=" text-align: right;font-weight: bold;"><h:outputText value="#{abrechnungsController.gehaltsabrechnungsrechner.employeeSalaryMonth}"/></p:column>
+                         <p:column  styleClass="ui-widget-header" style=" text-align: right;font-weight: bold;"><h:outputText value="#{abrechnungsController.payrollCalculator.employeeSalaryMonth}"/></p:column>
                      </p:row>
                      <p:row>
                          <p:column></p:column>
                          <p:column colspan="2">Lohnsteuer</p:column>
-                         <p:column  style=" text-align: right;"><h:outputText value="#{abrechnungsController.gehaltsabrechnungsrechner.mlstjahr_lstlzzSum/100}"/></p:column>
+                         <p:column  style=" text-align: right;"><h:outputText value="#{abrechnungsController.payrollCalculator.mlstjahr_lstlzzSum/100}"/></p:column>
                      </p:row>
                      <p:row>
                          <p:column></p:column>
                          <p:column colspan="2">9% Kirchensteuer</p:column>
-                         <p:column  style=" text-align: right;"><h:outputText value="#{abrechnungsController.gehaltsabrechnungsrechner.bk_kistSum}"/></p:column>
+                         <p:column  style=" text-align: right;"><h:outputText value="#{abrechnungsController.payrollCalculator.bk_kistSum}"/></p:column>
                      </p:row>
                      <p:row>
                          <p:column></p:column>
                          <p:column colspan="2">Solidaritätszuschlag</p:column>
-                         <p:column  style=" text-align: right;"><h:outputText value="#{abrechnungsController.gehaltsabrechnungsrechner.solz_solzSum}"/></p:column>
+                         <p:column  style=" text-align: right;"><h:outputText value="#{abrechnungsController.payrollCalculator.solz_solzSum}"/></p:column>
                      </p:row>
                      <p:row>
                          <p:column></p:column>
                          <p:column colspan="2">7,3% Krankenkassenbeitrag</p:column>
-                         <p:column  style=" text-align: right;"><h:outputText value="#{abrechnungsController.gehaltsabrechnungsrechner.uebertragw_kvAn}"/></p:column>
+                         <p:column  style=" text-align: right;"><h:outputText value="#{abrechnungsController.payrollCalculator.uebertragw_kvAn}"/></p:column>
                      </p:row>
                      <p:row>
                          <p:column></p:column>
                          <p:column colspan="2">1,1% Zusatzbeitrag</p:column>
-                         <p:column  style=" text-align: right;"><h:outputText value="#{abrechnungsController.gehaltsabrechnungsrechner.uebertragw_kvZusatz}"/></p:column>
+                         <p:column  style=" text-align: right;"><h:outputText value="#{abrechnungsController.payrollCalculator.uebertragw_kvZusatz}"/></p:column>
                      </p:row>
                      <p:row>
                          <p:column></p:column>
                          <p:column colspan="2">1,5% Arbeitslosenversicherung</p:column>
-                         <p:column  style=" text-align: right;"><h:outputText value="#{abrechnungsController.gehaltsabrechnungsrechner.uebertragw_avAn}"/></p:column>
+                         <p:column  style=" text-align: right;"><h:outputText value="#{abrechnungsController.payrollCalculator.uebertragw_avAn}"/></p:column>
                      </p:row>
                      <p:row>
                          <p:column></p:column>
                          <p:column colspan="2">9,35% Rentenversicherung</p:column>
-                         <p:column  style=" text-align: right;"><h:outputText value="#{abrechnungsController.gehaltsabrechnungsrechner.uebertragw_rvAn}"/></p:column>
+                         <p:column  style=" text-align: right;"><h:outputText value="#{abrechnungsController.payrollCalculator.uebertragw_rvAn}"/></p:column>
                      </p:row>
                      <p:row>
                          <p:column></p:column>
                          <p:column colspan="2">1,175% Pflegeversicherung</p:column>
-                         <p:column  style=" text-align: right;"><h:outputText value="#{abrechnungsController.gehaltsabrechnungsrechner.uebertragw_pvAn}"/></p:column>
+                         <p:column  style=" text-align: right;"><h:outputText value="#{abrechnungsController.payrollCalculator.uebertragw_pvAn}"/></p:column>
                      </p:row>
                      <p:row>
                          <p:column styleClass="ui-widget-header"  colspan="3" style="font-weight: bold;">Summe Abzüge</p:column>
-                         <p:column   styleClass="ui-widget-header"  style=" text-align: right;font-weight: bold;"><h:outputText value="#{abrechnungsController.gehaltsabrechnungsrechner.sumDiscount}"/></p:column>
+                         <p:column   styleClass="ui-widget-header"  style=" text-align: right;font-weight: bold;"><h:outputText value="#{abrechnungsController.payrollCalculator.sumDiscount}"/></p:column>
                      </p:row>
                       <p:row>
                          <p:column colspan="6">
@@ -316,27 +311,28 @@
                          </p:column>
                      </p:row>
                      <p:row>
-                         <p:column colspan="4">Zeitzuschläge</p:column>
+                         <p:column colspan="4" style="font-weight: bold;">Zeitzuschläge</p:column>
+                         
                      </p:row>
                      <p:row>
                          <p:column colspan="2" >Stunden Nachtschicht</p:column>
-                         <p:column colspan="2" style=" text-align: right;"><h:outputText value="#{abrechnungsController.optionalSalaryStatement.hoursAtNight}"/></p:column>
+                         <p:column colspan="2" style=" text-align: right;"><h:outputText value="#{abrechnungsController.optionalSalaryInput.hoursAtNight}"/></p:column>
                      </p:row>
                      <p:row>
                          <p:column colspan="2" >Stunden Sonntage</p:column>
-                         <p:column colspan="2" style=" text-align: right;"><h:outputText value="#{abrechnungsController.optionalSalaryStatement.hoursSunday}"/></p:column>
+                         <p:column colspan="2" style=" text-align: right;"><h:outputText value="#{abrechnungsController.optionalSalaryInput.hoursSunday}"/></p:column>
                      </p:row>
                      <p:row>
                          <p:column colspan="2" >Stunden Sondervergütung</p:column>
-                         <p:column colspan="2" style=" text-align: right;"><h:outputText value="#{abrechnungsController.optionalSalaryStatement.holidayExtraBonus}"/></p:column>
+                         <p:column colspan="2" style=" text-align: right;"><h:outputText value="#{abrechnungsController.optionalSalaryInput.holidayExtraBonus}"/></p:column>
                      </p:row>
                      <p:row>
                          <p:column colspan="2" >Stunden Feiertage</p:column>
-                         <p:column colspan="2" style=" text-align: right;"><h:outputText value="#{abrechnungsController.optionalSalaryStatement.hoursOnHoliday}"/></p:column>
+                         <p:column colspan="2" style=" text-align: right;"><h:outputText value="#{abrechnungsController.optionalSalaryInput.hoursOnHoliday}"/></p:column>
                      </p:row>
                      <p:row>
                          <p:column colspan="2" >Sonn-, Feiertags- und Nachtzuschläge</p:column>
-                         <p:column colspan="2" style=" text-align: right;"><h:outputText value="#{abrechnungsController.optionalSalaryStatement.sunHolidayNightMoney}"/></p:column>
+                         <p:column colspan="2" style=" text-align: right;"><h:outputText value="#{abrechnungsController.optionalSalaryInput.sunHolidayNightMoney}"/></p:column>
                      </p:row>
                       <p:row>
                          <p:column colspan="6">
@@ -345,60 +341,27 @@
                      </p:row>
                      <p:row>
                          <p:column colspan="2" >Arbeitgeberzuschuss private KV</p:column>
-                         <p:column colspan="2" style=" text-align: right;"><h:outputText value="#{abrechnungsController.gehaltsabrechnungsrechner.arbeitgeberzuschussPrivateKv}"/></p:column>
+                         <p:column colspan="2" style=" text-align: right;"><h:outputText value="#{abrechnungsController.payrollCalculator.employerSubsidyPrivateKv}"/></p:column>
                      </p:row>
                      <p:row>
                          <p:column colspan="2" >Auslagen-Erstattung</p:column>
-                         <p:column colspan="2" style=" text-align: right;"><h:outputText value="#{abrechnungsController.optionalSalaryStatement.expensesRefund}"/></p:column>
+                         <p:column colspan="2" style=" text-align: right;"><h:outputText value="#{abrechnungsController.optionalSalaryInput.expensesRefund}"/></p:column>
                      </p:row>
                      <p:row>
                          <p:column colspan="2" >Fahrtgeld</p:column>
-                         <p:column colspan="2" style=" text-align: right;"><h:outputText value="#{abrechnungsController.optionalSalaryStatement.rideMoney}"/></p:column>
+                         <p:column colspan="2" style=" text-align: right;"><h:outputText value="#{abrechnungsController.optionalSalaryInput.rideMoney}"/></p:column>
                      </p:row>
                      <p:row>
                          <p:column colspan="2" >AG-Zuschuss zur baV</p:column>
-                         <p:column colspan="2" style=" text-align: right;"><h:outputText value="#{abrechnungsController.optionalSalaryStatement.bonusbaV}"/></p:column>
+                         <p:column colspan="2" style=" text-align: right;"><h:outputText value="#{abrechnungsController.optionalSalaryInput.bonusbaV}"/></p:column>
                      </p:row>
                       <p:row>
                          <p:column styleClass="ui-widget-header"  colspan="3" style="font-weight: bold;">Summe steuerfreie Bezüge</p:column>
-                         <p:column   styleClass="ui-widget-header"  style=" text-align: right;font-weight: bold;"><h:outputText value="#{abrechnungsController.gehaltsabrechnungsrechner.steuerfreiebezuege}"/></p:column>
+                         <p:column   styleClass="ui-widget-header"  style=" text-align: right;font-weight: bold;"><h:outputText value="#{abrechnungsController.payrollCalculator.steuerfreiebezuege}"/></p:column>
                      </p:row>
                       <p:row>
                          <p:column colspan="3" style="font-weight: bold;">Auszahlungsbetrag</p:column>
-                         <p:column  style=" text-align: right;font-weight: bold;"><h:outputText value="#{abrechnungsController.gehaltsabrechnungsrechner.payAmount}"/></p:column>
-                     </p:row>
-                     <p:row>
-                         <p:column colspan="6">
-                             <p:spacer height="0.5"/>
-                         </p:column>
-                     </p:row>
-                     <p:row>
-                         <p:column colspan="4" style="font-size:10px;">Kommulierte Jahreswerte</p:column>
-                         
-                     </p:row>
-                     <p:row>
-                         <p:column style="font-size:10px;">Bruttolohn</p:column>
-                         <p:column style=" text-align: right;font-size:10px;">234234234</p:column>
-                         <p:column style="font-size:10px;">Einmalzahlungen</p:column>
-                         <p:column style=" text-align: right;font-size:10px;">234234234</p:column>
-                     </p:row>
-                     <p:row>
-                         <p:column style="font-size:10px;">Lohnsteuer</p:column>
-                         <p:column style=" text-align: right;font-size:10px;">234234234</p:column>
-                         <p:column style="font-size:10px;">steuerfreie Bezüge</p:column>
-                         <p:column style=" text-align: right;font-size:10px;">234234234</p:column>
-                     </p:row>
-                     <p:row>
-                         <p:column style="font-size:10px;">Kirchensteuer</p:column>
-                         <p:column style=" text-align: right;font-size:10px;">234234234</p:column>
-                         <p:column style="font-size:10px;">Beitrag zur baV</p:column>
-                         <p:column style=" text-align: right;font-size:10px;">234234234</p:column>
-                     </p:row>
-                     <p:row>
-                         <p:column style="font-size:10px;">Sol. Zuschlag</p:column>
-                         <p:column style=" text-align: right;font-size:10px;">234234234</p:column>
-                         <p:column style="font-size:10px;">Gesamt Netto</p:column>
-                         <p:column style=" text-align: right;font-size:10px;">234234234</p:column>
+                         <p:column  style=" text-align: right;font-weight: bold;"><h:outputText value="#{abrechnungsController.payrollCalculator.payAmount}"/></p:column>
                      </p:row>
                  </p:panelGrid>
             </h:form> 

@@ -38,26 +38,26 @@ import javax.inject.Named;
 @ConversationScoped
 public class Gehaltsabrechnungsrechner implements Serializable {
    
-    //Stammdaten
+    //baseData
     private Stammdaten baseData;
-    private OptionalSalaryStatement optionalSalaryStatement;
+    private OptionalSalaryInput optionalSalaryInput;
     private Mitarbeiter employee;
     
     //Andere Daten die Benötigt werden
     private double employeeSalaryYear;
     private double employeeSalaryMonth;
     private String month = "";
-    private Lohnkonto lohnkonto;    
+    private Lohnkonto payrollAccount;    
     private double payAmount;
     private double sumDiscount;
-    private double sVBruttoRv;
-    private double svBruttoKv;
-    private double sumSteuerBruttoBisher;
-    private double arbeitgeberzuschussPrivateKv;
-    private String zusatzbeitrag;
-    private String krankenversicherung;
+    private double sVGrossRv;
+    private double svGrossKv;
+    private double sumTaxGrossTillNow;
+    private double employerSubsidyPrivateKv;
+    private String additionalContribution;
+    private String healthInsurance;
     private String avpflichtig;
-    private double einmalbezuegeimbruttolohn;
+    private double onetimeEarningsInTheGrossEarning;
     //Lohnsteuer
     private double lohnst_alter1;
     private double lohnst_zkf;
@@ -431,23 +431,23 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         this.avpflichtig = avpflichtig;
     }
 
-    public double getEinmalbezuegeimbruttolohn() {
-        return einmalbezuegeimbruttolohn;
+    public double getOnetimeEarningsInTheGrossEarning() {
+        return onetimeEarningsInTheGrossEarning;
     }
 
-    public void setEinmalbezuegeimbruttolohn(double einmalbezuegeimbruttolohn) {
-        this.einmalbezuegeimbruttolohn = einmalbezuegeimbruttolohn;
+    public void setOnetimeEarningsInTheGrossEarning(double onetimeEarningsInTheGrossEarning) {
+        this.onetimeEarningsInTheGrossEarning = onetimeEarningsInTheGrossEarning;
     }
 
    
    
    
-    public String getZusatzbeitrag() {
+    public String getAdditionalContribution() {
         if(baseData != null){
         if(baseData.getKrankenversicherung() > 20){
-            return zusatzbeitrag = "privat";
+            return additionalContribution = "privat";
         }else{
-            return zusatzbeitrag = Double.toString(baseData.getKvzuschlag()/100);
+            return additionalContribution = Double.toString(baseData.getKvzuschlag());
         }
         }else{
             return "";
@@ -455,41 +455,42 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         
     }
 
-    public void setZusatzbeitrag(String zusatzbeitrag) {
-        this.zusatzbeitrag = zusatzbeitrag;
+    public void setAdditionalContribution(String additionalContribution) {
+        this.additionalContribution = additionalContribution;
     }
 
-    public String getKrankenversicherung() {
+    public String getHealthInsurance() {
         if(baseData != null){
           if(baseData.getKrankenversicherung() > 20){
-            return krankenversicherung = "privat";
+            return healthInsurance = "privat";
         }else{
-            return krankenversicherung = Double.toString(baseData.getKvzuschlag()/100);
+            return healthInsurance = Double.toString(baseData.getKvzuschlag()/100);
         }
         }else{
             return "";
         }
     }
 
-    public void setKrankenversicherung(String krankenversicherung) {
-        this.krankenversicherung = krankenversicherung;
+    public void setHealthInsurance(String healthInsurance) {
+        this.healthInsurance = healthInsurance;
     }
 
    
    
    
-    public double getSumSteuerBruttoBisher() {
-        return sumSteuerBruttoBisher;
+    public double getSumTaxGrossTillNow() {
+        return sumTaxGrossTillNow;
     }
 
-    public void setSumSteuerBruttoBisher(double sumSteuerBruttoBisher) {
-        this.sumSteuerBruttoBisher = sumSteuerBruttoBisher;
+    public void setSumTaxGrossTillNow(double sumTaxGrossTillNow) {
+        this.sumTaxGrossTillNow = sumTaxGrossTillNow;
     }
 
    
    
    
     public double getSumDiscount() {
+        sumDiscount = Math.floor((sumDiscount*100.0)/100.0);
         return sumDiscount;
     }
 
@@ -497,20 +498,20 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         this.sumDiscount = sumDiscount;
     }
 
-    public double getsVBruttoRv() {
-        return sVBruttoRv;
+    public double getsVGrossRv() {
+        return sVGrossRv;
     }
 
-    public void setsVBruttoRv(double sVBruttoRv) {
-        this.sVBruttoRv = sVBruttoRv;
+    public void setsVGrossRv(double sVGrossRv) {
+        this.sVGrossRv = sVGrossRv;
     }
 
-    public double getSvBruttoKv() {
-        return svBruttoKv;
+    public double getsvGrossKv() {
+        return svGrossKv;
     }
 
-    public void setSvBruttoKv(double svBruttoKv) {
-        this.svBruttoKv = svBruttoKv;
+    public void setsvGrossKv(double svGrossKv) {
+        this.svGrossKv = svGrossKv;
     }
    
    
@@ -518,6 +519,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
    
 
     public double getSteuerfreiebezuege() {
+        steuerfreiebezuege = Math.floor(steuerfreiebezuege*100.0)/100.0;
         return steuerfreiebezuege;
     }
 
@@ -526,6 +528,8 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public double getPayAmount() {
+        payAmount = Math.floor((payAmount*100.0d)/100.0d);
+
         return payAmount;
     }
 
@@ -536,20 +540,23 @@ public class Gehaltsabrechnungsrechner implements Serializable {
    
    
    
-    public Lohnkonto getLohnkonto() {
-        return lohnkonto;
+    public Lohnkonto getPayrollAccount() {
+        return payrollAccount;
     }
 
-    public void setLohnkonto(Lohnkonto lohnkonto) {
-        this.lohnkonto = lohnkonto;
+    public void setPayrollAccount(Lohnkonto payrollAccount) {
+        this.payrollAccount = payrollAccount;
     }
 
-    public double getArbeitgeberzuschussPrivateKv() {
-        return arbeitgeberzuschussPrivateKv;
+    public double getEmployerSubsidyPrivateKv() {
+        employerSubsidyPrivateKv = Math.floor((employerSubsidyPrivateKv*100.0)/100.0);
+
+        
+        return employerSubsidyPrivateKv;
     }
 
-    public void setArbeitgeberzuschussPrivateKv(double arbeitgeberzuschussPrivateKv) {
-        this.arbeitgeberzuschussPrivateKv = arbeitgeberzuschussPrivateKv;
+    public void setEmployerSubsidyPrivateKv(double employerSubsidyPrivateKv) {
+        this.employerSubsidyPrivateKv = employerSubsidyPrivateKv;
     }
    
    
@@ -566,6 +573,8 @@ public class Gehaltsabrechnungsrechner implements Serializable {
    
 
     public double getTaxBrutto() {
+       taxBrutto = Math.floor(taxBrutto*100.0)/100.0;
+
         return taxBrutto;
     }
 
@@ -574,6 +583,8 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public double getEmployeeSalaryMonth() {
+        employeeSalaryMonth = Math.floor((employeeSalaryMonth*100.0)/100.0);
+
         return employeeSalaryMonth;
     }
 
@@ -595,18 +606,18 @@ public class Gehaltsabrechnungsrechner implements Serializable {
    
    
 
-    public OptionalSalaryStatement getOptionalSalaryStatement() {
-        return optionalSalaryStatement;
+    public OptionalSalaryInput getOptionalSalaryInput() {
+        return optionalSalaryInput;
     }
 
-    public void setOptionalSalaryStatement(OptionalSalaryStatement optionalSalaryStatement) {
-        this.optionalSalaryStatement = optionalSalaryStatement;
+    public void setOptionalSalaryInput(OptionalSalaryInput optionalSalaryInput) {
+        this.optionalSalaryInput = optionalSalaryInput;
     }
 
    
    
    
-   public void setStammdaten(Stammdaten baseData){
+   public void setbaseData(Stammdaten baseData){
        this.baseData = baseData;
    }
 
@@ -1157,6 +1168,8 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public double getSolz_solzSum() {
+       solz_solzSum = Math.floor((solz_solzSum*100.0)/100.0);
+
         return solz_solzSum;
     }
 
@@ -1189,6 +1202,8 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public double getBk_kistSum() {
+        bk_kistSum = Math.floor((bk_kistSum*100.0)/100.0);
+
         return bk_kistSum;
     }
 
@@ -1381,6 +1396,8 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public double getUebertragw_rvAn() {
+        uebertragw_rvAn = Math.floor((uebertragw_rvAn*100.0)/100.0);
+
         return uebertragw_rvAn;
     }
 
@@ -1389,6 +1406,8 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public double getUebertragw_avAn() {
+        uebertragw_avAn = Math.floor((uebertragw_avAn*100.0)/100.0);
+
         return uebertragw_avAn;
     }
 
@@ -1397,6 +1416,8 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public double getUebertragw_kvAn() {
+        uebertragw_kvAn = Math.floor((uebertragw_kvAn*100.0)/100.0);
+        
         return uebertragw_kvAn;
     }
 
@@ -1405,6 +1426,8 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public double getUebertragw_kvZusatz() {
+        uebertragw_kvZusatz = Math.floor((uebertragw_kvZusatz*100.0)/100.0);
+
         return uebertragw_kvZusatz;
     }
 
@@ -1413,6 +1436,8 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public double getUebertragw_pvAn() {
+        uebertragw_pvAn = Math.floor((uebertragw_pvAn*100.0)/100.0);
+
         return uebertragw_pvAn;
     }
 
@@ -2755,13 +2780,13 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     
     public void fillJahreslohn_zre4j(){
         clacOneTimePayment();
-        System.out.println("einmalbezuegeimbruttolohn ist: " + einmalbezuegeimbruttolohn + " einmalzahlung ist: " + einmalzahlung );
-        jahreslohn_zre4j =( taxBrutto*100-einmalzahlung)*12 + ((einmalbezuegeimbruttolohn+(einmalzahlung/100))*100-einmalzahlung);
+        System.out.println("onetimeEarningsInTheGrossEarning ist: " + onetimeEarningsInTheGrossEarning + " einmalzahlung ist: " + einmalzahlung );
+        jahreslohn_zre4j =( taxBrutto*100-einmalzahlung)*12 + ((onetimeEarningsInTheGrossEarning+(einmalzahlung/100))*100-einmalzahlung);
     }
     
     public void fillJahreslohn1_zre4j(){
         clacOneTimePayment();
-        jahreslohn1_zre4j =( taxBrutto*100-einmalzahlung)*12 + ((einmalbezuegeimbruttolohn+(einmalzahlung/100))*100);
+        jahreslohn1_zre4j =( taxBrutto*100-einmalzahlung)*12 + ((onetimeEarningsInTheGrossEarning+(einmalzahlung/100))*100);
     }
     
     public void fillLohnst_stkl(){
@@ -4507,40 +4532,40 @@ public class Gehaltsabrechnungsrechner implements Serializable {
      }
     
     public void calcRVPflichtigerBeitrag(){
-        calcSvBruttoRv();
-        System.out.println("beitrag von sVBruttoRV ist: " + sVBruttoRv);
-        rvPflichtigerBeitrag = sVBruttoRv;
+        calcsVGrossRv();
+        System.out.println("beitrag von sVGrossRv ist: " + sVGrossRv);
+        rvPflichtigerBeitrag = sVGrossRv;
         System.out.println("beitrag von rvPflichtigerbeitrag nach übertrag ist: " + rvPflichtigerBeitrag);
     }
     
     public void calcKVPflichtigerBeitrag(){
-        calcSvBruttoKv();
-        System.out.println("SvBruttoKv in clacKvplfichtigerbeitrag ist: " + svBruttoKv);
-        kvPflichtigerBeitrag = svBruttoKv;
+        calcsvGrossKv();
+        System.out.println("svGrossKv in clacKvplfichtigerbeitrag ist: " + svGrossKv);
+        kvPflichtigerBeitrag = svGrossKv;
     }
     /*
     public double calcBruttoTaxes(){
         double salaryMonth = employeeSalaryYear/12;
         double bavDiscount = 0.0d;
         
-        if(optionalSalaryStatement.getBav() < 398){
-            bavDiscount = optionalSalaryStatement.getBav();
+        if(optionalSalaryInput.getBav() < 398){
+            bavDiscount = optionalSalaryInput.getBav();
         }else{
             bavDiscount = 398;
         }
         
-        double taxBrutto = salaryMonth -(optionalSalaryStatement.getHolidayMoney() 
-                + optionalSalaryStatement.getBonus()
-                + optionalSalaryStatement.getCompanyCar1()
-                + optionalSalaryStatement.getCompanyCarWayToWork() + bavDiscount);
+        double taxBrutto = salaryMonth -(optionalSalaryInput.getHolidayMoney() 
+                + optionalSalaryInput.getBonus()
+                + optionalSalaryInput.getCompanyCar1()
+                + optionalSalaryInput.getCompanyCarWayToWork() + bavDiscount);
         return taxBrutto;
     }
     */
     public void clacOneTimePayment(){
-        einmalzahlung = (optionalSalaryStatement.getHolidayMoney()
-                + optionalSalaryStatement.getBonus()
-                + optionalSalaryStatement.getCompanyCar1()
-                + optionalSalaryStatement.getCompanyCarWayToWork())*100;
+        einmalzahlung = (optionalSalaryInput.getHolidayMoney()
+                + optionalSalaryInput.getBonus()
+                + optionalSalaryInput.getCompanyCar1()
+                + optionalSalaryInput.getCompanyCarWayToWork())*100;
     }
     
     public int getYearFromDate(Date date) throws ParseException{
@@ -4696,14 +4721,14 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     
     
     public void fillSolzAnteilBaV_bavBeitrag(){
-        solzAnteilBaV_bavBeitrag = min(optionalSalaryStatement.getBav(),398);
+        solzAnteilBaV_bavBeitrag = min(optionalSalaryInput.getBav(),398);
         
     }
     
     public void fillSolzAnteilBav_sozVPflicht(){
         fillSolzAnteilBaV_bavBeitrag();
         if(solzAnteilBaV_bavBeitrag > 248){
-            solzAnteilBaV_sozVPflicht = min(optionalSalaryStatement.getBav()-248,150);
+            solzAnteilBaV_sozVPflicht = min(optionalSalaryInput.getBav()-248,150);
         }else{
             solzAnteilBaV_sozVPflicht = 0;
             
@@ -4716,11 +4741,11 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
     
     
-    public void fillArbeitgeberzuschussPrivateKv(){
+    public void fillEmployerSubsidyPrivateKv(){
         if(lohnst_pkv > 0 && baseData.getArbeitgeberzuschussKvPv() == 1){
-            arbeitgeberzuschussPrivateKv = baseData.getKrankenversicherung()/2;
+            employerSubsidyPrivateKv = baseData.getKrankenversicherung()/2;
         }else{
-            arbeitgeberzuschussPrivateKv = 0;
+            employerSubsidyPrivateKv = 0;
         }
     }
     public int changeMonthInNumberGehaltsrechnung(){
@@ -4773,24 +4798,24 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         double salaryMonth = employeeSalaryYear/12;
         double bav = 0.0d;
         
-        if(optionalSalaryStatement.getBav() < 398){
-            bav = optionalSalaryStatement.getBav();
+        if(optionalSalaryInput.getBav() < 398){
+            bav = optionalSalaryInput.getBav();
         }else{
             bav = 398;
         }
-        return salaryMonth +(optionalSalaryStatement.getHolidayMoney() 
-                + optionalSalaryStatement.getBonus()
-                + optionalSalaryStatement.getCompanyCar1()
-                + optionalSalaryStatement.getCompanyCarWayToWork())-bav;
+        return salaryMonth +(optionalSalaryInput.getHolidayMoney() 
+                + optionalSalaryInput.getBonus()
+                + optionalSalaryInput.getCompanyCar1()
+                + optionalSalaryInput.getCompanyCarWayToWork())-bav;
     }
 
     public void calcSteuerfreiebezuege(){
-        steuerfreiebezuege = optionalSalaryStatement.getRideMoney() + optionalSalaryStatement.getBonusbaV() + optionalSalaryStatement.getExpensesRefund() + optionalSalaryStatement.getSunHolidayNightMoney();
+        steuerfreiebezuege = optionalSalaryInput.getRideMoney() + optionalSalaryInput.getBonusbaV() + optionalSalaryInput.getExpensesRefund() + optionalSalaryInput.getSunHolidayNightMoney();
     }
     
     public void calcPayAmount(){
         
-        payAmount = employeeSalaryMonth - min(optionalSalaryStatement.getBav(),398)- sumDiscount + steuerfreiebezuege;
+        payAmount = employeeSalaryMonth - min(optionalSalaryInput.getBav(),398)- sumDiscount + steuerfreiebezuege;
     }
     
     public void calcSumDiscount(){
@@ -4989,11 +5014,11 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         fillSolzAnteilBaV_bavBeitrag();
         fillSolzAnteilBav_sozVPflicht();
         fillSolzAnteilBaV_sozVpflichtBrut();
-       fillArbeitgeberzuschussPrivateKv();
+       fillEmployerSubsidyPrivateKv();
           calcSalaryMonthWithOneTimePayment();
         calcSteuerfreiebezuege();
-         calcSvBruttoRv();
-        calcSvBruttoKv();
+         calcsVGrossRv();
+        calcsvGrossKv();
         calcRVPflichtigerBeitrag();
         calcKVPflichtigerBeitrag();
         
@@ -5020,37 +5045,37 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         fillBk_kistsum();
         calcSumDiscount();
         calcPayAmount();
-        //Lohnkonto werte setzen
-        lohnkonto.setBruttolohn(employeeSalaryMonth);
-        lohnkonto.setGeltwertevorteilelaufend(0.0);
-        lohnkonto.setEinmalbezuegeimbruttolohn(einmalzahlung/100);
-        lohnkonto.setGeltwertevorteileeinmalig(0.0);
-        lohnkonto.setSteuerfreiebezuege(steuerfreiebezuege);
-        lohnkonto.setLohnsteuer(mlstjahr_lstlzzSum);
-        lohnkonto.setSolidaritaetszuschlag(solz_solzSum);
-        lohnkonto.setKirchensteuer(bk_kistSum);
-        lohnkonto.setKvan(uebertragw_kvAn);
-        lohnkonto.setKvzusatzbeitrag(uebertragw_kvZusatz);
-        lohnkonto.setRvan(uebertragw_rvAn);
-        lohnkonto.setAvan(uebertragw_avAn);
-        lohnkonto.setPvan(uebertragw_pvAn);
-        lohnkonto.setKvag(solzvers_kvAg);
-        lohnkonto.setRvag(solzvers_rvAg);
-        lohnkonto.setAvag(solzvers_avAg);
-        lohnkonto.setPvag(solzvers_pvAg);
-        lohnkonto.setUmlage1(uebWerte_u1);
-        lohnkonto.setUmlage2(uebWerte_u2);
-        lohnkonto.setInsolvenzumlage(uebWerte_insolvenz);
-        lohnkonto.setBeitragzurbav(optionalSalaryStatement.getBav());
-        lohnkonto.setDavonsozvpflichtig(solzAnteilBaV_sozVPflicht);
-        lohnkonto.setSteuerbrutto(calcTaxBrutto());
-        lohnkonto.setMaid(employee);
-        lohnkonto.setSvbruttorv(taxBrutto);
-        lohnkonto.setSvbruttokv(taxBrutto);
-        lohnkonto.setGesamtnetto(payAmount);
-        lohnkonto.setSvbruttokv(svBruttoKv);
-        lohnkonto.setSvbruttorv(sVBruttoRv);
-        lohnkonto.setMonat(changeMonthInNumberGehaltsrechnung());
+        //payrollAccount werte setzen
+        payrollAccount.setBruttolohn(employeeSalaryMonth);
+        payrollAccount.setGeltwertevorteilelaufend(0.0);
+        payrollAccount.setEinmalbezuegeimbruttolohn(einmalzahlung/100);
+        payrollAccount.setGeltwertevorteileeinmalig(0.0);
+        payrollAccount.setSteuerfreiebezuege(steuerfreiebezuege);
+        payrollAccount.setLohnsteuer(mlstjahr_lstlzzSum);
+        payrollAccount.setSolidaritaetszuschlag(solz_solzSum);
+        payrollAccount.setKirchensteuer(bk_kistSum);
+        payrollAccount.setKvan(uebertragw_kvAn);
+        payrollAccount.setKvzusatzbeitrag(uebertragw_kvZusatz);
+        payrollAccount.setRvan(uebertragw_rvAn);
+        payrollAccount.setAvan(uebertragw_avAn);
+        payrollAccount.setPvan(uebertragw_pvAn);
+        payrollAccount.setKvag(solzvers_kvAg);
+        payrollAccount.setRvag(solzvers_rvAg);
+        payrollAccount.setAvag(solzvers_avAg);
+        payrollAccount.setPvag(solzvers_pvAg);
+        payrollAccount.setUmlage1(uebWerte_u1);
+        payrollAccount.setUmlage2(uebWerte_u2);
+        payrollAccount.setInsolvenzumlage(uebWerte_insolvenz);
+        payrollAccount.setBeitragzurbav(optionalSalaryInput.getBav());
+        payrollAccount.setDavonsozvpflichtig(solzAnteilBaV_sozVPflicht);
+        payrollAccount.setSteuerbrutto(calcTaxBrutto());
+        payrollAccount.setMaid(employee);
+        payrollAccount.setSvbruttorv(taxBrutto);
+        payrollAccount.setSvbruttokv(taxBrutto);
+        payrollAccount.setGesamtnetto(payAmount);
+        payrollAccount.setSvbruttokv(svGrossKv);
+        payrollAccount.setSvbruttorv(sVGrossRv);
+        payrollAccount.setMonat(changeMonthInNumberGehaltsrechnung());
         
         System.out.println("alles wurde gerechnet)");
        
@@ -5341,12 +5366,12 @@ public class Gehaltsabrechnungsrechner implements Serializable {
 
    System.out.println("payAmount: " +    payAmount);
   System.out.println("sumDiscount: " +     sumDiscount);
-    System.out.println("sVBruttoRv: " +   sVBruttoRv);
-   System.out.println("svBruttoKv: " +    svBruttoKv);
-  System.out.println("sumSteuerBruttoBisher: " +     sumSteuerBruttoBisher);
-  System.out.println("arbeitgeberzuschussPrivateKv: " +     arbeitgeberzuschussPrivateKv);
-   System.out.println("zusatzbeitrag: " +  zusatzbeitrag);
-    System.out.println("krankenversicherung: " + krankenversicherung);
+    System.out.println("sVGrossRv: " +   sVGrossRv);
+   System.out.println("svGrossKv: " +    svGrossKv);
+  System.out.println("sumTaxGrossTillNow: " +     sumTaxGrossTillNow);
+  System.out.println("employerSubsidyPrivateKv: " +     employerSubsidyPrivateKv);
+   System.out.println("additionalContribution: " +  additionalContribution);
+    System.out.println("krankenversicherung: " + healthInsurance);
     System.out.println("avpflichtig: " +avpflichtig);
         
         
@@ -5451,39 +5476,39 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     
     
     
-      //Berechnungen für Lohnkonto
-    public void calcSvBruttoRv(){
+      //Berechnungen für payrollAccount
+    public void calcsVGrossRv(){
         switch(month){
             case "Januar":{
-                calcSvBruttoRvJanuar();
+                calcsVGrossRvJanuar();
             }break;
             default:{
-                calcSvBruttoRvOtherMonths();
+                calcsVGrossRvOtherMonths();
             }break;
             
         }
     }
     
-    public void calcSvBruttoKv(){
+    public void calcsvGrossKv(){
         switch(month){
             case "Januar":{
-                calcSvBruttoKvJanuar();
+                calcsvGrossKvJanuar();
             }break;
             default:{
-                calcSvBruttoKvOtherMonths();
+                calcsvGrossKvOtherMonths();
             }break;
         }
     }  
 
-    private void calcSvBruttoRvJanuar() {
-        sVBruttoRv = min(solzAnteilBaV_sozVpflichtBrut, solzAnteilBaV_sozVpflichtBrut-(lohnkonto.getSteuerbrutto()-(solzvers_rvBemes)));
+    private void calcsVGrossRvJanuar() {
+        sVGrossRv = min(solzAnteilBaV_sozVpflichtBrut, solzAnteilBaV_sozVpflichtBrut-(payrollAccount.getSteuerbrutto()-(solzvers_rvBemes)));
     }
 
-    private void calcSvBruttoRvOtherMonths() {
-        if(lohnkonto.getEinmalbezuegeimbruttolohn() > 0){
-            sVBruttoRv = min(solzAnteilBaV_sozVpflichtBrut,max(solzvers_rvBemes,solzAnteilBaV_sozVpflichtBrut-sumSteuerBruttoBisher - (solzvers_rvBemes*changeMonthInNumberGehaltsrechnung())));
+    private void calcsVGrossRvOtherMonths() {
+        if(payrollAccount.getEinmalbezuegeimbruttolohn() > 0){
+            sVGrossRv = min(solzAnteilBaV_sozVpflichtBrut,max(solzvers_rvBemes,solzAnteilBaV_sozVpflichtBrut-sumTaxGrossTillNow - (solzvers_rvBemes*changeMonthInNumberGehaltsrechnung())));
         }else{
-            sVBruttoRv = min(solzAnteilBaV_sozVpflichtBrut,lohnst_rvbemes/12);
+            sVGrossRv = min(solzAnteilBaV_sozVpflichtBrut,lohnst_rvbemes/12);
         }
     }
 
@@ -5491,17 +5516,17 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     
     
     
-    private void calcSvBruttoKvJanuar() {
+    private void calcsvGrossKvJanuar() {
         
-                svBruttoKv = min(solzAnteilBaV_sozVpflichtBrut, solzAnteilBaV_sozVpflichtBrut-(lohnkonto.getSteuerbrutto()-(solzvers_kvBemes)));
+                svGrossKv = min(solzAnteilBaV_sozVpflichtBrut, solzAnteilBaV_sozVpflichtBrut-(payrollAccount.getSteuerbrutto()-(solzvers_kvBemes)));
                  //System.out.println("sVBrutto")
     }
 
-    private void calcSvBruttoKvOtherMonths() {
-         if(lohnkonto.getEinmalbezuegeimbruttolohn() > 0){
-            svBruttoKv = min(solzAnteilBaV_sozVpflichtBrut,max(solzvers_kvBemes,solzAnteilBaV_sozVpflichtBrut-sumSteuerBruttoBisher - (solzvers_kvBemes*changeMonthInNumberGehaltsrechnung())));
+    private void calcsvGrossKvOtherMonths() {
+         if(payrollAccount.getEinmalbezuegeimbruttolohn() > 0){
+            svGrossKv = min(solzAnteilBaV_sozVpflichtBrut,max(solzvers_kvBemes,solzAnteilBaV_sozVpflichtBrut-sumTaxGrossTillNow - (solzvers_kvBemes*changeMonthInNumberGehaltsrechnung())));
         }else{
-            svBruttoKv = min(solzAnteilBaV_sozVpflichtBrut,solzvers_kvBemes);
+            svGrossKv = min(solzAnteilBaV_sozVpflichtBrut,solzvers_kvBemes);
         }
     }
 

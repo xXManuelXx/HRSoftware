@@ -39,12 +39,7 @@
                             </f:facet>
                             <h:outputText value="#{item.gehalt}"/>
                         </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListGehaltTitle_mitarbeiter}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.mitarbeiter}"/>
-                        </p:column>
+                       
                         <f:facet name="footer">
                             <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{gehaltController.prepareCreate}" update=":GehaltCreateForm" oncomplete="PF('GehaltCreateDialog').show()"/>
                             <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":GehaltViewForm" oncomplete="PF('GehaltViewDialog').show()" disabled="#{empty gehaltController.selected}"/>

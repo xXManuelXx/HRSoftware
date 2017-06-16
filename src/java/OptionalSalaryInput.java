@@ -13,9 +13,9 @@ import javax.inject.Named;
  *
  * @author mfehrenbach
  */
-@Named("optionalSalaryStatement")
+@Named("optionalSalaryInput")
 @ConversationScoped
-public class OptionalSalaryStatement implements Serializable{
+public class OptionalSalaryInput implements Serializable{
     private double holidayMoney;
     private double bonus;
     private double companyCar1;
@@ -46,6 +46,8 @@ public class OptionalSalaryStatement implements Serializable{
     
 
     public double getHolidayMoney() {
+        holidayMoney = Math.floor(holidayMoney*100.0)/100.0;
+        
         return holidayMoney;
     }
 
@@ -54,6 +56,7 @@ public class OptionalSalaryStatement implements Serializable{
     }
 
     public double getBonus() {
+        bonus = Math.floor(bonus*100.0)/100.0;
         return bonus;
     }
 
@@ -62,6 +65,7 @@ public class OptionalSalaryStatement implements Serializable{
     }
 
     public double getCompanyCar1() {
+         companyCar1 = Math.floor(companyCar1*100.0)/100.0;
         return companyCar1;
     }
 
@@ -70,6 +74,7 @@ public class OptionalSalaryStatement implements Serializable{
     }
 
     public double getCompanyCarWayToWork() {
+        companyCarWayToWork = Math.floor(companyCarWayToWork*100.0)/100.0;
         return companyCarWayToWork;
     }
 
@@ -78,6 +83,7 @@ public class OptionalSalaryStatement implements Serializable{
     }
 
     public double getHoursAtNight() {
+        hoursAtNight = Math.floor(hoursAtNight*100.0)/100.0;
         return hoursAtNight;
     }
 
@@ -86,6 +92,8 @@ public class OptionalSalaryStatement implements Serializable{
     }
 
     public double getHoursSunday() {
+        hoursSunday = Math.floor(hoursSunday*100.0)/100.0;
+
         return hoursSunday;
     }
 
@@ -94,6 +102,8 @@ public class OptionalSalaryStatement implements Serializable{
     }
 
     public double getHoursOnHoliday() {
+       hoursOnHoliday = Math.floor(hoursOnHoliday*100.0)/100.0;
+
         return hoursOnHoliday;
     }
 
@@ -102,6 +112,8 @@ public class OptionalSalaryStatement implements Serializable{
     }
 
     public double getHolidayExtraBonus() {
+        holidayExtraBonus = Math.floor(holidayExtraBonus*100.0)/100.0;
+
         return holidayExtraBonus;
     }
 
@@ -110,6 +122,8 @@ public class OptionalSalaryStatement implements Serializable{
     }
 
     public double getExpensesRefund() {
+        expensesRefund = Math.floor(expensesRefund*100.0)/100.0;
+
         return expensesRefund;
     }
 
@@ -118,6 +132,8 @@ public class OptionalSalaryStatement implements Serializable{
     }
 
     public double getRideMoney() {
+        rideMoney = Math.floor(rideMoney*100.0)/100.0;
+
         return rideMoney;
     }
 
@@ -126,6 +142,8 @@ public class OptionalSalaryStatement implements Serializable{
     }
 
     public double getBonusbaV() {
+        bonusbaV = Math.floor(bonusbaV*100.0)/100.0;
+
         return bonusbaV;
     }
 
@@ -135,6 +153,8 @@ public class OptionalSalaryStatement implements Serializable{
     
     public double getSunHolidayNightMoney(){
         this.sunHolidayNightMoney = hoursAtNight+hoursOnHoliday+hoursSunday+hoursOnHoliday;
+        sunHolidayNightMoney = Math.floor(sunHolidayNightMoney*100.0)/100.0;
+
         return this.sunHolidayNightMoney;
     }
 

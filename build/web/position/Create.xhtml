@@ -16,12 +16,7 @@
                         <p:inputText id="id" value="#{positionController.selected.id}" title="#{bundle.CreatePositionTitle_id}" required="false" requiredMessage="#{bundle.CreatePositionRequiredMessage_id}"/>
                         <p:outputLabel value="#{bundle.CreatePositionLabel_beschreibung}" for="beschreibung" />
                         <p:inputTextarea rows="4" cols="30" id="beschreibung" value="#{positionController.selected.beschreibung}" title="#{bundle.CreatePositionTitle_beschreibung}" required="true" requiredMessage="#{bundle.CreatePositionRequiredMessage_beschreibung}"/>
-                        <p:outputLabel value="#{bundle.CreatePositionLabel_mitarbeiter}" for="mitarbeiter" />
-                        <p:selectOneMenu id="mitarbeiter" value="#{positionController.selected.mitarbeiter}" >
-                            <f:selectItems value="#{mitarbeiterController.itemsAvailableSelectOne}"
-                                           var="mitarbeiterItem"
-                                           itemValue="#{mitarbeiterItem}"/>
-                        </p:selectOneMenu>
+                        
                     </p:panelGrid>
                     <p:commandButton actionListener="#{positionController.create}" value="#{bundle.Save}" update="display,:PositionListForm:datalist,:growl" oncomplete="handleSubmit(args,'PositionCreateDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" onclick="PositionCreateDialog.hide()"/>
