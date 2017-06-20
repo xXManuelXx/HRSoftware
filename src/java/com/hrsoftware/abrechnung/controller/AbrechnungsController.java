@@ -1,3 +1,5 @@
+package com.hrsoftware.abrechnung.controller;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -8,6 +10,9 @@
  *
  * @author mfehrenbach
  */
+import com.hrsoftware.abrechnung.utilities.MonthView;
+import com.hrsoftware.abrechnung.model.OptionalSalaryInput;
+import com.hrsoftware.abrechnung.model.Gehaltsabrechnungsrechner;
 import com.hrsoftware.jpa.Abteilung;
 import com.hrsoftware.jpa.Gehalt;
 import com.hrsoftware.jpa.Gehaltsabrechnungvariableeingaben;

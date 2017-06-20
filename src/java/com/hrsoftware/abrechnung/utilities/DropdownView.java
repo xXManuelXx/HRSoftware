@@ -1,4 +1,4 @@
-package org.primefaces.showcase.view.ajax;
+package com.hrsoftware.abrechnung.utilities;
  
 import java.io.Serializable;
 import java.util.HashMap;

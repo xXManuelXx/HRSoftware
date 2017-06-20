@@ -1,3 +1,5 @@
+package com.hrsoftware.abrechnung.model;
+
 
 import java.io.Serializable;
 import javax.enterprise.context.ConversationScoped;
