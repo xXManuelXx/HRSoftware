@@ -10,7 +10,7 @@ package com.hrsoftware.abrechnung.controller;
  *
  * @author mfehrenbach
  */
-import com.hrsoftware.abrechnung.utilities.MonthView;
+import com.hrsoftware.abrechnung.model.MonthView;
 import com.hrsoftware.abrechnung.model.OptionalSalaryInput;
 import com.hrsoftware.abrechnung.model.Gehaltsabrechnungsrechner;
 import com.hrsoftware.jpa.Abteilung;
@@ -56,6 +56,10 @@ public class AbrechnungsController  implements Serializable {
     private String date = "";
     private String birthdate ="";
     private double calcSalaryMonth = 0.0d;
+    private String message;
+    
+
+    
     @Inject
     Gehaltsabrechnungsrechner payrollCalculator;
     
@@ -88,8 +92,7 @@ public class AbrechnungsController  implements Serializable {
     private List<Abteilung> itemsDepartment = null;
     private Abteilung selectedDepartment;
 
-   
-    
+     
      public Gehaltsabrechnungsrechner getpayrollCalculator() {
         return payrollCalculator;
     }
@@ -172,7 +175,16 @@ public class AbrechnungsController  implements Serializable {
         return ejbFacadeDepartment;
     }
     
+    public String getMessage(){
+        return message;
+    }
+    
+    public void setMessage(String message){
+        this.message = message;
+    }
+    
     private Lohnkonto loadpayrollAccount(){
+
         payrollAccount = ejbFacadePayrollAccount.getLohnkontoDatenVonMonat(changeMonth(monthView.getMonth()));
         
         if(payrollAccount == null){

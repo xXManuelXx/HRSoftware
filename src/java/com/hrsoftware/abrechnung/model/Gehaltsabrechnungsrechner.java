@@ -492,7 +492,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
    
    
     public double getSumDiscount() {
-        sumDiscount = Math.floor((sumDiscount*100.0)/100.0);
+        sumDiscount = changeNumberTwoDecimals(sumDiscount,2); 
         return sumDiscount;
     }
 
@@ -521,7 +521,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
    
 
     public double getSteuerfreiebezuege() {
-        steuerfreiebezuege = Math.floor(steuerfreiebezuege*100.0)/100.0;
+        steuerfreiebezuege = changeNumberTwoDecimals(steuerfreiebezuege,2); 
         return steuerfreiebezuege;
     }
 
@@ -530,7 +530,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public double getPayAmount() {
-        payAmount = Math.floor((payAmount*100.0d)/100.0d);
+        payAmount = changeNumberTwoDecimals(payAmount,2); 
 
         return payAmount;
     }
@@ -551,7 +551,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public double getEmployerSubsidyPrivateKv() {
-        employerSubsidyPrivateKv = Math.floor((employerSubsidyPrivateKv*100.0)/100.0);
+        employerSubsidyPrivateKv = changeNumberTwoDecimals(employerSubsidyPrivateKv,2); 
 
         
         return employerSubsidyPrivateKv;
@@ -575,7 +575,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
    
 
     public double getTaxBrutto() {
-       taxBrutto = Math.floor(taxBrutto*100.0)/100.0;
+       taxBrutto =  changeNumberTwoDecimals(taxBrutto,2); 
 
         return taxBrutto;
     }
@@ -585,7 +585,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public double getEmployeeSalaryMonth() {
-        employeeSalaryMonth = Math.floor((employeeSalaryMonth*100.0)/100.0);
+        employeeSalaryMonth = changeNumberTwoDecimals(employeeSalaryMonth,2); 
 
         return employeeSalaryMonth;
     }
@@ -1170,7 +1170,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public double getSolz_solzSum() {
-       solz_solzSum = Math.floor((solz_solzSum*100.0)/100.0);
+       solz_solzSum = changeNumberTwoDecimals(solz_solzSum,2); 
 
         return solz_solzSum;
     }
@@ -1204,7 +1204,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public double getBk_kistSum() {
-        bk_kistSum = Math.floor((bk_kistSum*100.0)/100.0);
+        bk_kistSum = changeNumberTwoDecimals(bk_kistSum,2); 
 
         return bk_kistSum;
     }
@@ -1398,7 +1398,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public double getUebertragw_rvAn() {
-        uebertragw_rvAn = Math.floor((uebertragw_rvAn*100.0)/100.0);
+        uebertragw_rvAn =  changeNumberTwoDecimals(uebertragw_rvAn,2); 
 
         return uebertragw_rvAn;
     }
@@ -1408,7 +1408,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public double getUebertragw_avAn() {
-        uebertragw_avAn = Math.floor((uebertragw_avAn*100.0)/100.0);
+        uebertragw_avAn =  changeNumberTwoDecimals(uebertragw_avAn,2); 
 
         return uebertragw_avAn;
     }
@@ -1418,7 +1418,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public double getUebertragw_kvAn() {
-        uebertragw_kvAn = Math.floor((uebertragw_kvAn*100.0)/100.0);
+        uebertragw_kvAn = changeNumberTwoDecimals(uebertragw_kvAn,2); 
         
         return uebertragw_kvAn;
     }
@@ -1428,7 +1428,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public double getUebertragw_kvZusatz() {
-        uebertragw_kvZusatz = Math.floor((uebertragw_kvZusatz*100.0)/100.0);
+        uebertragw_kvZusatz =changeNumberTwoDecimals(uebertragw_kvZusatz,2); 
 
         return uebertragw_kvZusatz;
     }
@@ -1438,7 +1438,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public double getUebertragw_pvAn() {
-        uebertragw_pvAn = Math.floor((uebertragw_pvAn*100.0)/100.0);
+        uebertragw_pvAn = changeNumberTwoDecimals(uebertragw_pvAn,2); 
 
         return uebertragw_pvAn;
     }
@@ -5532,4 +5532,20 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         }
     }
 
+    
+    private double changeNumberTwoDecimals(double number, int places){
+        if(places< 0 ) throw new IllegalArgumentException();
+        String twodec;
+        String stringnumber = String.valueOf(number);
+        String[] split = stringnumber.split("\\.");
+        if(split[1].length() >= 2){
+            twodec = split[1].substring(0, places);
+        }else{
+            twodec = split[1];
+        }
+        
+        String endNumber = split[0] + "." + twodec;
+        
+        return Double.valueOf(endNumber);
+    }
 }

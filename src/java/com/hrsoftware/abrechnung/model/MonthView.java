@@ -1,4 +1,4 @@
-package com.hrsoftware.abrechnung.utilities;
+package com.hrsoftware.abrechnung.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,6 +14,8 @@ public class MonthView implements Serializable{
     private List<String> months;  
 
      
+  
+    
     @PostConstruct
     public void init() {
         months = new ArrayList<String>();
@@ -29,6 +31,7 @@ public class MonthView implements Serializable{
         months.add("Oktober");
         months.add("November");
         months.add("Dezember");
+        month = "Januar";
     }
  
     public String getMonth(){

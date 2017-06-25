@@ -144,20 +144,14 @@
                          
                          <p:column >AG-Zuschuss zur baV (€)</p:column>
                          <p:column ><p:inputText  id="adBonusBav" size="5" type="number" value="#{abrechnungsController.optionalSalaryInput.bonusbaV}"/></p:column>
-
-                      
                      </p:row>
               
                    
                
                  </p:panelGrid>
-            
+                <br />
                 <p:commandButton value="Abrechnung erstellen" id="ajax" actionListener="#{abrechnungsController.createSalaryStatement}" update="lohnabrechnung" styleClass="ui-priority-primary" />
-                <p:commandButton value="Drucken" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
-                    <p:printer target="lohnabrechnung" />
-                </p:commandButton>
-            <br />
-             
+        
                  <h3>Abrechnung</h3>
                  <p:panelGrid id="lohnabrechnung" style="margin-top:20px" >
                      <f:facet name="header">
@@ -177,15 +171,11 @@
                           <p:column><h:outputText value="#{abrechnungsController.selectedEmployee.nachname}"/></p:column>
                      </p:row>
                       <p:row>
-                          <p:column style="font-weight: bold;">Straße</p:column>
+                          <p:column style="font-weight: bold;">Vorname</p:column>
                           <p:column><h:outputText value="#{abrechnungsController.selectedEmployee.vorname}"/></p:column>
                      </p:row>
                       <p:row>
-                          <p:column style="font-weight: bold;">PLZ Ort</p:column>
-                          <p:column><h:outputText value="#{abrechnungsController.selectedEmployee.plz}"/></p:column>
-                     </p:row>
-                      <p:row>
-                          <p:column style="font-weight: bold;">Datum</p:column>
+                          <p:column style="font-weight: bold;">Datum Erstellung</p:column>
                           <p:column><h:outputText value="#{abrechnungsController.date}"/></p:column>
                          <p:column style="font-weight: bold;">Geburtsdatum</p:column>
                          <p:column><h:outputText value="#{abrechnungsController.birthdate}"/></p:column>
@@ -364,6 +354,11 @@
                          <p:column  style=" text-align: right;font-weight: bold;"><h:outputText value="#{abrechnungsController.payrollCalculator.payAmount}"/></p:column>
                      </p:row>
                  </p:panelGrid>
+                  <p:separator style="visibility: hidden"/>
+
+                <p:commandButton value="Abrechnung Drucken" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
+                    <p:printer target="lohnabrechnung" />
+                </p:commandButton>
             </h:form> 
          </h:form> 
 
