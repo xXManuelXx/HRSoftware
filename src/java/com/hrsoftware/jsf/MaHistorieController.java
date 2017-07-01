@@ -3,7 +3,7 @@ package com.hrsoftware.jsf;
 import com.hrsoftware.jpa.MaHistorie;
 import com.hrsoftware.jsf.util.JsfUtil;
 import com.hrsoftware.jsf.util.JsfUtil.PersistAction;
-import com.hrsoftware.jpaservice.MaHistorieFacade;
+import com.hrsoftware.jpaservice.MaHistorieService;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,7 +24,7 @@ import javax.faces.convert.FacesConverter;
 public class MaHistorieController implements Serializable {
 
     @EJB
-    private com.hrsoftware.jpaservice.MaHistorieFacade ejbFacade;
+    private com.hrsoftware.jpaservice.MaHistorieService ejbFacade;
     private List<MaHistorie> items = null;
     private MaHistorie selected;
 
@@ -45,7 +45,7 @@ public class MaHistorieController implements Serializable {
     protected void initializeEmbeddableKey() {
     }
 
-    private MaHistorieFacade getFacade() {
+    private MaHistorieService getFacade() {
         return ejbFacade;
     }
 

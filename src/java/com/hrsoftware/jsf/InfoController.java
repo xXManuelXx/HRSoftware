@@ -3,7 +3,7 @@ package com.hrsoftware.jsf;
 import com.hrsoftware.jpa.Info;
 import com.hrsoftware.jsf.util.JsfUtil;
 import com.hrsoftware.jsf.util.JsfUtil.PersistAction;
-import com.hrsoftware.jpaservice.InfoFacade;
+import com.hrsoftware.jpaservice.InfoService;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,7 +24,7 @@ import javax.faces.convert.FacesConverter;
 public class InfoController implements Serializable {
 
     @EJB
-    private com.hrsoftware.jpaservice.InfoFacade ejbFacade;
+    private com.hrsoftware.jpaservice.InfoService ejbFacade;
     private List<Info> items = null;
     private Info selected;
 
@@ -45,7 +45,7 @@ public class InfoController implements Serializable {
     protected void initializeEmbeddableKey() {
     }
 
-    private InfoFacade getFacade() {
+    private InfoService getFacade() {
         return ejbFacade;
     }
 

@@ -3,7 +3,7 @@ package com.hrsoftware.jsf;
 import com.hrsoftware.jpa.Raum;
 import com.hrsoftware.jsf.util.JsfUtil;
 import com.hrsoftware.jsf.util.JsfUtil.PersistAction;
-import com.hrsoftware.jpaservice.RaumFacade;
+import com.hrsoftware.jpaservice.RaumService;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,7 +24,7 @@ import javax.faces.convert.FacesConverter;
 public class RaumController implements Serializable {
 
     @EJB
-    private com.hrsoftware.jpaservice.RaumFacade ejbFacade;
+    private com.hrsoftware.jpaservice.RaumService ejbFacade;
     private List<Raum> items = null;
     private Raum selected;
 
@@ -45,7 +45,7 @@ public class RaumController implements Serializable {
     protected void initializeEmbeddableKey() {
     }
 
-    private RaumFacade getFacade() {
+    private RaumService getFacade() {
         return ejbFacade;
     }
 

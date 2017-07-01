@@ -3,7 +3,7 @@ package com.hrsoftware.jsf;
 import com.hrsoftware.jpa.Position;
 import com.hrsoftware.jsf.util.JsfUtil;
 import com.hrsoftware.jsf.util.JsfUtil.PersistAction;
-import com.hrsoftware.jpaservice.PositionFacade;
+import com.hrsoftware.jpaservice.PositionService;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,7 +24,7 @@ import javax.faces.convert.FacesConverter;
 public class PositionController implements Serializable {
 
     @EJB
-    private com.hrsoftware.jpaservice.PositionFacade ejbFacade;
+    private com.hrsoftware.jpaservice.PositionService ejbFacade;
     private List<Position> items = null;
     private Position selected;
 
@@ -45,7 +45,7 @@ public class PositionController implements Serializable {
     protected void initializeEmbeddableKey() {
     }
 
-    private PositionFacade getFacade() {
+    private PositionService getFacade() {
         return ejbFacade;
     }
 

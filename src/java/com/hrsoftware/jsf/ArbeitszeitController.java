@@ -3,7 +3,7 @@ package com.hrsoftware.jsf;
 import com.hrsoftware.jpa.Arbeitszeit;
 import com.hrsoftware.jsf.util.JsfUtil;
 import com.hrsoftware.jsf.util.JsfUtil.PersistAction;
-import com.hrsoftware.jpaservice.ArbeitszeitFacade;
+import com.hrsoftware.jpaservice.ArbeitszeitService;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,7 +24,7 @@ import javax.faces.convert.FacesConverter;
 public class ArbeitszeitController implements Serializable {
 
     @EJB
-    private com.hrsoftware.jpaservice.ArbeitszeitFacade ejbFacade;
+    private com.hrsoftware.jpaservice.ArbeitszeitService ejbFacade;
     private List<Arbeitszeit> items = null;
     private Arbeitszeit selected;
 
@@ -45,7 +45,7 @@ public class ArbeitszeitController implements Serializable {
     protected void initializeEmbeddableKey() {
     }
 
-    private ArbeitszeitFacade getFacade() {
+    private ArbeitszeitService getFacade() {
         return ejbFacade;
     }
 

@@ -3,7 +3,7 @@ package com.hrsoftware.jsf;
 import com.hrsoftware.jpa.Unternehmen;
 import com.hrsoftware.jsf.util.JsfUtil;
 import com.hrsoftware.jsf.util.JsfUtil.PersistAction;
-import com.hrsoftware.jpaservice.UnternehmenFacade;
+import com.hrsoftware.jpaservice.UnternehmenService;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,7 +24,7 @@ import javax.faces.convert.FacesConverter;
 public class UnternehmenController implements Serializable {
 
     @EJB
-    private com.hrsoftware.jpaservice.UnternehmenFacade ejbFacade;
+    private com.hrsoftware.jpaservice.UnternehmenService ejbFacade;
     private List<Unternehmen> items = null;
     private Unternehmen selected;
 
@@ -45,7 +45,7 @@ public class UnternehmenController implements Serializable {
     protected void initializeEmbeddableKey() {
     }
 
-    private UnternehmenFacade getFacade() {
+    private UnternehmenService getFacade() {
         return ejbFacade;
     }
 

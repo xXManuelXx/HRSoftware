@@ -3,7 +3,7 @@ package com.hrsoftware.jsf;
 import com.hrsoftware.jpa.Schulung;
 import com.hrsoftware.jsf.util.JsfUtil;
 import com.hrsoftware.jsf.util.JsfUtil.PersistAction;
-import com.hrsoftware.jpaservice.SchulungFacade;
+import com.hrsoftware.jpaservice.SchulungService;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,7 +24,7 @@ import javax.faces.convert.FacesConverter;
 public class SchulungController implements Serializable {
 
     @EJB
-    private com.hrsoftware.jpaservice.SchulungFacade ejbFacade;
+    private com.hrsoftware.jpaservice.SchulungService ejbFacade;
     private List<Schulung> items = null;
     private Schulung selected;
 
@@ -45,7 +45,7 @@ public class SchulungController implements Serializable {
     protected void initializeEmbeddableKey() {
     }
 
-    private SchulungFacade getFacade() {
+    private SchulungService getFacade() {
         return ejbFacade;
     }
 

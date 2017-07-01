@@ -3,7 +3,7 @@ package com.hrsoftware.jsf;
 import com.hrsoftware.jpa.Mitarbeiter;
 import com.hrsoftware.jsf.util.JsfUtil;
 import com.hrsoftware.jsf.util.JsfUtil.PersistAction;
-import com.hrsoftware.jpaservice.MitarbeiterFacade;
+import com.hrsoftware.jpaservice.MitarbeiterService;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,7 +24,7 @@ import javax.faces.convert.FacesConverter;
 public class MitarbeiterController implements Serializable {
 
     @EJB
-    private com.hrsoftware.jpaservice.MitarbeiterFacade ejbFacade;
+    private com.hrsoftware.jpaservice.MitarbeiterService ejbFacade;
     private List<Mitarbeiter> items = null;
     private Mitarbeiter selected;
 
@@ -45,7 +45,7 @@ public class MitarbeiterController implements Serializable {
     protected void initializeEmbeddableKey() {
     }
 
-    private MitarbeiterFacade getFacade() {
+    private MitarbeiterService getFacade() {
         return ejbFacade;
     }
 

@@ -3,7 +3,7 @@ package com.hrsoftware.jsf;
 import com.hrsoftware.jpa.Krankheit;
 import com.hrsoftware.jsf.util.JsfUtil;
 import com.hrsoftware.jsf.util.JsfUtil.PersistAction;
-import com.hrsoftware.jpaservice.KrankheitFacade;
+import com.hrsoftware.jpaservice.KrankheitService;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,7 +24,7 @@ import javax.faces.convert.FacesConverter;
 public class KrankheitController implements Serializable {
 
     @EJB
-    private com.hrsoftware.jpaservice.KrankheitFacade ejbFacade;
+    private com.hrsoftware.jpaservice.KrankheitService ejbFacade;
     private List<Krankheit> items = null;
     private Krankheit selected;
 
@@ -45,7 +45,7 @@ public class KrankheitController implements Serializable {
     protected void initializeEmbeddableKey() {
     }
 
-    private KrankheitFacade getFacade() {
+    private KrankheitService getFacade() {
         return ejbFacade;
     }
 

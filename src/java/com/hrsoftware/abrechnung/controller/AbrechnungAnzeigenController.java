@@ -14,9 +14,9 @@ import com.hrsoftware.jpa.Gehaltsabrechnungvariableeingaben;
 import com.hrsoftware.jpa.Lohnkonto;
 import com.hrsoftware.jpa.Mitarbeiter;
 import com.hrsoftware.jpa.Stammdaten;
-import com.hrsoftware.jpaservice.AbteilungFacade;
-import com.hrsoftware.jpaservice.MitarbeiterFacade;
-import com.hrsoftware.jpaservice.StammdatenFacade;
+import com.hrsoftware.jpaservice.AbteilungService;
+import com.hrsoftware.jpaservice.MitarbeiterService;
+import com.hrsoftware.jpaservice.StammdatenService;
 import com.hrsoftware.jsf.AbteilungController;
 import com.hrsoftware.jsf.MitarbeiterController;
 import com.hrsoftware.jsf.util.JsfUtil;
@@ -42,6 +42,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.faces.application.FacesMessage;
+
 /**
  *
  * @author mfehrenbach
@@ -63,15 +64,15 @@ public class AbrechnungAnzeigenController implements Serializable {
     MonthView monthView;
 
     @Inject
-    private com.hrsoftware.jpaservice.LohnkontoFacade ejbFacadePayrollAccount;
+    private com.hrsoftware.jpaservice.LohnkontoService ejbServicePayrollAccount;
     private Lohnkonto payrollAccount;
 
     @Inject
-    private com.hrsoftware.jpaservice.StammdatenFacade ejbFacadeBasedata;
+    private com.hrsoftware.jpaservice.StammdatenService ejbServiceBasedata;
     private Stammdaten selectedBasedata;
 
     @Inject
-    private com.hrsoftware.jpaservice.MitarbeiterFacade ejbFacadeEmployee;
+    private com.hrsoftware.jpaservice.MitarbeiterService ejbServiceEmployee;
     private List<Mitarbeiter> itemsEmployee = null;
     private Mitarbeiter selectedEmployee;
 
@@ -90,7 +91,7 @@ public class AbrechnungAnzeigenController implements Serializable {
     public List<Mitarbeiter> getItemsEmployee() {
         if (itemsEmployee == null && all) {
             all = false;
-            itemsEmployee = getFacadeEmployee().findAll();
+            itemsEmployee = getServiceEmployee().findAll();
         }
         return itemsEmployee;
     }
@@ -109,8 +110,8 @@ public class AbrechnungAnzeigenController implements Serializable {
     protected void initializeEmbeddableKey() {
     }
 
-    private MitarbeiterFacade getFacadeEmployee() {
-        return ejbFacadeEmployee;
+    private MitarbeiterService getServiceEmployee() {
+        return ejbServiceEmployee;
     }
 
     public String getMessage() {
@@ -130,18 +131,18 @@ public class AbrechnungAnzeigenController implements Serializable {
     }
 
     private void loadpayrollAccount() {
-        payrollAccount = ejbFacadePayrollAccount.getLohnkontoDatenVonMonatUndMaId(changeMonth(monthView.getMonth()), selectedEmployee);
+        payrollAccount = ejbServicePayrollAccount.getLohnkontoDatenVonMonatUndMaId(changeMonth(monthView.getMonth()), selectedEmployee);
 
     }
 
     public void showSalaryStatement() {
         if (selectedEmployee != null) {
-            Stammdaten stamm = ejbFacadeBasedata.getBaseDataFromEmployeeId(selectedEmployee.getId());
+            Stammdaten stamm = ejbServiceBasedata.getBaseDataFromEmployeeId(selectedEmployee.getId());
             selectedBasedata = stamm;
             loadpayrollAccount();
-        }else{
+        } else {
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL,"Mitarbeiter auswählen","") );
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Mitarbeiter auswählen", ""));
         }
     }
 

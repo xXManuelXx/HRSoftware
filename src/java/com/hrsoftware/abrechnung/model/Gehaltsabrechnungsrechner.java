@@ -5,7 +5,6 @@ package com.hrsoftware.abrechnung.model;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author mfehrenbach
@@ -14,7 +13,7 @@ import com.hrsoftware.jpa.Gehaltsabrechnungvariableeingaben;
 import com.hrsoftware.jpa.Lohnkonto;
 import com.hrsoftware.jpa.Mitarbeiter;
 import com.hrsoftware.jpa.Stammdaten;
-import com.hrsoftware.jpaservice.StammdatenFacade;
+import com.hrsoftware.jpaservice.StammdatenService;
 import java.io.Serializable;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -35,21 +34,21 @@ import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
 import javax.inject.Named;
- 
+
 @Named("gehaltsabrechnungsrechner")
 @ConversationScoped
 public class Gehaltsabrechnungsrechner implements Serializable {
-   
+
     //baseData
     private Stammdaten baseData;
     private OptionalSalaryInput optionalSalaryInput;
     private Mitarbeiter employee;
-    
+
     //Andere Daten die Benötigt werden
     private double employeeSalaryYear;
     private double employeeSalaryMonth;
     private String month = "";
-    private Lohnkonto payrollAccount;    
+    private Lohnkonto payrollAccount;
     private double payAmount;
     private double sumDiscount;
     private double sVGrossRv;
@@ -73,141 +72,140 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     private double lohnst_pkv;
     private double lohnst_pv;
     private double lohnst_faktorF;
-   
-   private double taxBrutto;
-   
-   private double steuerfreiebezuege;
-   //Einmalzahlungen
-   private double einmalzahlung;
-   
-   //laufende zahlungen
-   private double laufendezahlungen;
-   
-   //einmaliger geltw. Vorteil
-   private double einmaligerGeltwVorteil;
-   
-   //laufender geltw.Vorteil
-   private double laufenderGeltwVorteil;
-   
-   private double rvPflichtigerBeitrag;
-   
-   private int miniJobFlatrate = 0;
-   
-   //MRE4ALTE
-   private double mre4alte_tab4;
-   private double mre4alte_tab5;
-   private double mre4alte_alteanteil;
-   private double mre4alte_alte;
-   private double mre4alte_zre4;
-   private double mre4alte_zre4vp;
-   
-   //MRE4
-   private double mre4_zre4;
-   private double mre4_zre4vp;
-   
-   //MZTABFB
-   private double mztabfb_kztab;
-   private double mztabfb_anp = 1000;
-   private double mztabfb_efa;
-   private double mztabfb_sap;
-   private double mztabfb_kfb;
-   private double mztabfb_ztabfb;
-   
-   //UPEVP
-   private double upevp_zre4vp;
-   private double upevp_vsp1;
-   private double upevp_vhb;
-   private double upevp_vsp2;
-   private double upevp_zukvPv;
-   private double upevp_kv;
-   private double upevp_kvVhb;
-   private double upevp_vspn;
-   
-   //UMVSP
-   private double umvsp_zve;
-   private double umvsp_zzx;
-   
-   //UPTAB07
-   private int uptab07_st;
-   
-   //MST5-6
-   private double mst56_x;
-   private double mst56_st1;
-   private double mst56_x1;
-   private double mst56_st2;
-   private double mst56_diff;
-   private double mst56_mist;
-   private double mst56_st;
-   private double mst56_st3;
-   private double mst56_vergl;
-   private double mst56_st4;
-   private double mst56_st5;
-   private double mst56_reichst;
-   private double mst56_lstjahr;
-   private double mst56_jw;
-   
-   //MLSTJAHR
-   private double mlstjahr_lstlzzSum;
-   private double mlstjahr_ztabfb;
-   private double mlstjahr_zve;
-   private double mlstjahr_zveX;
-   private double mlstjahr_st;
-   private double mlstjahr_jbmg;
-   
-   //MSOLZ
-   private double msolz_solzfrei;
-   private double msolz_solzj;
-   private double msolz_solzmin;
-   private double msolz_solzj1;
-   private double  msolz_jw;
-   
-   //SOLZ
-   private double solz_anteil1;
-   private double solz_solzSum;
-   private double solz_jw;
-   
-   //BK
-   private double bk_anteil1;
-   private double bk_bk;
-   private double  bk_kistSum;
-   
-   //Sozialversicherung
-   private double solzvers_kvBemes;
-   private double solzvers_rvBemes;
-   private double solzvers_rvAn;
-   private double solzvers_avAn;
-   private double solzvers_kvAn;
-   private double solzvers_kvZusatz;
-   private double solzvers_pvAn;
-   private double solzvers_rvAg;
-   private double solzvers_avAg;
-   private double solzvers_kvAg;
-   private double solzvers_pvAg;
-   
-   //SozV Gleitzone
-   private double sozgleit_sozVEntgelt = 0;
-   private double sozgleit_rvAn= 0;
-   private double sozgleit_avAn= 0;
-   private double sozgleit_kvAn= 0;
-   private double sozgleit_kvZusatz= 0;
-   private double sozgleit_pvAn= 0;
-   
-   
-   //Gleitzone 400-450
-   private double gleitzone_sozVEntgelt= 0;
-   private double gleitzone_rvAn= 0;
-   private double gleitzone_avAn= 0;
-   private double gleitzone_kvAn= 0;
-   private double gleitzone_kvZusatz= 0;
-   private double gleitzone_pvAn= 0;
-   
-   //Ãœbertragswerte
-    private double uebertragw_rvAn= 0;
-    private double uebertragw_avAn= 0;
-    private double uebertragw_kvAn= 0;
-    private double uebertragw_kvZusatz= 0;
-    private double uebertragw_pvAn= 0;
-    
+
+    private double taxBrutto;
+
+    private double steuerfreiebezuege;
+    //Einmalzahlungen
+    private double einmalzahlung;
+
+    //laufende zahlungen
+    private double laufendezahlungen;
+
+    //einmaliger geltw. Vorteil
+    private double einmaligerGeltwVorteil;
+
+    //laufender geltw.Vorteil
+    private double laufenderGeltwVorteil;
+
+    private double rvPflichtigerBeitrag;
+
+    private int miniJobFlatrate = 0;
+
+    //MRE4ALTE
+    private double mre4alte_tab4;
+    private double mre4alte_tab5;
+    private double mre4alte_alteanteil;
+    private double mre4alte_alte;
+    private double mre4alte_zre4;
+    private double mre4alte_zre4vp;
+
+    //MRE4
+    private double mre4_zre4;
+    private double mre4_zre4vp;
+
+    //MZTABFB
+    private double mztabfb_kztab;
+    private double mztabfb_anp = 1000;
+    private double mztabfb_efa;
+    private double mztabfb_sap;
+    private double mztabfb_kfb;
+    private double mztabfb_ztabfb;
+
+    //UPEVP
+    private double upevp_zre4vp;
+    private double upevp_vsp1;
+    private double upevp_vhb;
+    private double upevp_vsp2;
+    private double upevp_zukvPv;
+    private double upevp_kv;
+    private double upevp_kvVhb;
+    private double upevp_vspn;
+
+    //UMVSP
+    private double umvsp_zve;
+    private double umvsp_zzx;
+
+    //UPTAB07
+    private int uptab07_st;
+
+    //MST5-6
+    private double mst56_x;
+    private double mst56_st1;
+    private double mst56_x1;
+    private double mst56_st2;
+    private double mst56_diff;
+    private double mst56_mist;
+    private double mst56_st;
+    private double mst56_st3;
+    private double mst56_vergl;
+    private double mst56_st4;
+    private double mst56_st5;
+    private double mst56_reichst;
+    private double mst56_lstjahr;
+    private double mst56_jw;
+
+    //MLSTJAHR
+    private double mlstjahr_lstlzzSum;
+    private double mlstjahr_ztabfb;
+    private double mlstjahr_zve;
+    private double mlstjahr_zveX;
+    private double mlstjahr_st;
+    private double mlstjahr_jbmg;
+
+    //MSOLZ
+    private double msolz_solzfrei;
+    private double msolz_solzj;
+    private double msolz_solzmin;
+    private double msolz_solzj1;
+    private double msolz_jw;
+
+    //SOLZ
+    private double solz_anteil1;
+    private double solz_solzSum;
+    private double solz_jw;
+
+    //BK
+    private double bk_anteil1;
+    private double bk_bk;
+    private double bk_kistSum;
+
+    //Sozialversicherung
+    private double solzvers_kvBemes;
+    private double solzvers_rvBemes;
+    private double solzvers_rvAn;
+    private double solzvers_avAn;
+    private double solzvers_kvAn;
+    private double solzvers_kvZusatz;
+    private double solzvers_pvAn;
+    private double solzvers_rvAg;
+    private double solzvers_avAg;
+    private double solzvers_kvAg;
+    private double solzvers_pvAg;
+
+    //SozV Gleitzone
+    private double sozgleit_sozVEntgelt = 0;
+    private double sozgleit_rvAn = 0;
+    private double sozgleit_avAn = 0;
+    private double sozgleit_kvAn = 0;
+    private double sozgleit_kvZusatz = 0;
+    private double sozgleit_pvAn = 0;
+
+    //Gleitzone 400-450
+    private double gleitzone_sozVEntgelt = 0;
+    private double gleitzone_rvAn = 0;
+    private double gleitzone_avAn = 0;
+    private double gleitzone_kvAn = 0;
+    private double gleitzone_kvZusatz = 0;
+    private double gleitzone_pvAn = 0;
+
+    //Ãœbertragswerte
+    private double uebertragw_rvAn = 0;
+    private double uebertragw_avAn = 0;
+    private double uebertragw_kvAn = 0;
+    private double uebertragw_kvZusatz = 0;
+    private double uebertragw_pvAn = 0;
+
     //jahreslohn+abger.EinmZ
     private double jahreslohn_alter1;
     private double jahreslohn_zkf;
@@ -221,7 +219,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     private double jahreslohn_pkv;
     private double jahreslohn_pv;
     private double jahreslohn_faktorF;
-    
+
     //MRE4ALTE
     private double mre4alte1_tab4;
     private double mre4alte1_tab5;
@@ -229,75 +227,72 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     private double mre4alte1_alte;
     private double mre4alte1_zre4;
     private double mre4alte1_zre4vp;
-    
+
     //MRE41
     private double mre41_zre4;
     private double mre41_zre4vp;
-    
-    
+
     //MZTABFB
-   private double mztabfb1_kztab;
-   private double mztabfb1_anp = 1000;
-   private double mztabfb1_efa;
-   private double mztabfb1_sap;
-   private double mztabfb1_kfb;
-   private double mztabfb1_ztabfb;
-   
-   //UPEVP
-   private double upevp1_zre4vp;
-   private double upevp1_vsp1;
-   private double upevp1_vhb;
-   private double upevp1_vsp2;
-   private double upevp1_zukvPv;
-   private double upevp1_kv;
-   private double upevp1_kvVhb;
-   private double upevp1_vspn;
-   
-   //UMVSP
-   private double umvsp1_zve;
-   private double umvsp1_zzx;
-   
-   //UPTAB07
-   private double uptab071_st;
-   
-   //MST5-6
-   private double mst561_x;
-   private double mst561_st1;
-   private double mst561_x1;
-   private double mst561_st2;
-   private double mst561_diff;
-   private double mst561_mist;
-   private double mst561_st;
-   private double mst561_st3;
-   private double mst561_vergl;
-   private double mst561_st4;
-   private double mst561_st5;
-   private double mst561_reichst;
-   private double mst561_lstjahr;
-   private double mst561_jw;
-   
-   //MLSTJAHR
-   private double mlstjahr1_lstlzzSum;
-   private double mlstjahr1_ztabfb;
-   private double mlstjahr1_zve;
-   private double mlstjahr1_zveX;
-   private double mlstjahr1_st;
-   private double mlstjahr1_jbmg;
-   
-   //MSOLZ
-   private double msolz1_solzfrei;
-   private double msolz1_solzj;
-   private double msolz1_solzeinmal;
-   
-   //BK
-   private double bk1_anteil1;
-   private double bk1_bk;
-   private double bk1_bkeinmal;
-   private double bk1_kist;
-    
-   
-   
-   //jahreslohn+alle .EinmZ
+    private double mztabfb1_kztab;
+    private double mztabfb1_anp = 1000;
+    private double mztabfb1_efa;
+    private double mztabfb1_sap;
+    private double mztabfb1_kfb;
+    private double mztabfb1_ztabfb;
+
+    //UPEVP
+    private double upevp1_zre4vp;
+    private double upevp1_vsp1;
+    private double upevp1_vhb;
+    private double upevp1_vsp2;
+    private double upevp1_zukvPv;
+    private double upevp1_kv;
+    private double upevp1_kvVhb;
+    private double upevp1_vspn;
+
+    //UMVSP
+    private double umvsp1_zve;
+    private double umvsp1_zzx;
+
+    //UPTAB07
+    private double uptab071_st;
+
+    //MST5-6
+    private double mst561_x;
+    private double mst561_st1;
+    private double mst561_x1;
+    private double mst561_st2;
+    private double mst561_diff;
+    private double mst561_mist;
+    private double mst561_st;
+    private double mst561_st3;
+    private double mst561_vergl;
+    private double mst561_st4;
+    private double mst561_st5;
+    private double mst561_reichst;
+    private double mst561_lstjahr;
+    private double mst561_jw;
+
+    //MLSTJAHR
+    private double mlstjahr1_lstlzzSum;
+    private double mlstjahr1_ztabfb;
+    private double mlstjahr1_zve;
+    private double mlstjahr1_zveX;
+    private double mlstjahr1_st;
+    private double mlstjahr1_jbmg;
+
+    //MSOLZ
+    private double msolz1_solzfrei;
+    private double msolz1_solzj;
+    private double msolz1_solzeinmal;
+
+    //BK
+    private double bk1_anteil1;
+    private double bk1_bk;
+    private double bk1_bkeinmal;
+    private double bk1_kist;
+
+    //jahreslohn+alle .EinmZ
     private double jahreslohn1_alter1;
     private double jahreslohn1_zkf;
     private double jahreslohn1_lzz;
@@ -310,7 +305,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     private double jahreslohn1_pkv;
     private double jahreslohn1_pv;
     private double jahreslohn1_faktorF;
-    
+
     //MRE4ALTE
     private double mre4alte2_tab4;
     private double mre4alte2_tab5;
@@ -318,115 +313,112 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     private double mre4alte2_alte;
     private double mre4alte2_zre4;
     private double mre4alte2_zre4vp;
-    
+
     //MRE41
     private double mre42_zre4;
     private double mre42_zre4vp;
-    
-    
-    //MZTABFB
-   private double mztabfb2_kztab;
-   private double mztabfb2_anp = 1000;
-   private double mztabfb2_efa;
-   private double mztabfb2_sap;
-   private double mztabfb2_kfb;
-   private double mztabfb2_ztabfb;
-   
-   //UPEVP
-   private double upevp2_zre4vp;
-   private double upevp2_vsp1;
-   private double upevp2_vhb;
-   private double upevp2_vsp2;
-   private double upevp2_zukvPv;
-   private double upevp2_kv;
-   private double upevp2_kvVhb;
-   private double upevp2_vspn;
-  
-   //UMVSP
-   private double umvsp2_zve;
-   private double umvsp2_zzx;
-   
-   //UPTAB07
-   private double uptab072_st;
-   
-   //MST5-6
-   private double mst562_x;
-   private double mst562_st1;
-   private double mst562_x1;
-   private double mst562_st2;
-   private double mst562_diff;
-   private double mst562_mist;
-   private double mst562_st;
-   private double mst562_st3;
-   private double mst562_vergl;
-   private double mst562_st4;
-   private double mst562_st5;
-   private double mst562_reichst;
-   private double mst562_lstjahr;
-   private double mst562_jw;
-   
-   //MLSTJAHR
-   private double mlstjahr2_lstlzzSum;
-   private double mlstjahr2_ztabfb;
-   private double mlstjahr2_zve;
-   private double mlstjahr2_zveX;
-   private double mlstjahr2_st;
-   private double mlstjahr2_jbmg;
-   
-   //MSOLZ
-   private double msolz2_solzfrei;
-   private double msolz2_solzj;
 
-   
-   //BK
-   private double bk2_anteil1;
-   private double bk2_bk;
-   
-   //sozialversichungspflichtiger Anteil des baV-Beitrags
-   private double solzAnteilBaV_bavBeitrag;
-   private double solzAnteilBaV_sozVPflicht;
-   private double solzAnteilBaV_sozVpflichtBrut;
-    
-   
-   //RV-pflichtiger Beitrag
-   private double kvPflichtigerBeitrag;
-   
-   
-   //Umlagen
-   private double u1;
-   private double u2;
-   private double insolvenz;
-   
-   //UmschlÃ¤ge Minijob/Gleitzone
-   private double mini_u1;
-   private double mini_u2;
-   private double mini_insolvenz;
-   
-   //Ãœbergabewerte
-   private double uebWerte_u1;
-   private double uebWerte_u2;
-   private double uebWerte_insolvenz;
-   
-   //U1 und U2 bei Minijob
-   private double minijob_u1;
-   private double minijob_u2;
-   
-   //MiniJob % Pauschale
-   private double minijobpausch_miniJob;
-   private double minijobpausch_kv;
-   private double minijobpausch_lst;
-   private double minijobpausch_berueck;
-   
-   //Pflege
-   private double pflege_pflegeversicherung;
-   private double pflege_pflegeSachsen;
-   private double pflege_pflegeArbeitgeber;
+    //MZTABFB
+    private double mztabfb2_kztab;
+    private double mztabfb2_anp = 1000;
+    private double mztabfb2_efa;
+    private double mztabfb2_sap;
+    private double mztabfb2_kfb;
+    private double mztabfb2_ztabfb;
+
+    //UPEVP
+    private double upevp2_zre4vp;
+    private double upevp2_vsp1;
+    private double upevp2_vhb;
+    private double upevp2_vsp2;
+    private double upevp2_zukvPv;
+    private double upevp2_kv;
+    private double upevp2_kvVhb;
+    private double upevp2_vspn;
+
+    //UMVSP
+    private double umvsp2_zve;
+    private double umvsp2_zzx;
+
+    //UPTAB07
+    private double uptab072_st;
+
+    //MST5-6
+    private double mst562_x;
+    private double mst562_st1;
+    private double mst562_x1;
+    private double mst562_st2;
+    private double mst562_diff;
+    private double mst562_mist;
+    private double mst562_st;
+    private double mst562_st3;
+    private double mst562_vergl;
+    private double mst562_st4;
+    private double mst562_st5;
+    private double mst562_reichst;
+    private double mst562_lstjahr;
+    private double mst562_jw;
+
+    //MLSTJAHR
+    private double mlstjahr2_lstlzzSum;
+    private double mlstjahr2_ztabfb;
+    private double mlstjahr2_zve;
+    private double mlstjahr2_zveX;
+    private double mlstjahr2_st;
+    private double mlstjahr2_jbmg;
+
+    //MSOLZ
+    private double msolz2_solzfrei;
+    private double msolz2_solzj;
+
+    //BK
+    private double bk2_anteil1;
+    private double bk2_bk;
+
+    //sozialversichungspflichtiger Anteil des baV-Beitrags
+    private double solzAnteilBaV_bavBeitrag;
+    private double solzAnteilBaV_sozVPflicht;
+    private double solzAnteilBaV_sozVpflichtBrut;
+
+    //RV-pflichtiger Beitrag
+    private double kvPflichtigerBeitrag;
+
+    //Umlagen
+    private double u1;
+    private double u2;
+    private double insolvenz;
+
+    //UmschlÃ¤ge Minijob/Gleitzone
+    private double mini_u1;
+    private double mini_u2;
+    private double mini_insolvenz;
+
+    //Ãœbergabewerte
+    private double uebWerte_u1;
+    private double uebWerte_u2;
+    private double uebWerte_insolvenz;
+
+    //U1 und U2 bei Minijob
+    private double minijob_u1;
+    private double minijob_u2;
+
+    //MiniJob % Pauschale
+    private double minijobpausch_miniJob;
+    private double minijobpausch_kv;
+    private double minijobpausch_lst;
+    private double minijobpausch_berueck;
+
+    //Pflege
+    private double pflege_pflegeversicherung;
+    private double pflege_pflegeSachsen;
+    private double pflege_pflegeArbeitgeber;
 
     public String getAvpflichtig() {
-        if(uebertragw_rvAn > 0)
+        if (uebertragw_rvAn > 0) {
             return avpflichtig = "RV-pflichtig";
-        else
+        } else {
             return avpflichtig = "RV-frei";
+        }
     }
 
     public void setAvpflichtig(String avpflichtig) {
@@ -441,20 +433,17 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         this.onetimeEarningsInTheGrossEarning = onetimeEarningsInTheGrossEarning;
     }
 
-   
-   
-   
     public String getAdditionalContribution() {
-        if(baseData != null){
-        if(baseData.getKrankenversicherung() > 20){
-            return additionalContribution = "privat";
-        }else{
-            return additionalContribution = Double.toString(baseData.getKvzuschlag());
-        }
-        }else{
+        if (baseData != null) {
+            if (baseData.getKrankenversicherung() > 20) {
+                return additionalContribution = "privat";
+            } else {
+                return additionalContribution = Double.toString(baseData.getKvzuschlag());
+            }
+        } else {
             return "";
         }
-        
+
     }
 
     public void setAdditionalContribution(String additionalContribution) {
@@ -462,13 +451,13 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public String getHealthInsurance() {
-        if(baseData != null){
-          if(baseData.getKrankenversicherung() > 20){
-            return healthInsurance = "privat";
-        }else{
-            return healthInsurance = Double.toString(baseData.getKvzuschlag()/100);
-        }
-        }else{
+        if (baseData != null) {
+            if (baseData.getKrankenversicherung() > 20) {
+                return healthInsurance = "privat";
+            } else {
+                return healthInsurance = Double.toString(baseData.getKvzuschlag() / 100);
+            }
+        } else {
             return "";
         }
     }
@@ -477,9 +466,6 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         this.healthInsurance = healthInsurance;
     }
 
-   
-   
-   
     public double getSumTaxGrossTillNow() {
         return sumTaxGrossTillNow;
     }
@@ -488,11 +474,8 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         this.sumTaxGrossTillNow = sumTaxGrossTillNow;
     }
 
-   
-   
-   
     public double getSumDiscount() {
-        sumDiscount = changeNumberTwoDecimals(sumDiscount,2); 
+        sumDiscount = changeNumberTwoDecimals(sumDiscount, 2);
         return sumDiscount;
     }
 
@@ -515,13 +498,9 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     public void setsvGrossKv(double svGrossKv) {
         this.svGrossKv = svGrossKv;
     }
-   
-   
-   
-   
 
     public double getSteuerfreiebezuege() {
-        steuerfreiebezuege = changeNumberTwoDecimals(steuerfreiebezuege,2); 
+        steuerfreiebezuege = changeNumberTwoDecimals(steuerfreiebezuege, 2);
         return steuerfreiebezuege;
     }
 
@@ -530,7 +509,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public double getPayAmount() {
-        payAmount = changeNumberTwoDecimals(payAmount,2); 
+        payAmount = changeNumberTwoDecimals(payAmount, 2);
 
         return payAmount;
     }
@@ -539,9 +518,6 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         this.payAmount = payAmount;
     }
 
-   
-   
-   
     public Lohnkonto getPayrollAccount() {
         return payrollAccount;
     }
@@ -551,17 +527,14 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public double getEmployerSubsidyPrivateKv() {
-        employerSubsidyPrivateKv = changeNumberTwoDecimals(employerSubsidyPrivateKv,2); 
+        employerSubsidyPrivateKv = changeNumberTwoDecimals(employerSubsidyPrivateKv, 2);
 
-        
         return employerSubsidyPrivateKv;
     }
 
     public void setEmployerSubsidyPrivateKv(double employerSubsidyPrivateKv) {
         this.employerSubsidyPrivateKv = employerSubsidyPrivateKv;
     }
-   
-   
 
     public String getMonth() {
         return month;
@@ -570,12 +543,9 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     public void setMonth(String month) {
         this.month = month;
     }
-   
-   
-   
 
     public double getTaxBrutto() {
-       taxBrutto =  changeNumberTwoDecimals(taxBrutto,2); 
+        taxBrutto = changeNumberTwoDecimals(taxBrutto, 2);
 
         return taxBrutto;
     }
@@ -585,7 +555,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public double getEmployeeSalaryMonth() {
-        employeeSalaryMonth = changeNumberTwoDecimals(employeeSalaryMonth,2); 
+        employeeSalaryMonth = changeNumberTwoDecimals(employeeSalaryMonth, 2);
 
         return employeeSalaryMonth;
     }
@@ -593,9 +563,6 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     public void setEmployeeSalaryMonth(double employeeSalaryMonth) {
         this.employeeSalaryMonth = employeeSalaryMonth;
     }
-   
-   
-   
 
     public double getEmployeeSalaryYear() {
         return employeeSalaryYear;
@@ -604,9 +571,6 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     public void setEmployeeSalaryYear(double employeeSalaryYear) {
         this.employeeSalaryYear = employeeSalaryYear;
     }
-   
-   
-   
 
     public OptionalSalaryInput getOptionalSalaryInput() {
         return optionalSalaryInput;
@@ -616,12 +580,9 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         this.optionalSalaryInput = optionalSalaryInput;
     }
 
-   
-   
-   
-   public void setbaseData(Stammdaten baseData){
-       this.baseData = baseData;
-   }
+    public void setbaseData(Stammdaten baseData) {
+        this.baseData = baseData;
+    }
 
     public Mitarbeiter getEmployee() {
         return employee;
@@ -630,9 +591,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     public void setEmployee(Mitarbeiter employee) {
         this.employee = employee;
     }
-   
-   
-   
+
     public double getLohnst_alter1() {
         return lohnst_alter1;
     }
@@ -1170,7 +1129,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public double getSolz_solzSum() {
-       solz_solzSum = changeNumberTwoDecimals(solz_solzSum,2); 
+        solz_solzSum = changeNumberTwoDecimals(solz_solzSum, 2);
 
         return solz_solzSum;
     }
@@ -1204,7 +1163,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public double getBk_kistSum() {
-        bk_kistSum = changeNumberTwoDecimals(bk_kistSum,2); 
+        bk_kistSum = changeNumberTwoDecimals(bk_kistSum, 2);
 
         return bk_kistSum;
     }
@@ -1398,7 +1357,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public double getUebertragw_rvAn() {
-        uebertragw_rvAn =  changeNumberTwoDecimals(uebertragw_rvAn,2); 
+        uebertragw_rvAn = changeNumberTwoDecimals(uebertragw_rvAn, 2);
 
         return uebertragw_rvAn;
     }
@@ -1408,7 +1367,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public double getUebertragw_avAn() {
-        uebertragw_avAn =  changeNumberTwoDecimals(uebertragw_avAn,2); 
+        uebertragw_avAn = changeNumberTwoDecimals(uebertragw_avAn, 2);
 
         return uebertragw_avAn;
     }
@@ -1418,8 +1377,8 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public double getUebertragw_kvAn() {
-        uebertragw_kvAn = changeNumberTwoDecimals(uebertragw_kvAn,2); 
-        
+        uebertragw_kvAn = changeNumberTwoDecimals(uebertragw_kvAn, 2);
+
         return uebertragw_kvAn;
     }
 
@@ -1428,7 +1387,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public double getUebertragw_kvZusatz() {
-        uebertragw_kvZusatz =changeNumberTwoDecimals(uebertragw_kvZusatz,2); 
+        uebertragw_kvZusatz = changeNumberTwoDecimals(uebertragw_kvZusatz, 2);
 
         return uebertragw_kvZusatz;
     }
@@ -1438,7 +1397,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public double getUebertragw_pvAn() {
-        uebertragw_pvAn = changeNumberTwoDecimals(uebertragw_pvAn,2); 
+        uebertragw_pvAn = changeNumberTwoDecimals(uebertragw_pvAn, 2);
 
         return uebertragw_pvAn;
     }
@@ -1464,7 +1423,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     }
 
     public double getJahreslohn_lzz() {
-        return jahreslohn_lzz  ;
+        return jahreslohn_lzz;
     }
 
     public void setJahreslohn_lzz(double jahreslohn_lzz) {
@@ -2630,1132 +2589,1115 @@ public class Gehaltsabrechnungsrechner implements Serializable {
     public void setPflege_pflegeArbeitgeber(double pflege_pflegeArbeitgeber) {
         this.pflege_pflegeArbeitgeber = pflege_pflegeArbeitgeber;
     }
-   
-    public void calcLohnst_alter1(){
+
+    public void calcLohnst_alter1() {
         try {
             String inputDateOld = "1940-12-31";
             DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
             Date dateOld = dateFormat.parse(inputDateOld);
-            
+
             String inputDateMittleOld = "1952-12-31";
             DateFormat dateFormatMittle = new SimpleDateFormat("yyyy-mm-dd");
             Date dateMittleOld = dateFormat.parse(inputDateMittleOld);
-            
-            if(employee.getGeburtsdatum().before(dateOld)){
-                lohnst_alter1 = 1+1;
-            }else if(employee.getGeburtsdatum().after(dateMittleOld)){
+
+            if (employee.getGeburtsdatum().before(dateOld)) {
+                lohnst_alter1 = 1 + 1;
+            } else if (employee.getGeburtsdatum().after(dateMittleOld)) {
                 //System.out.println("else if: Employee: "+employee.getGeburtsdatum() + " mittleold: " + dateMittleOld );
-                lohnst_alter1 = -1+1;
-            }else{
-                 //System.out.println("Else Zweig: Employee: "+employee.getGeburtsdatum() + " mittleold: " + dateMittleOld );
-                int diffYears = (getYearFromDate(employee.getGeburtsdatum())-1940) +1;
+                lohnst_alter1 = -1 + 1;
+            } else {
+                //System.out.println("Else Zweig: Employee: "+employee.getGeburtsdatum() + " mittleold: " + dateMittleOld );
+                int diffYears = (getYearFromDate(employee.getGeburtsdatum()) - 1940) + 1;
                 lohnst_alter1 = diffYears;
             }
         } catch (ParseException ex) {
             Logger.getLogger(Gehaltsabrechnungsrechner.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void calcJahreslohn_alter1(){
+
+    public void calcJahreslohn_alter1() {
         try {
             String inputDateOld = "1940-12-31";
             DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
             Date dateOld = dateFormat.parse(inputDateOld);
-            
+
             String inputDateMittleOld = "1951-1-1";
             DateFormat dateFormatMittle = new SimpleDateFormat("yyyy-mm-dd");
             Date dateMittleOld = dateFormat.parse(inputDateMittleOld);
-            
-            if(employee.getGeburtsdatum().before(dateOld)){
-                jahreslohn_alter1 = 1 +1;
-            }else if(employee.getGeburtsdatum().after(dateMittleOld)){
-                jahreslohn_alter1 = -1+1;
-            }else{
-                int diffYears = (getYearFromDate(employee.getGeburtsdatum())-1940) +1;
+
+            if (employee.getGeburtsdatum().before(dateOld)) {
+                jahreslohn_alter1 = 1 + 1;
+            } else if (employee.getGeburtsdatum().after(dateMittleOld)) {
+                jahreslohn_alter1 = -1 + 1;
+            } else {
+                int diffYears = (getYearFromDate(employee.getGeburtsdatum()) - 1940) + 1;
                 jahreslohn_alter1 = diffYears;
             }
         } catch (ParseException ex) {
             Logger.getLogger(Gehaltsabrechnungsrechner.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void calcJahreslohn1_alter1(){
+
+    public void calcJahreslohn1_alter1() {
         try {
             String inputDateOld = "1940-12-31";
             DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
             Date dateOld = dateFormat.parse(inputDateOld);
-            
+
             String inputDateMittleOld = "1951-1-1";
             DateFormat dateFormatMittle = new SimpleDateFormat("yyyy-mm-dd");
             Date dateMittleOld = dateFormat.parse(inputDateMittleOld);
-            
-            if(employee.getGeburtsdatum().before(dateOld)){
-                jahreslohn1_alter1 = 1 +1;
-            }else if(employee.getGeburtsdatum().after(dateMittleOld)){
-                jahreslohn1_alter1 = -1 +1;
-            }else{
-                int diffYears = (getYearFromDate(employee.getGeburtsdatum())-1940) +1;
+
+            if (employee.getGeburtsdatum().before(dateOld)) {
+                jahreslohn1_alter1 = 1 + 1;
+            } else if (employee.getGeburtsdatum().after(dateMittleOld)) {
+                jahreslohn1_alter1 = -1 + 1;
+            } else {
+                int diffYears = (getYearFromDate(employee.getGeburtsdatum()) - 1940) + 1;
                 jahreslohn1_alter1 = diffYears;
             }
         } catch (ParseException ex) {
             Logger.getLogger(Gehaltsabrechnungsrechner.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
-    public void fillLohnst_zkf(){
-        if(baseData.getSteuerklasse() >4){
+
+    public void fillLohnst_zkf() {
+        if (baseData.getSteuerklasse() > 4) {
             lohnst_zkf = 0;
-        }else{
+        } else {
             lohnst_zkf = baseData.getKinderfreibetrag();
         }
     }
-    
-    public void fillJahreslohn_zkf(){
-        if(baseData.getSteuerklasse() >4){
+
+    public void fillJahreslohn_zkf() {
+        if (baseData.getSteuerklasse() > 4) {
             jahreslohn_zkf = 0;
-        }else{
+        } else {
             jahreslohn_zkf = baseData.getKinderfreibetrag();
         }
     }
-    
-    public void fillJahreslohn1_zkf(){
-        if(baseData.getSteuerklasse() >4){
+
+    public void fillJahreslohn1_zkf() {
+        if (baseData.getSteuerklasse() > 4) {
             jahreslohn1_zkf = 0;
-        }else{
+        } else {
             jahreslohn1_zkf = baseData.getKinderfreibetrag();
         }
     }
-    
-    
-    public void fillLohnst_lzz(){
+
+    public void fillLohnst_lzz() {
         lohnst_lzz = 2;
     }
-    
-     public void fillJahreslohn_lzz(){
+
+    public void fillJahreslohn_lzz() {
         jahreslohn_lzz = 1;
     }
-     
-     public void fillJahreslohn1_lzz(){
+
+    public void fillJahreslohn1_lzz() {
         jahreslohn1_lzz = 1;
     }
-    
-    
-    public void fillLohnst_krv(){
+
+    public void fillLohnst_krv() {
         calcLohnst_alter1();
-        if(lohnst_alter1 == 1){
-            lohnst_krv =1;
-        }else if(baseData.getRentenversichert() == 1){
-            lohnst_krv = 0; 
-        }else{
+        if (lohnst_alter1 == 1) {
+            lohnst_krv = 1;
+        } else if (baseData.getRentenversichert() == 1) {
+            lohnst_krv = 0;
+        } else {
             lohnst_krv = 1;
         }
     }
-    
-    public void fillJahreslohn_krv(){
+
+    public void fillJahreslohn_krv() {
         calcJahreslohn_alter1();
-        if(jahreslohn_alter1 == 1){
-            jahreslohn_krv =1;
-        }else if(baseData.getRentenversichert() == 1){
-            jahreslohn_krv = 0; 
-        }else{
+        if (jahreslohn_alter1 == 1) {
+            jahreslohn_krv = 1;
+        } else if (baseData.getRentenversichert() == 1) {
+            jahreslohn_krv = 0;
+        } else {
             jahreslohn_krv = 1;
         }
     }
-    
-    public void fillJahreslohn1_krv(){
+
+    public void fillJahreslohn1_krv() {
         calcJahreslohn1_alter1();
-        if(jahreslohn1_alter1 == 1){
-            jahreslohn1_krv =1;
-        }else if(baseData.getRentenversichert() == 1){
-            jahreslohn1_krv = 0; 
-        }else{
+        if (jahreslohn1_alter1 == 1) {
+            jahreslohn1_krv = 1;
+        } else if (baseData.getRentenversichert() == 1) {
+            jahreslohn1_krv = 0;
+        } else {
             jahreslohn1_krv = 1;
         }
     }
-    
-    public void fillLohnst_zre4j(){
+
+    public void fillLohnst_zre4j() {
         clacOneTimePayment();
         System.out.println("SteuerbRutto bei der berechnung:  " + taxBrutto);
-        lohnst_zre4j =(( taxBrutto*100-einmalzahlung)*12)-1;
+        lohnst_zre4j = ((taxBrutto * 100 - einmalzahlung) * 12) - 1;
     }
-    
-    public void fillJahreslohn_zre4j(){
+
+    public void fillJahreslohn_zre4j() {
         clacOneTimePayment();
-        System.out.println("onetimeEarningsInTheGrossEarning ist: " + onetimeEarningsInTheGrossEarning + " einmalzahlung ist: " + einmalzahlung );
-        jahreslohn_zre4j =( taxBrutto*100-einmalzahlung)*12 + ((onetimeEarningsInTheGrossEarning+(einmalzahlung/100))*100-einmalzahlung);
+        System.out.println("onetimeEarningsInTheGrossEarning ist: " + onetimeEarningsInTheGrossEarning + " einmalzahlung ist: " + einmalzahlung);
+        jahreslohn_zre4j = (taxBrutto * 100 - einmalzahlung) * 12 + ((onetimeEarningsInTheGrossEarning + (einmalzahlung / 100)) * 100 - einmalzahlung);
     }
-    
-    public void fillJahreslohn1_zre4j(){
+
+    public void fillJahreslohn1_zre4j() {
         clacOneTimePayment();
-        jahreslohn1_zre4j =( taxBrutto*100-einmalzahlung)*12 + ((onetimeEarningsInTheGrossEarning+(einmalzahlung/100))*100);
+        jahreslohn1_zre4j = (taxBrutto * 100 - einmalzahlung) * 12 + ((onetimeEarningsInTheGrossEarning + (einmalzahlung / 100)) * 100);
     }
-    
-    public void fillLohnst_stkl(){
-       
-            lohnst_stkl = baseData.getSteuerklasse();
+
+    public void fillLohnst_stkl() {
+
+        lohnst_stkl = baseData.getSteuerklasse();
 
     }
-    
-    public void fillJahreslohn_stkl(){
-  
-            jahreslohn_stkl = baseData.getSteuerklasse();
-        
+
+    public void fillJahreslohn_stkl() {
+
+        jahreslohn_stkl = baseData.getSteuerklasse();
+
     }
-    
-      public void fillJahreslohn1_stkl(){
-  
-            jahreslohn1_stkl = baseData.getSteuerklasse();
-        
+
+    public void fillJahreslohn1_stkl() {
+
+        jahreslohn1_stkl = baseData.getSteuerklasse();
+
     }
-    
-    public void fillLohnst_jlfreib(){
-        lohnst_jlfreib = baseData.getLohnsteuerfreibetrag()*100;
+
+    public void fillLohnst_jlfreib() {
+        lohnst_jlfreib = baseData.getLohnsteuerfreibetrag() * 100;
     }
-    
-    public void fillJahreslohn_jlfreib(){
-        jahreslohn_jlfreib = baseData.getLohnsteuerfreibetrag()*100;
+
+    public void fillJahreslohn_jlfreib() {
+        jahreslohn_jlfreib = baseData.getLohnsteuerfreibetrag() * 100;
     }
-    
-    public void fillJahreslohn1_jlfreib(){
-        jahreslohn1_jlfreib = baseData.getLohnsteuerfreibetrag()*100;
+
+    public void fillJahreslohn1_jlfreib() {
+        jahreslohn1_jlfreib = baseData.getLohnsteuerfreibetrag() * 100;
     }
-    
-    public void fillLohnst_jlhinzu(){
+
+    public void fillLohnst_jlhinzu() {
         fillLohnst_stkl();
-        lohnst_jlhinzu = baseData.getHinzurechnungsbetrag()*100;
+        lohnst_jlhinzu = baseData.getHinzurechnungsbetrag() * 100;
     }
-    
-    public void fillJahreslohn_jlhinzu(){
+
+    public void fillJahreslohn_jlhinzu() {
         fillJahreslohn_stkl();
-        jahreslohn_jlhinzu = baseData.getHinzurechnungsbetrag()*100;
+        jahreslohn_jlhinzu = baseData.getHinzurechnungsbetrag() * 100;
     }
-    
-        public void fillJahreslohn1_jlhinzu(){
+
+    public void fillJahreslohn1_jlhinzu() {
         fillJahreslohn1_stkl();
-        jahreslohn1_jlhinzu = baseData.getHinzurechnungsbetrag()*100;
+        jahreslohn1_jlhinzu = baseData.getHinzurechnungsbetrag() * 100;
     }
-    
-    
-    public void fillLohnst_rvbemes(){
-        if(baseData.getStelleImOsten() == 0){
+
+    public void fillLohnst_rvbemes() {
+        if (baseData.getStelleImOsten() == 0) {
             lohnst_rvbemes = 74400;
-        }else{
+        } else {
             lohnst_rvbemes = 64800;
         }
     }
-    
-    public void fillJahreslohn_rvbemes(){
-        if(baseData.getStelleImOsten() == 0){
+
+    public void fillJahreslohn_rvbemes() {
+        if (baseData.getStelleImOsten() == 0) {
             jahreslohn_rvBemes = 74400;
-        }else{
+        } else {
             jahreslohn_rvBemes = 64800;
         }
     }
-    
-    public void fillJahreslohn1_rvbemes(){
-        if(baseData.getStelleImOsten() == 0){
+
+    public void fillJahreslohn1_rvbemes() {
+        if (baseData.getStelleImOsten() == 0) {
             jahreslohn1_rvBemes = 74400;
-        }else{
+        } else {
             jahreslohn1_rvBemes = 64800;
         }
     }
-    
-    public void fillLohnst_pkv(){
+
+    public void fillLohnst_pkv() {
         fillMztabfb_kztab();
         fillUpevp_vhb();
-        
-        if(baseData.getKrankenversicherung() > 20){
-            if(upevp_vhb >(baseData.getKvzuschlag()*12)){
-                if(baseData.getArbeitgeberzuschussKvPv()>0){
-                    if(baseData.getStelleImOsten() == 1){
-                        lohnst_pkv = upevp_vhb - (0.07675 * min(lohnst_zre4j/100,50850));
-                    }else{
-                        lohnst_pkv = upevp_vhb - (0.08175 * min(lohnst_zre4j/100,50850));
+
+        if (baseData.getKrankenversicherung() > 20) {
+            if (upevp_vhb > (baseData.getKvzuschlag() * 12)) {
+                if (baseData.getArbeitgeberzuschussKvPv() > 0) {
+                    if (baseData.getStelleImOsten() == 1) {
+                        lohnst_pkv = upevp_vhb - (0.07675 * min(lohnst_zre4j / 100, 50850));
+                    } else {
+                        lohnst_pkv = upevp_vhb - (0.08175 * min(lohnst_zre4j / 100, 50850));
                     }
-                }else{
-                    lohnst_pkv = upevp_vhb -0;
+                } else {
+                    lohnst_pkv = upevp_vhb - 0;
                 }
-            }else{
-                 if(baseData.getArbeitgeberzuschussKvPv()>0){
-                    if(baseData.getStelleImOsten() == 1){
-                        lohnst_pkv = (baseData.getKvzuschlag()*12) - (0.07675 * min(lohnst_zre4j/100,50850));
-                    }else{
-                        lohnst_pkv = (baseData.getKvzuschlag()*12)  - (0.08175 * min(lohnst_zre4j/100,50850));
+            } else {
+                if (baseData.getArbeitgeberzuschussKvPv() > 0) {
+                    if (baseData.getStelleImOsten() == 1) {
+                        lohnst_pkv = (baseData.getKvzuschlag() * 12) - (0.07675 * min(lohnst_zre4j / 100, 50850));
+                    } else {
+                        lohnst_pkv = (baseData.getKvzuschlag() * 12) - (0.08175 * min(lohnst_zre4j / 100, 50850));
                     }
-                }else{
-                    lohnst_pkv = (baseData.getKvzuschlag()*12)  -0;
+                } else {
+                    lohnst_pkv = (baseData.getKvzuschlag() * 12) - 0;
                 }
             }
-        }else{
+        } else {
             lohnst_pkv = 0;
         }
     }
-    
-    
-    
-      public void fillJahreslohn_pkv(){
+
+    public void fillJahreslohn_pkv() {
         fillMztabfb1_kztab();
         fillUpevp1_vhb();
-        
-        if(baseData.getKrankenversicherung() > 20){
-            if(upevp1_vhb >(baseData.getKvzuschlag()*12)){
-                if(baseData.getArbeitgeberzuschussKvPv()>0){
-                    if(baseData.getStelleImOsten() == 1){
-                        jahreslohn_pkv = upevp1_vhb - (0.07675 * min(jahreslohn_zre4j/100,50850));
-                    }else{
-                        jahreslohn_pkv = upevp1_vhb - (0.08175 * min(jahreslohn_zre4j/100,50850));
+
+        if (baseData.getKrankenversicherung() > 20) {
+            if (upevp1_vhb > (baseData.getKvzuschlag() * 12)) {
+                if (baseData.getArbeitgeberzuschussKvPv() > 0) {
+                    if (baseData.getStelleImOsten() == 1) {
+                        jahreslohn_pkv = upevp1_vhb - (0.07675 * min(jahreslohn_zre4j / 100, 50850));
+                    } else {
+                        jahreslohn_pkv = upevp1_vhb - (0.08175 * min(jahreslohn_zre4j / 100, 50850));
                     }
-                }else{
-                    jahreslohn_pkv = upevp1_vhb -0;
+                } else {
+                    jahreslohn_pkv = upevp1_vhb - 0;
                 }
-            }else{
-                 if(baseData.getArbeitgeberzuschussKvPv()>0){
-                    if(baseData.getStelleImOsten() == 1){
-                        jahreslohn_pkv = (baseData.getKvzuschlag()*12) - (0.07675 * min(jahreslohn_zre4j/100,50850));
-                    }else{
-                        jahreslohn_pkv = (baseData.getKvzuschlag()*12)  - (0.08175 * min(jahreslohn_zre4j/100,50850));
+            } else {
+                if (baseData.getArbeitgeberzuschussKvPv() > 0) {
+                    if (baseData.getStelleImOsten() == 1) {
+                        jahreslohn_pkv = (baseData.getKvzuschlag() * 12) - (0.07675 * min(jahreslohn_zre4j / 100, 50850));
+                    } else {
+                        jahreslohn_pkv = (baseData.getKvzuschlag() * 12) - (0.08175 * min(jahreslohn_zre4j / 100, 50850));
                     }
-                }else{
-                    jahreslohn_pkv = (baseData.getKvzuschlag()*12)  -0;
+                } else {
+                    jahreslohn_pkv = (baseData.getKvzuschlag() * 12) - 0;
                 }
             }
-        }else{
+        } else {
             jahreslohn_pkv = 0;
         }
     }
-      
-      
-      
-      
-      public void fillJahreslohn1_pkv(){
+
+    public void fillJahreslohn1_pkv() {
         fillMztabfb2_kztab();
         fillUpevp2_vhb();
-        
-        if(baseData.getKrankenversicherung() > 20){
-            if(upevp2_vhb >(baseData.getKvzuschlag()*12)){
-                if(baseData.getArbeitgeberzuschussKvPv()>0){
-                    if(baseData.getStelleImOsten() == 1){
-                        jahreslohn1_pkv = upevp2_vhb - (0.07675 * min(jahreslohn1_zre4j/100,50850));
-                    }else{
-                        jahreslohn1_pkv = upevp2_vhb - (0.08175 * min(jahreslohn1_zre4j/100,50850));
+
+        if (baseData.getKrankenversicherung() > 20) {
+            if (upevp2_vhb > (baseData.getKvzuschlag() * 12)) {
+                if (baseData.getArbeitgeberzuschussKvPv() > 0) {
+                    if (baseData.getStelleImOsten() == 1) {
+                        jahreslohn1_pkv = upevp2_vhb - (0.07675 * min(jahreslohn1_zre4j / 100, 50850));
+                    } else {
+                        jahreslohn1_pkv = upevp2_vhb - (0.08175 * min(jahreslohn1_zre4j / 100, 50850));
                     }
-                }else{
-                    jahreslohn1_pkv = upevp2_vhb -0;
+                } else {
+                    jahreslohn1_pkv = upevp2_vhb - 0;
                 }
-            }else{
-                 if(baseData.getArbeitgeberzuschussKvPv()>0){
-                    if(baseData.getStelleImOsten() == 1){
-                        jahreslohn1_pkv = (baseData.getKvzuschlag()*12) - (0.07675 * min(jahreslohn1_zre4j/100,50850));
-                    }else{
-                        jahreslohn1_pkv = (baseData.getKvzuschlag()*12)  - (0.08175 * min(jahreslohn1_zre4j/100,50850));
+            } else {
+                if (baseData.getArbeitgeberzuschussKvPv() > 0) {
+                    if (baseData.getStelleImOsten() == 1) {
+                        jahreslohn1_pkv = (baseData.getKvzuschlag() * 12) - (0.07675 * min(jahreslohn1_zre4j / 100, 50850));
+                    } else {
+                        jahreslohn1_pkv = (baseData.getKvzuschlag() * 12) - (0.08175 * min(jahreslohn1_zre4j / 100, 50850));
                     }
-                }else{
-                    jahreslohn1_pkv = (baseData.getKvzuschlag()*12)  -0;
+                } else {
+                    jahreslohn1_pkv = (baseData.getKvzuschlag() * 12) - 0;
                 }
             }
-        }else{
+        } else {
             jahreslohn1_pkv = 0;
         }
     }
-    
-    
-    
-    
-    
-    public void fillLohnst_pv(){
+
+    public void fillLohnst_pv() {
         double wert1;
         double wert2;
-        
-        if(baseData.getStelleInSachsen() == 0){
+
+        if (baseData.getStelleInSachsen() == 0) {
             wert1 = 0.01175;
-        }else{
+        } else {
             wert1 = 0.01675;
         }
-        
-        if(baseData.getKinderlos() == 1){
+
+        if (baseData.getKinderlos() == 1) {
             wert2 = 0.0025;
-        }else{
+        } else {
             wert2 = 0;
         }
-        
+
         lohnst_pv = wert1 + wert2;
     }
-    
-    public void fillJahreslohn_pv(){
+
+    public void fillJahreslohn_pv() {
         double wert1;
         double wert2;
-        
-        if(baseData.getStelleInSachsen() == 0){
+
+        if (baseData.getStelleInSachsen() == 0) {
             wert1 = 0.01175;
-        }else{
+        } else {
             wert1 = 0.01675;
         }
-        
-        if(baseData.getKinderlos() == 1){
+
+        if (baseData.getKinderlos() == 1) {
             wert2 = 0.0025;
-        }else{
+        } else {
             wert2 = 0;
         }
-        
+
         jahreslohn_pv = wert1 + wert2;
     }
-    
-    
-    
-    public void fillJahreslohn1_pv(){
+
+    public void fillJahreslohn1_pv() {
         double wert1;
         double wert2;
-        
-        if(baseData.getStelleInSachsen() == 0){
+
+        if (baseData.getStelleInSachsen() == 0) {
             wert1 = 0.01175;
-        }else{
+        } else {
             wert1 = 0.01675;
         }
-        
-        if(baseData.getKinderlos() == 1){
+
+        if (baseData.getKinderlos() == 1) {
             wert2 = 0.0025;
-        }else{
+        } else {
             wert2 = 0;
         }
-        
+
         jahreslohn1_pv = wert1 + wert2;
     }
-    
-    
-    public void fillLohnst_faktorf(){
-        if( (baseData.getEhegattenfaktor() == 0 || baseData.getEhegattenfaktor() > 1 ) || baseData.getSteuerklasse() != 4){
+
+    public void fillLohnst_faktorf() {
+        if ((baseData.getEhegattenfaktor() == 0 || baseData.getEhegattenfaktor() > 1) || baseData.getSteuerklasse() != 4) {
             lohnst_faktorF = 1;
-        }else{
+        } else {
             lohnst_faktorF = baseData.getEhegattenfaktor();
         }
     }
-    
-    public void fillJahreslohn_faktorf(){
-        if( (baseData.getEhegattenfaktor() == 0 || baseData.getEhegattenfaktor() > 1 ) || baseData.getSteuerklasse() != 4){
+
+    public void fillJahreslohn_faktorf() {
+        if ((baseData.getEhegattenfaktor() == 0 || baseData.getEhegattenfaktor() > 1) || baseData.getSteuerklasse() != 4) {
             jahreslohn_faktorF = 1;
-        }else{
+        } else {
             jahreslohn_faktorF = baseData.getEhegattenfaktor();
         }
     }
-    
-    public void fillJahreslohn1_faktorf(){
-        if( (baseData.getEhegattenfaktor() == 0 || baseData.getEhegattenfaktor() > 1 ) || baseData.getSteuerklasse() != 4){
+
+    public void fillJahreslohn1_faktorf() {
+        if ((baseData.getEhegattenfaktor() == 0 || baseData.getEhegattenfaktor() > 1) || baseData.getSteuerklasse() != 4) {
             jahreslohn1_faktorF = 1;
-        }else{
+        } else {
             jahreslohn1_faktorF = baseData.getEhegattenfaktor();
         }
     }
-    
-    public void fillUpevp_vhb(){
-        if(mztabfb_kztab == 1){
+
+    public void fillUpevp_vhb() {
+        if (mztabfb_kztab == 1) {
             upevp_vhb = 1900;
-        }else{
+        } else {
             upevp_vhb = 3000;
         }
     }
-    
-     public void fillUpevp1_vhb(){
-        if(mztabfb1_kztab == 1){
+
+    public void fillUpevp1_vhb() {
+        if (mztabfb1_kztab == 1) {
             upevp1_vhb = 1900;
-        }else{
+        } else {
             upevp1_vhb = 3000;
         }
     }
-     
-     public void fillUpevp2_vhb(){
-        if(mztabfb2_kztab == 1){
+
+    public void fillUpevp2_vhb() {
+        if (mztabfb2_kztab == 1) {
             upevp2_vhb = 1900;
-        }else{
+        } else {
             upevp2_vhb = 3000;
         }
     }
-    
-    public void fillMre4Alte_tab5(){
-        
+
+    public void fillMre4Alte_tab5() {
+
         double wert1 = 0;
-        
-        if(lohnst_alter1 == 9){
-             wert1 = 129200;
-        }else if(lohnst_alter1 == 10){
-             wert1 = 121600;
-        }else if(lohnst_alter1 == 11){
-             wert1 = 114000;
-        }else if(lohnst_alter1 == 12){
-             wert1 = 106400;
+
+        if (lohnst_alter1 == 9) {
+            wert1 = 129200;
+        } else if (lohnst_alter1 == 10) {
+            wert1 = 121600;
+        } else if (lohnst_alter1 == 11) {
+            wert1 = 114000;
+        } else if (lohnst_alter1 == 12) {
+            wert1 = 106400;
         }
-        
-        if(lohnst_alter1 == 1){
+
+        if (lohnst_alter1 == 1) {
             mre4alte_tab5 = 190000 + wert1;
-        }else if(lohnst_alter1 == 2){
-             mre4alte_tab5 = 182400 + wert1;
-        }else if(lohnst_alter1 == 3){
-             mre4alte_tab5 = 174200 + wert1;
-        }else if(lohnst_alter1 == 4){
-             mre4alte_tab5 = 167200 + wert1;
-        }else if(lohnst_alter1 == 5){
-             mre4alte_tab5 = 159600 + wert1;
-        }else if(lohnst_alter1 == 6){
-             mre4alte_tab5 = 152000 + wert1;
-        }else if(lohnst_alter1 == 7){
-             mre4alte_tab5 = 144400 + wert1;
-        }else if(lohnst_alter1 == 8){
-             mre4alte_tab5 = 136800 + wert1;
+        } else if (lohnst_alter1 == 2) {
+            mre4alte_tab5 = 182400 + wert1;
+        } else if (lohnst_alter1 == 3) {
+            mre4alte_tab5 = 174200 + wert1;
+        } else if (lohnst_alter1 == 4) {
+            mre4alte_tab5 = 167200 + wert1;
+        } else if (lohnst_alter1 == 5) {
+            mre4alte_tab5 = 159600 + wert1;
+        } else if (lohnst_alter1 == 6) {
+            mre4alte_tab5 = 152000 + wert1;
+        } else if (lohnst_alter1 == 7) {
+            mre4alte_tab5 = 144400 + wert1;
+        } else if (lohnst_alter1 == 8) {
+            mre4alte_tab5 = 136800 + wert1;
         }
     }
-    
-    public void fillMre4Alte1_tab5(){
-        
+
+    public void fillMre4Alte1_tab5() {
+
         double wert1 = 0;
-        
-        if(lohnst_alter1 == 9){
-             wert1 = 129200;
-        }else if(lohnst_alter1 == 10){
-             wert1 = 121600;
-        }else {
-             wert1 = 0;
+
+        if (lohnst_alter1 == 9) {
+            wert1 = 129200;
+        } else if (lohnst_alter1 == 10) {
+            wert1 = 121600;
+        } else {
+            wert1 = 0;
         }
-        
-        if(jahreslohn_alter1 == 1){
+
+        if (jahreslohn_alter1 == 1) {
             mre4alte1_tab5 = 190000 + wert1;
-        }else if(jahreslohn_alter1 == 2){
-             mre4alte1_tab5 = 182400 + wert1;
-        }else if(jahreslohn_alter1 == 3){
-             mre4alte1_tab5 = 174200 + wert1;
-        }else if(jahreslohn_alter1 == 4){
-             mre4alte1_tab5 = 167200 + wert1;
-        }else if(jahreslohn_alter1 == 5){
-             mre4alte1_tab5 = 159600 + wert1;
-        }else if(jahreslohn_alter1 == 6){
-             mre4alte1_tab5 = 152000 + wert1;
-        }else if(jahreslohn_alter1 == 7){
-             mre4alte1_tab5 = 144400 + wert1;
-        }else if(jahreslohn_alter1 == 8){
-             mre4alte1_tab5 = 136800 + wert1;
+        } else if (jahreslohn_alter1 == 2) {
+            mre4alte1_tab5 = 182400 + wert1;
+        } else if (jahreslohn_alter1 == 3) {
+            mre4alte1_tab5 = 174200 + wert1;
+        } else if (jahreslohn_alter1 == 4) {
+            mre4alte1_tab5 = 167200 + wert1;
+        } else if (jahreslohn_alter1 == 5) {
+            mre4alte1_tab5 = 159600 + wert1;
+        } else if (jahreslohn_alter1 == 6) {
+            mre4alte1_tab5 = 152000 + wert1;
+        } else if (jahreslohn_alter1 == 7) {
+            mre4alte1_tab5 = 144400 + wert1;
+        } else if (jahreslohn_alter1 == 8) {
+            mre4alte1_tab5 = 136800 + wert1;
         }
     }
-    
-    public void fillMre4Alte2_tab5(){
-        
+
+    public void fillMre4Alte2_tab5() {
+
         double wert1 = 0;
-        
-        if(lohnst_alter1 == 9){
-             wert1 = 129200;
-        }else if(lohnst_alter1 == 10){
-             wert1 = 121600;
-        }else {
-             wert1 = 0;
+
+        if (lohnst_alter1 == 9) {
+            wert1 = 129200;
+        } else if (lohnst_alter1 == 10) {
+            wert1 = 121600;
+        } else {
+            wert1 = 0;
         }
-        
-        if(jahreslohn1_alter1 == 1){
+
+        if (jahreslohn1_alter1 == 1) {
             mre4alte2_tab5 = 190000 + wert1;
-        }else if(jahreslohn1_alter1 == 2){
-             mre4alte2_tab5 = 182400 + wert1;
-        }else if(jahreslohn1_alter1 == 3){
-             mre4alte2_tab5 = 174200 + wert1;
-        }else if(jahreslohn1_alter1 == 4){
-             mre4alte2_tab5 = 167200 + wert1;
-        }else if(jahreslohn1_alter1 == 5){
-             mre4alte2_tab5 = 159600 + wert1;
-        }else if(jahreslohn1_alter1 == 6){
-             mre4alte2_tab5 = 152000 + wert1;
-        }else if(jahreslohn1_alter1 == 7){
-             mre4alte2_tab5 = 144400 + wert1;
-        }else if(jahreslohn1_alter1 == 8){
-             mre4alte2_tab5 = 136800 + wert1;
+        } else if (jahreslohn1_alter1 == 2) {
+            mre4alte2_tab5 = 182400 + wert1;
+        } else if (jahreslohn1_alter1 == 3) {
+            mre4alte2_tab5 = 174200 + wert1;
+        } else if (jahreslohn1_alter1 == 4) {
+            mre4alte2_tab5 = 167200 + wert1;
+        } else if (jahreslohn1_alter1 == 5) {
+            mre4alte2_tab5 = 159600 + wert1;
+        } else if (jahreslohn1_alter1 == 6) {
+            mre4alte2_tab5 = 152000 + wert1;
+        } else if (jahreslohn1_alter1 == 7) {
+            mre4alte2_tab5 = 144400 + wert1;
+        } else if (jahreslohn1_alter1 == 8) {
+            mre4alte2_tab5 = 136800 + wert1;
         }
     }
-    
-    public void fillMre4alte_tab4(){
-           double wert1 = 0;
-        
-        if(lohnst_alter1 == 9){
-             wert1 = 0.272;
-        }else if(lohnst_alter1 == 10){
-             wert1 = 0.256;
-        }else if(lohnst_alter1 == 11){
-             wert1 = 0.24;
-        }else if(lohnst_alter1 == 12){
-             wert1 = 0.224;
+
+    public void fillMre4alte_tab4() {
+        double wert1 = 0;
+
+        if (lohnst_alter1 == 9) {
+            wert1 = 0.272;
+        } else if (lohnst_alter1 == 10) {
+            wert1 = 0.256;
+        } else if (lohnst_alter1 == 11) {
+            wert1 = 0.24;
+        } else if (lohnst_alter1 == 12) {
+            wert1 = 0.224;
         }
-        
-        if(lohnst_alter1 == 1){
+
+        if (lohnst_alter1 == 1) {
             mre4alte_tab4 = 0.4 + wert1;
-        }else if(lohnst_alter1 == 2){
-             mre4alte_tab4 = 0.384 + wert1;
-        }else if(lohnst_alter1 == 3){
-             mre4alte_tab4 = 0.368 + wert1;
-        }else if(lohnst_alter1 == 4){
-             mre4alte_tab4 = 0.352 + wert1;
-        }else if(lohnst_alter1 == 5){
-             mre4alte_tab4 = 0.336 + wert1;
-        }else if(lohnst_alter1 == 6){
-             mre4alte_tab4 = 0.32 + wert1;
-        }else if(lohnst_alter1 == 7){
-             mre4alte_tab4 = 0.304 + wert1;
-        }else if(lohnst_alter1 == 8){
-             mre4alte_tab4 = 0.288 + wert1;
+        } else if (lohnst_alter1 == 2) {
+            mre4alte_tab4 = 0.384 + wert1;
+        } else if (lohnst_alter1 == 3) {
+            mre4alte_tab4 = 0.368 + wert1;
+        } else if (lohnst_alter1 == 4) {
+            mre4alte_tab4 = 0.352 + wert1;
+        } else if (lohnst_alter1 == 5) {
+            mre4alte_tab4 = 0.336 + wert1;
+        } else if (lohnst_alter1 == 6) {
+            mre4alte_tab4 = 0.32 + wert1;
+        } else if (lohnst_alter1 == 7) {
+            mre4alte_tab4 = 0.304 + wert1;
+        } else if (lohnst_alter1 == 8) {
+            mre4alte_tab4 = 0.288 + wert1;
         }
     }
-    
-    
-     public void fillMre4alte1_tab4(){
-           double wert1 = 0;
-        if(lohnst_alter1 == 9){
-             wert1 = 0.272;
-        }else if(lohnst_alter1 == 10){
-             wert1 = 0.256;
-        }else{
+
+    public void fillMre4alte1_tab4() {
+        double wert1 = 0;
+        if (lohnst_alter1 == 9) {
+            wert1 = 0.272;
+        } else if (lohnst_alter1 == 10) {
+            wert1 = 0.256;
+        } else {
             wert1 = 0;
         }
-        
-        if(jahreslohn_alter1 == 1){
+
+        if (jahreslohn_alter1 == 1) {
             mre4alte1_tab4 = 0.4 + wert1;
-        }else if(jahreslohn_alter1 == 2){
-             mre4alte1_tab4 = 0.384 + wert1;
-        }else if(jahreslohn_alter1 == 3){
-             mre4alte1_tab4 = 0.368 + wert1;
-        }else if(jahreslohn_alter1 == 4){
-             mre4alte1_tab4 = 0.352 + wert1;
-        }else if(jahreslohn_alter1 == 5){
-             mre4alte1_tab4 = 0.336 + wert1;
-        }else if(jahreslohn_alter1 == 6){
-             mre4alte1_tab4 = 0.32 + wert1;
-        }else if(jahreslohn_alter1 == 7){
-             mre4alte1_tab4 = 0.304 + wert1;
-        }else if(jahreslohn_alter1 == 8){
-             mre4alte1_tab4 = 0.288 + wert1;
+        } else if (jahreslohn_alter1 == 2) {
+            mre4alte1_tab4 = 0.384 + wert1;
+        } else if (jahreslohn_alter1 == 3) {
+            mre4alte1_tab4 = 0.368 + wert1;
+        } else if (jahreslohn_alter1 == 4) {
+            mre4alte1_tab4 = 0.352 + wert1;
+        } else if (jahreslohn_alter1 == 5) {
+            mre4alte1_tab4 = 0.336 + wert1;
+        } else if (jahreslohn_alter1 == 6) {
+            mre4alte1_tab4 = 0.32 + wert1;
+        } else if (jahreslohn_alter1 == 7) {
+            mre4alte1_tab4 = 0.304 + wert1;
+        } else if (jahreslohn_alter1 == 8) {
+            mre4alte1_tab4 = 0.288 + wert1;
         }
     }
-     
-     public void fillMre4alte2_tab4(){
-           double wert1 = 0;
-        if(lohnst_alter1 == 9){
-             wert1 = 0.272;
-        }else if(lohnst_alter1 == 10){
-             wert1 = 0.256;
-        }else{
+
+    public void fillMre4alte2_tab4() {
+        double wert1 = 0;
+        if (lohnst_alter1 == 9) {
+            wert1 = 0.272;
+        } else if (lohnst_alter1 == 10) {
+            wert1 = 0.256;
+        } else {
             wert1 = 0;
         }
-        
-        if(jahreslohn1_alter1 == 1){
+
+        if (jahreslohn1_alter1 == 1) {
             mre4alte2_tab4 = 0.4 + wert1;
-        }else if(jahreslohn1_alter1 == 2){
-             mre4alte2_tab4 = 0.384 + wert1;
-        }else if(jahreslohn1_alter1 == 3){
-             mre4alte2_tab4 = 0.368 + wert1;
-        }else if(jahreslohn1_alter1 == 4){
-             mre4alte2_tab4 = 0.352 + wert1;
-        }else if(jahreslohn1_alter1 == 5){
-             mre4alte2_tab4 = 0.336 + wert1;
-        }else if(jahreslohn1_alter1 == 6){
-             mre4alte2_tab4 = 0.32 + wert1;
-        }else if(jahreslohn1_alter1 == 7){
-             mre4alte2_tab4 = 0.304 + wert1;
-        }else if(jahreslohn1_alter1 == 8){
-             mre4alte2_tab4 = 0.288 + wert1;
+        } else if (jahreslohn1_alter1 == 2) {
+            mre4alte2_tab4 = 0.384 + wert1;
+        } else if (jahreslohn1_alter1 == 3) {
+            mre4alte2_tab4 = 0.368 + wert1;
+        } else if (jahreslohn1_alter1 == 4) {
+            mre4alte2_tab4 = 0.352 + wert1;
+        } else if (jahreslohn1_alter1 == 5) {
+            mre4alte2_tab4 = 0.336 + wert1;
+        } else if (jahreslohn1_alter1 == 6) {
+            mre4alte2_tab4 = 0.32 + wert1;
+        } else if (jahreslohn1_alter1 == 7) {
+            mre4alte2_tab4 = 0.304 + wert1;
+        } else if (jahreslohn1_alter1 == 8) {
+            mre4alte2_tab4 = 0.288 + wert1;
         }
     }
-    
-    public void fillMztabfb_kztab(){
+
+    public void fillMztabfb_kztab() {
         fillLohnst_stkl();
-        if(lohnst_stkl == 3){
+        if (lohnst_stkl == 3) {
             mztabfb_kztab = 2;
-        }else{
+        } else {
             mztabfb_kztab = 1;
         }
-        
+
     }
-    public void fillMztabfb1_kztab(){
+
+    public void fillMztabfb1_kztab() {
         fillLohnst_stkl();
-        if(jahreslohn_stkl == 3){
+        if (jahreslohn_stkl == 3) {
             mztabfb1_kztab = 2;
-        }else{
+        } else {
             mztabfb1_kztab = 1;
         }
-        
+
     }
-    
-    public void fillMztabfb2_kztab(){
+
+    public void fillMztabfb2_kztab() {
         fillLohnst_stkl();
-        if(jahreslohn1_stkl == 3){
+        if (jahreslohn1_stkl == 3) {
             mztabfb2_kztab = 2;
-        }else{
+        } else {
             mztabfb2_kztab = 1;
         }
-        
+
     }
-    
-    
-    public void fillMre4alte_alteanteil(){
+
+    public void fillMre4alte_alteanteil() {
         fillMre4Alte_tab5();
         mre4alte_alteanteil = mre4alte_tab5;
     }
-    
-      public void fillMre4alte1_alteanteil(){
+
+    public void fillMre4alte1_alteanteil() {
         fillMre4Alte1_tab5();
         mre4alte1_alteanteil = mre4alte1_tab5;
     }
-      
-    public void fillMre4alte2_alteanteil(){
+
+    public void fillMre4alte2_alteanteil() {
         fillMre4Alte2_tab5();
         mre4alte2_alteanteil = mre4alte2_tab5;
-    }    
-    
-    public void fillMre4alte_alte(){
+    }
+
+    public void fillMre4alte_alte() {
         fillLohnst_zre4j();
         fillMre4alte_alteanteil();
-        if(lohnst_alter1 == 0){
+        if (lohnst_alter1 == 0) {
             mre4alte_alte = 0;
-        }else if((lohnst_zre4j*mre4alte_tab4)>mre4alte_alteanteil){
+        } else if ((lohnst_zre4j * mre4alte_tab4) > mre4alte_alteanteil) {
             mre4alte_alte = mre4alte_alteanteil;
-        }else{
-            mre4alte_alte = (lohnst_zre4j*mre4alte_tab4);
+        } else {
+            mre4alte_alte = (lohnst_zre4j * mre4alte_tab4);
         }
     }
-    
-    public void fillMre4alte1_alte(){
+
+    public void fillMre4alte1_alte() {
         fillJahreslohn_zre4j();
         fillMre4alte1_alteanteil();
-        if(jahreslohn_alter1 == 0){
+        if (jahreslohn_alter1 == 0) {
             mre4alte1_alte = 0;
-        }else if((jahreslohn_zre4j*mre4alte1_tab4)>mre4alte1_alteanteil){
+        } else if ((jahreslohn_zre4j * mre4alte1_tab4) > mre4alte1_alteanteil) {
             mre4alte1_alte = mre4alte1_alteanteil;
-        }else{
-            mre4alte1_alte = (jahreslohn_zre4j*mre4alte1_tab4);
+        } else {
+            mre4alte1_alte = (jahreslohn_zre4j * mre4alte1_tab4);
         }
     }
-    
-    public void fillMre4alte2_alte(){
+
+    public void fillMre4alte2_alte() {
         fillJahreslohn1_zre4j();
         fillMre4alte2_alteanteil();
-        if(jahreslohn1_alter1 == 0){
+        if (jahreslohn1_alter1 == 0) {
             mre4alte2_alte = 0;
-        }else if((jahreslohn1_zre4j*mre4alte2_tab4)>mre4alte2_alteanteil){
+        } else if ((jahreslohn1_zre4j * mre4alte2_tab4) > mre4alte2_alteanteil) {
             mre4alte2_alte = mre4alte2_alteanteil;
-        }else{
-            mre4alte2_alte = (jahreslohn1_zre4j*mre4alte2_tab4);
+        } else {
+            mre4alte2_alte = (jahreslohn1_zre4j * mre4alte2_tab4);
         }
     }
-    
-    public void fillMre4alte_zre4(){
+
+    public void fillMre4alte_zre4() {
         fillLohnst_zre4j();
         fillLohnst_jlfreib();
         fillLohnst_jlhinzu();
         fillMre4alte_alte();
         mre4alte_zre4 = lohnst_zre4j - (lohnst_jlfreib + lohnst_jlhinzu) - mre4alte_alte;
     }
-    
-    public void fillMre4alte1_zre4(){
+
+    public void fillMre4alte1_zre4() {
         fillJahreslohn_zre4j();
         fillJahreslohn_jlfreib();
         fillJahreslohn_jlhinzu();
         fillMre4alte1_alte();
         mre4alte1_zre4 = jahreslohn_zre4j - (jahreslohn_jlfreib + jahreslohn_jlhinzu) - mre4alte1_alte;
     }
-    
-     public void fillMre4alte2_zre4(){
+
+    public void fillMre4alte2_zre4() {
         fillJahreslohn1_zre4j();
         fillJahreslohn1_jlfreib();
         fillJahreslohn1_jlhinzu();
         fillMre4alte2_alte();
         mre4alte2_zre4 = jahreslohn1_zre4j - (jahreslohn1_jlfreib + jahreslohn1_jlhinzu) - mre4alte2_alte;
     }
-    
-    public void fillMre4alte_zre4vp(){
+
+    public void fillMre4alte_zre4vp() {
         fillLohnst_zre4j();
         mre4alte_zre4vp = lohnst_zre4j;
     }
-    
-    public void fillMre4alte1_zre4vp(){
+
+    public void fillMre4alte1_zre4vp() {
         fillJahreslohn_zre4j();
         mre4alte1_zre4vp = jahreslohn_zre4j;
     }
-    
-    public void fillMre4alte2_zre4vp(){
+
+    public void fillMre4alte2_zre4vp() {
         fillJahreslohn1_zre4j();
         mre4alte2_zre4vp = jahreslohn1_zre4j;
     }
-    public void fillMre4_zre4(){
+
+    public void fillMre4_zre4() {
         fillMre4alte_zre4();
-        mre4_zre4 = mre4alte_zre4/100;
+        mre4_zre4 = mre4alte_zre4 / 100;
     }
-    
-     public void fillMre41_zre4(){
+
+    public void fillMre41_zre4() {
         fillMre4alte1_zre4();
-        mre41_zre4 = mre4alte1_zre4/100;
+        mre41_zre4 = mre4alte1_zre4 / 100;
     }
-     
-      public void fillMre42_zre4(){
+
+    public void fillMre42_zre4() {
         fillMre4alte2_zre4();
-        mre42_zre4 = mre4alte2_zre4/100;
+        mre42_zre4 = mre4alte2_zre4 / 100;
     }
-    
-     public void fillMre4_zre4vp(){
+
+    public void fillMre4_zre4vp() {
         fillMre4alte_zre4vp();
-        mre4_zre4vp = mre4alte_zre4vp/100;
+        mre4_zre4vp = mre4alte_zre4vp / 100;
     }
-     
-     public void fillMre41_zre4vp(){
+
+    public void fillMre41_zre4vp() {
         fillMre4alte1_zre4vp();
-        mre41_zre4vp = mre4alte1_zre4vp/100;
+        mre41_zre4vp = mre4alte1_zre4vp / 100;
     }
-     
-     public void fillMre42_zre4vp(){
+
+    public void fillMre42_zre4vp() {
         fillMre4alte2_zre4vp();
-        mre42_zre4vp = mre4alte2_zre4vp/100;
+        mre42_zre4vp = mre4alte2_zre4vp / 100;
     }
-     
-     public void fillMztabfb_efa(){
-         fillLohnst_stkl();
-         if(lohnst_stkl == 2){
-             mztabfb_efa = 1908;
-         }else{
-             mztabfb_efa = 0;
-         }
-     }
-     
-     public void fillMztabfb1_efa(){
-         fillJahreslohn_stkl();
-         if(jahreslohn_stkl == 2){
-             mztabfb1_efa = 1908;
-         }else{
-             mztabfb1_efa = 0;
-         }
-     }
-     
-     public void fillMztabfb2_efa(){
-         fillJahreslohn1_stkl();
-         if(jahreslohn1_stkl == 2){
-             mztabfb2_efa = 1908;
-         }else{
-             mztabfb2_efa = 0;
-         }
-     }
-     
-     public void fillMztabfb_sap(){
-         fillLohnst_stkl();
-         if(lohnst_stkl > 5){
-             mztabfb_sap = 0;
-         }else{
-             mztabfb_sap = 36;
-         }
-     }
-     
-     public void fillMztabfb1_sap(){
-         fillJahreslohn_stkl();
-         if(jahreslohn_stkl > 5){
-             mztabfb1_sap = 0;
-         }else{
-             mztabfb1_sap = 36;
-         }
-     }
-     
-     public void fillMztabfb2_sap(){
-         fillJahreslohn1_stkl();
-         if(jahreslohn1_stkl > 5){
-             mztabfb2_sap = 0;
-         }else{
-             mztabfb2_sap = 36;
-         }
-     }
-     
-     public void fillMztabfb_kfb(){
+
+    public void fillMztabfb_efa() {
+        fillLohnst_stkl();
+        if (lohnst_stkl == 2) {
+            mztabfb_efa = 1908;
+        } else {
+            mztabfb_efa = 0;
+        }
+    }
+
+    public void fillMztabfb1_efa() {
+        fillJahreslohn_stkl();
+        if (jahreslohn_stkl == 2) {
+            mztabfb1_efa = 1908;
+        } else {
+            mztabfb1_efa = 0;
+        }
+    }
+
+    public void fillMztabfb2_efa() {
+        fillJahreslohn1_stkl();
+        if (jahreslohn1_stkl == 2) {
+            mztabfb2_efa = 1908;
+        } else {
+            mztabfb2_efa = 0;
+        }
+    }
+
+    public void fillMztabfb_sap() {
+        fillLohnst_stkl();
+        if (lohnst_stkl > 5) {
+            mztabfb_sap = 0;
+        } else {
+            mztabfb_sap = 36;
+        }
+    }
+
+    public void fillMztabfb1_sap() {
+        fillJahreslohn_stkl();
+        if (jahreslohn_stkl > 5) {
+            mztabfb1_sap = 0;
+        } else {
+            mztabfb1_sap = 36;
+        }
+    }
+
+    public void fillMztabfb2_sap() {
+        fillJahreslohn1_stkl();
+        if (jahreslohn1_stkl > 5) {
+            mztabfb2_sap = 0;
+        } else {
+            mztabfb2_sap = 36;
+        }
+    }
+
+    public void fillMztabfb_kfb() {
         fillLohnst_stkl();
         fillLohnst_zkf();
-        
-        if(lohnst_stkl<4){
-            mztabfb_kfb = lohnst_zkf*7248;
-        }else if(lohnst_stkl == 4){
-             mztabfb_kfb = lohnst_zkf*3624;
-        }else{
-             mztabfb_kfb = 0;
+
+        if (lohnst_stkl < 4) {
+            mztabfb_kfb = lohnst_zkf * 7248;
+        } else if (lohnst_stkl == 4) {
+            mztabfb_kfb = lohnst_zkf * 3624;
+        } else {
+            mztabfb_kfb = 0;
         }
-     }
-     
-     public void fillMztabfb1_kfb(){
+    }
+
+    public void fillMztabfb1_kfb() {
         fillJahreslohn_stkl();
         fillJahreslohn_zkf();
-        
-        if(jahreslohn_stkl<4){
-            mztabfb1_kfb = jahreslohn_zkf*7248;
-        }else if(jahreslohn_stkl == 4){
-             mztabfb1_kfb = jahreslohn_zkf*3624;
-        }else{
-             mztabfb1_kfb = 0;
+
+        if (jahreslohn_stkl < 4) {
+            mztabfb1_kfb = jahreslohn_zkf * 7248;
+        } else if (jahreslohn_stkl == 4) {
+            mztabfb1_kfb = jahreslohn_zkf * 3624;
+        } else {
+            mztabfb1_kfb = 0;
         }
-     }
-     
-     public void fillMztabfb2_kfb(){
+    }
+
+    public void fillMztabfb2_kfb() {
         fillJahreslohn1_stkl();
         fillJahreslohn1_zkf();
-        
-        if(jahreslohn1_stkl<4){
-            mztabfb2_kfb = jahreslohn1_zkf*7248;
-        }else if(jahreslohn1_stkl == 4){
-             mztabfb2_kfb = jahreslohn1_zkf*3624;
-        }else{
-             mztabfb2_kfb = 0;
+
+        if (jahreslohn1_stkl < 4) {
+            mztabfb2_kfb = jahreslohn1_zkf * 7248;
+        } else if (jahreslohn1_stkl == 4) {
+            mztabfb2_kfb = jahreslohn1_zkf * 3624;
+        } else {
+            mztabfb2_kfb = 0;
         }
-     }
-     
-     
-     public void fillMztabfb_ztabfb(){
+    }
+
+    public void fillMztabfb_ztabfb() {
         fillLohnst_stkl();
         fillMztabfb_efa();
         fillMztabfb_sap();
 
-         if(lohnst_stkl == 6){
-             mztabfb_ztabfb = 0;
-         }else{
-             mztabfb_ztabfb = mztabfb_efa + mztabfb_sap + mztabfb_anp;
-         }
-     }
-     
-    public void fillMztabfb1_ztabfb(){
+        if (lohnst_stkl == 6) {
+            mztabfb_ztabfb = 0;
+        } else {
+            mztabfb_ztabfb = mztabfb_efa + mztabfb_sap + mztabfb_anp;
+        }
+    }
+
+    public void fillMztabfb1_ztabfb() {
         fillJahreslohn_stkl();
         fillMztabfb1_efa();
         fillMztabfb1_sap();
 
-         if(jahreslohn_stkl == 6){
-             mztabfb1_ztabfb = 0;
-         }else{
-             mztabfb1_ztabfb = mztabfb1_efa + mztabfb1_sap + mztabfb1_anp;
-         }
-     }
-    
-    public void fillMztabfb2_ztabfb(){
+        if (jahreslohn_stkl == 6) {
+            mztabfb1_ztabfb = 0;
+        } else {
+            mztabfb1_ztabfb = mztabfb1_efa + mztabfb1_sap + mztabfb1_anp;
+        }
+    }
+
+    public void fillMztabfb2_ztabfb() {
         fillJahreslohn1_stkl();
         fillMztabfb2_efa();
         fillMztabfb2_sap();
 
-         if(jahreslohn1_stkl == 6){
-             mztabfb2_ztabfb = 0;
-         }else{
-             mztabfb2_ztabfb = mztabfb2_efa + mztabfb2_sap + mztabfb2_anp;
-         }
-     }
-     
-     public void fillUpevp_zre4vp(){
-         fillLohnst_rvbemes();
-         fillMre4_zre4();
-         upevp_zre4vp = min(lohnst_rvbemes,mre4_zre4);
-     }
-     
-     public void fillUpevp1_zre4vp(){
-         fillJahreslohn_rvbemes();
-         fillMre41_zre4();
-         upevp1_zre4vp = min(jahreslohn_rvBemes,mre41_zre4);
-     }
-     
-     public void fillUpevp2_zre4vp(){
-         fillJahreslohn1_rvbemes();
-         fillMre42_zre4();
-         upevp2_zre4vp = min(jahreslohn1_rvBemes,mre42_zre4);
-     }
-     
-     public void fillUpevp_vsp1(){
-         fillUpevp_zre4vp();
-         fillLohnst_krv();
-         
-         if(lohnst_krv == 1){
-             upevp_vsp1 = 0;
-         }else{
-             upevp_vsp1 = 0.64*upevp_zre4vp*0.0935;
-         }
-     }
-     
-      public void fillUpevp1_vsp1(){
-         fillUpevp1_zre4vp();
-         fillJahreslohn_krv();
-         
-         if(jahreslohn_krv == 1){
-             upevp1_vsp1 = 0;
-         }else{
-             upevp1_vsp1 = 0.64*upevp1_zre4vp*0.0935;
-         }
-     }
-     
-      public void fillUpevp2_vsp1(){
-         fillUpevp2_zre4vp();
-         fillJahreslohn1_krv();
-         
-         if(jahreslohn1_krv == 1){
-             upevp2_vsp1 = 0;
-         }else{
-             upevp2_vsp1 = 0.64*upevp2_zre4vp*0.0935;
-         }
-     }
-     
-     public void fillUpevp_vsp2(){
-         fillUpevp_zre4vp();
-         fillUpevp_vhb();
-         upevp_vsp2 = min(upevp_vhb,(upevp_zre4vp*0.12));
-     }
-     
-     public void fillUpevp1_vsp2(){
-         fillUpevp1_zre4vp();
-         fillUpevp1_vhb();
-         upevp1_vsp2 = min(upevp1_vhb,(upevp1_zre4vp*0.12));
-     }
-     
-      public void fillUpevp2_vsp2(){
-         fillUpevp2_zre4vp();
-         fillUpevp2_vhb();
-         upevp2_vsp2 = min(upevp2_vhb,(upevp2_zre4vp*0.12));
-     }
-     
-     public void fillUpevp_zukvpv(){
-         fillLohnst_pv();
-         if(baseData.getKrankenversicherung()== 0){
-             upevp_zukvPv = 0;
-         }else{
-             upevp_zukvPv = 0.07+baseData.getKvzuschlag()/100+lohnst_pv;
-         }
-     }
-     
-     public void fillUpevp1_zukvpv(){
-         fillJahreslohn_pv();
-         if(baseData.getKrankenversicherung()== 0){
-             upevp1_zukvPv = 0;
-         }else{
-             upevp1_zukvPv = 0.07+baseData.getKvzuschlag()/100+jahreslohn_pv;
-         }
-     }
-     
-      public void fillUpevp2_zukvpv(){
-         fillJahreslohn1_pv();
-         if(baseData.getKrankenversicherung()== 0){
-             upevp2_zukvPv = 0;
-         }else{
-             upevp2_zukvPv = 0.07+baseData.getKvzuschlag()/100+jahreslohn1_pv;
-         }
-     }
-     
-     public void fillUpevp_kv(){
-         fillLohnst_pkv();
-         fillLohnst_stkl();
-         fillMre4_zre4vp();
-         fillUpevp_zukvpv();
-         if(lohnst_pkv > 0){
-            if(lohnst_stkl == 6){
+        if (jahreslohn1_stkl == 6) {
+            mztabfb2_ztabfb = 0;
+        } else {
+            mztabfb2_ztabfb = mztabfb2_efa + mztabfb2_sap + mztabfb2_anp;
+        }
+    }
+
+    public void fillUpevp_zre4vp() {
+        fillLohnst_rvbemes();
+        fillMre4_zre4();
+        upevp_zre4vp = min(lohnst_rvbemes, mre4_zre4);
+    }
+
+    public void fillUpevp1_zre4vp() {
+        fillJahreslohn_rvbemes();
+        fillMre41_zre4();
+        upevp1_zre4vp = min(jahreslohn_rvBemes, mre41_zre4);
+    }
+
+    public void fillUpevp2_zre4vp() {
+        fillJahreslohn1_rvbemes();
+        fillMre42_zre4();
+        upevp2_zre4vp = min(jahreslohn1_rvBemes, mre42_zre4);
+    }
+
+    public void fillUpevp_vsp1() {
+        fillUpevp_zre4vp();
+        fillLohnst_krv();
+
+        if (lohnst_krv == 1) {
+            upevp_vsp1 = 0;
+        } else {
+            upevp_vsp1 = 0.64 * upevp_zre4vp * 0.0935;
+        }
+    }
+
+    public void fillUpevp1_vsp1() {
+        fillUpevp1_zre4vp();
+        fillJahreslohn_krv();
+
+        if (jahreslohn_krv == 1) {
+            upevp1_vsp1 = 0;
+        } else {
+            upevp1_vsp1 = 0.64 * upevp1_zre4vp * 0.0935;
+        }
+    }
+
+    public void fillUpevp2_vsp1() {
+        fillUpevp2_zre4vp();
+        fillJahreslohn1_krv();
+
+        if (jahreslohn1_krv == 1) {
+            upevp2_vsp1 = 0;
+        } else {
+            upevp2_vsp1 = 0.64 * upevp2_zre4vp * 0.0935;
+        }
+    }
+
+    public void fillUpevp_vsp2() {
+        fillUpevp_zre4vp();
+        fillUpevp_vhb();
+        upevp_vsp2 = min(upevp_vhb, (upevp_zre4vp * 0.12));
+    }
+
+    public void fillUpevp1_vsp2() {
+        fillUpevp1_zre4vp();
+        fillUpevp1_vhb();
+        upevp1_vsp2 = min(upevp1_vhb, (upevp1_zre4vp * 0.12));
+    }
+
+    public void fillUpevp2_vsp2() {
+        fillUpevp2_zre4vp();
+        fillUpevp2_vhb();
+        upevp2_vsp2 = min(upevp2_vhb, (upevp2_zre4vp * 0.12));
+    }
+
+    public void fillUpevp_zukvpv() {
+        fillLohnst_pv();
+        if (baseData.getKrankenversicherung() == 0) {
+            upevp_zukvPv = 0;
+        } else {
+            upevp_zukvPv = 0.07 + baseData.getKvzuschlag() / 100 + lohnst_pv;
+        }
+    }
+
+    public void fillUpevp1_zukvpv() {
+        fillJahreslohn_pv();
+        if (baseData.getKrankenversicherung() == 0) {
+            upevp1_zukvPv = 0;
+        } else {
+            upevp1_zukvPv = 0.07 + baseData.getKvzuschlag() / 100 + jahreslohn_pv;
+        }
+    }
+
+    public void fillUpevp2_zukvpv() {
+        fillJahreslohn1_pv();
+        if (baseData.getKrankenversicherung() == 0) {
+            upevp2_zukvPv = 0;
+        } else {
+            upevp2_zukvPv = 0.07 + baseData.getKvzuschlag() / 100 + jahreslohn1_pv;
+        }
+    }
+
+    public void fillUpevp_kv() {
+        fillLohnst_pkv();
+        fillLohnst_stkl();
+        fillMre4_zre4vp();
+        fillUpevp_zukvpv();
+        if (lohnst_pkv > 0) {
+            if (lohnst_stkl == 6) {
                 upevp_kv = 0;
-            }else{
+            } else {
                 upevp_kv = lohnst_pkv;
             }
-         }else {
-            upevp_kv = (min(mre4_zre4vp,50850) * upevp_zukvPv*100)/100;  
-         }
-     }
-     
-      public void fillUpevp1_kv(){
-         fillJahreslohn_pkv();
-         fillJahreslohn_stkl();
-         fillMre41_zre4vp();
-         fillUpevp1_zukvpv();
-         if(jahreslohn_pkv > 0){
-            if(jahreslohn_stkl == 6){
+        } else {
+            upevp_kv = (min(mre4_zre4vp, 50850) * upevp_zukvPv * 100) / 100;
+        }
+    }
+
+    public void fillUpevp1_kv() {
+        fillJahreslohn_pkv();
+        fillJahreslohn_stkl();
+        fillMre41_zre4vp();
+        fillUpevp1_zukvpv();
+        if (jahreslohn_pkv > 0) {
+            if (jahreslohn_stkl == 6) {
                 upevp1_kv = 0;
-            }else{
+            } else {
                 upevp1_kv = jahreslohn_pkv;
             }
-         }else {
-            upevp1_kv = (min(mre41_zre4vp,50850) * upevp1_zukvPv*100)/100;  
-         }
-     }
-      
-      public void fillUpevp2_kv(){
-         fillJahreslohn1_pkv();
-         fillJahreslohn1_stkl();
-         fillMre42_zre4vp();
-         fillUpevp2_zukvpv();
-         if(jahreslohn1_pkv > 0){
-            if(jahreslohn1_stkl == 6){
+        } else {
+            upevp1_kv = (min(mre41_zre4vp, 50850) * upevp1_zukvPv * 100) / 100;
+        }
+    }
+
+    public void fillUpevp2_kv() {
+        fillJahreslohn1_pkv();
+        fillJahreslohn1_stkl();
+        fillMre42_zre4vp();
+        fillUpevp2_zukvpv();
+        if (jahreslohn1_pkv > 0) {
+            if (jahreslohn1_stkl == 6) {
                 upevp2_kv = 0;
-            }else{
+            } else {
                 upevp2_kv = jahreslohn_pkv;
             }
-         }else {
-            upevp2_kv = (min(mre42_zre4vp,50850) * upevp2_zukvPv*100)/100;  
-         }
-     }
-     
-     public void fillUpevp_kvvhb(){
-         fillUpevp_kv();
-         fillUpevp_vhb();
-         fillUpevp_vsp2();
-         if(upevp_kv > upevp_vhb){
-             upevp_kvVhb = upevp_kv;
-         }else{
-             upevp_kvVhb = upevp_vsp2;
-         }
-     }
-     
-      public void fillUpevp1_kvvhb(){
-         fillUpevp1_kv();
-         fillUpevp1_vhb();
-         fillUpevp1_vsp2();
-         if(upevp1_kv > upevp1_vhb){
-             upevp1_kvVhb = upevp1_kv;
-         }else{
-             upevp1_kvVhb = upevp1_vsp2;
-         }
-     }
-      
-        public void fillUpevp2_kvvhb(){
-         fillUpevp2_kv();
-         fillUpevp2_vhb();
-         fillUpevp2_vsp2();
-         if(upevp2_kv > upevp2_vhb){
-             upevp2_kvVhb = upevp2_kv;
-         }else{
-             upevp2_kvVhb = upevp2_vsp2;
-         }
-     }
-     
-     public void fillUpevp_vspn(){
-         fillUpevp_vsp1();
-         fillUpevp_kvvhb();
-         upevp_vspn = Math.ceil(upevp_vsp1 + upevp_kvVhb);
-     }
-     
-     public void fillUpevp1_vspn(){
-         fillUpevp1_vsp1();
-         fillUpevp1_kvvhb();
-         upevp1_vspn =  Math.ceil(upevp1_vsp1 + upevp1_kvVhb);
-     }
-     
-      public void fillUpevp2_vspn(){
-         fillUpevp2_vsp1();
-         fillUpevp2_kvvhb();
-         upevp2_vspn =  Math.ceil(upevp2_vsp1 + upevp2_kvVhb);
-     }
-     
-     public void fillUmvsp_zve(){
-         fillMre4_zre4();
-         fillMztabfb_ztabfb();
-         fillUpevp_vspn();
-         umvsp_zve = Math.floor(mre4_zre4 -mztabfb_ztabfb - upevp_vspn);
-     }
-     
-      public void fillUmvsp1_zve(){
-         fillMre41_zre4();
-         fillMztabfb1_ztabfb();
-         fillUpevp1_vspn();
-         System.out.println("fillUmvsp1_zve: " + (mre41_zre4 -mztabfb1_ztabfb - upevp1_vspn));
-         umvsp1_zve = Math.floor( mre41_zre4 -mztabfb1_ztabfb - upevp1_vspn)-1;
-     }
-      
-       public void fillUmvsp2_zve(){
-         fillMre42_zre4();
-         fillMztabfb2_ztabfb();
-         fillUpevp2_vspn();
-         umvsp2_zve = Math.floor( mre42_zre4 -mztabfb2_ztabfb - upevp2_vspn)-1;
-     }
-     
-     public void fillUmvsp_zzx(){
-         fillUmvsp_zve();
-         fillMztabfb_kztab();
+        } else {
+            upevp2_kv = (min(mre42_zre4vp, 50850) * upevp2_zukvPv * 100) / 100;
+        }
+    }
+
+    public void fillUpevp_kvvhb() {
+        fillUpevp_kv();
+        fillUpevp_vhb();
+        fillUpevp_vsp2();
+        if (upevp_kv > upevp_vhb) {
+            upevp_kvVhb = upevp_kv;
+        } else {
+            upevp_kvVhb = upevp_vsp2;
+        }
+    }
+
+    public void fillUpevp1_kvvhb() {
+        fillUpevp1_kv();
+        fillUpevp1_vhb();
+        fillUpevp1_vsp2();
+        if (upevp1_kv > upevp1_vhb) {
+            upevp1_kvVhb = upevp1_kv;
+        } else {
+            upevp1_kvVhb = upevp1_vsp2;
+        }
+    }
+
+    public void fillUpevp2_kvvhb() {
+        fillUpevp2_kv();
+        fillUpevp2_vhb();
+        fillUpevp2_vsp2();
+        if (upevp2_kv > upevp2_vhb) {
+            upevp2_kvVhb = upevp2_kv;
+        } else {
+            upevp2_kvVhb = upevp2_vsp2;
+        }
+    }
+
+    public void fillUpevp_vspn() {
+        fillUpevp_vsp1();
+        fillUpevp_kvvhb();
+        upevp_vspn = Math.ceil(upevp_vsp1 + upevp_kvVhb);
+    }
+
+    public void fillUpevp1_vspn() {
+        fillUpevp1_vsp1();
+        fillUpevp1_kvvhb();
+        upevp1_vspn = Math.ceil(upevp1_vsp1 + upevp1_kvVhb);
+    }
+
+    public void fillUpevp2_vspn() {
+        fillUpevp2_vsp1();
+        fillUpevp2_kvvhb();
+        upevp2_vspn = Math.ceil(upevp2_vsp1 + upevp2_kvVhb);
+    }
+
+    public void fillUmvsp_zve() {
+        fillMre4_zre4();
+        fillMztabfb_ztabfb();
+        fillUpevp_vspn();
+        umvsp_zve = Math.floor(mre4_zre4 - mztabfb_ztabfb - upevp_vspn);
+    }
+
+    public void fillUmvsp1_zve() {
+        fillMre41_zre4();
+        fillMztabfb1_ztabfb();
+        fillUpevp1_vspn();
+        System.out.println("fillUmvsp1_zve: " + (mre41_zre4 - mztabfb1_ztabfb - upevp1_vspn));
+        umvsp1_zve = Math.floor(mre41_zre4 - mztabfb1_ztabfb - upevp1_vspn) - 1;
+    }
+
+    public void fillUmvsp2_zve() {
+        fillMre42_zre4();
+        fillMztabfb2_ztabfb();
+        fillUpevp2_vspn();
+        umvsp2_zve = Math.floor(mre42_zre4 - mztabfb2_ztabfb - upevp2_vspn) - 1;
+    }
+
+    public void fillUmvsp_zzx() {
+        fillUmvsp_zve();
+        fillMztabfb_kztab();
         /* if(0 > (umvsp_zve/mztabfb_kztab)){
              System.out.println("umvsp1_zzx 0 ist größer warum auch immer");
              umvsp_zzx = 0;
@@ -3763,788 +3705,783 @@ public class Gehaltsabrechnungsrechner implements Serializable {
              System.out.println("umvsp1_zzx 0 ist größer warum auch immer");
              umvsp_zzx  = umvsp_zve/mztabfb_kztab;
          }*/
-         umvsp_zzx = max(0,umvsp_zve/mztabfb_kztab);
-     }
-     
-      public void fillUmvsp1_zzx(){
-         fillUmvsp1_zve();
-         fillMztabfb1_kztab();
-         umvsp1_zzx = max(0,umvsp1_zve/mztabfb1_kztab);
-     }
-     
-       public void fillUmvsp2_zzx(){
-         fillUmvsp2_zve();
-         fillMztabfb2_kztab();
-         umvsp2_zzx = max(0,umvsp2_zve/mztabfb2_kztab);
-     }
-     
-      
-     public void fillUptab07_st(){
-         fillUmvsp_zzx();
-         Double c= 1.0;
-         int b = c.intValue();
-         //uptab07_st;
-         if(umvsp_zzx<= 8652){
-             uptab07_st = 0;
-         }else if(umvsp_zzx <= 13669){
-             uptab07_st = new Double(((993.62*(umvsp_zzx-8652)/10000+1400)*(umvsp_zzx-8652)/10000)*mztabfb_kztab).intValue();
-         }else if(umvsp_zzx <= 53665){
-             uptab07_st =new Double(((225.4*(umvsp_zzx-13669)/10000+2397)*(umvsp_zzx-13669)/10000+952.48)*mztabfb_kztab).intValue();
-         }else if(umvsp_zzx <= 254446){
-             uptab07_st = new Double(((umvsp_zzx * 0.42-8394.14))*mztabfb_kztab).intValue();
-         }else{
-             uptab07_st =new Double(((umvsp_zzx * 0.45-16027.52)* mztabfb_kztab)).intValue();
-         }
-     }
-     
-      
-      public void fillUptab071_st(){
-         fillUmvsp1_zzx();
-        
-         //uptab07_st;
-         if(umvsp1_zzx<= 8652){
-             uptab071_st = 0;
-         }else if(umvsp1_zzx <= 13669){
-             uptab071_st = new Double(((993.62*(umvsp1_zzx-8652)/10000+1400)*(umvsp1_zzx-8652)/10000)*mztabfb_kztab).intValue();
-         }else if(umvsp1_zzx <= 53665){
-             uptab071_st = new Double(((225.4*(umvsp1_zzx-13669)/10000+2397)*(umvsp1_zzx-13669)/10000+952.48)*mztabfb_kztab).intValue();
-         }else if(umvsp1_zzx <= 254446){
-             uptab071_st = new Double(((umvsp1_zzx * 0.42-8394.14))*mztabfb_kztab).intValue();
-         }else{
-             uptab071_st = Math.floor(((umvsp1_zzx * 0.45-16027.52)* mztabfb_kztab));
-         }
- 
-     }
-      
-        public void fillUptab072_st(){
-         fillUmvsp2_zzx();
-        
-         //uptab07_st;
-         if(umvsp2_zzx<= 8652){
-             uptab072_st = 0;
-         }else if(umvsp2_zzx <= 13669){
-             uptab072_st =  new Double(((993.62*(umvsp2_zzx-8652)/10000+1400)*(umvsp2_zzx-8652)/10000)* mztabfb_kztab).intValue();
-         }else if(umvsp2_zzx <= 53665){
-             uptab072_st =  new Double(((225.4*(umvsp2_zzx-13669)/10000+2397)*(umvsp2_zzx-13669)/10000+952.48)* mztabfb_kztab).intValue();
-         }else if(umvsp2_zzx <= 254446){
-             uptab072_st =  new Double(((umvsp2_zzx * 0.42-8394.14))*mztabfb_kztab).intValue();
-         }else{
-             uptab072_st =  new Double(((umvsp2_zzx * 0.45-16027.52)* mztabfb_kztab)).intValue();
-         }
-         
-         
-     }
-     
-     
-     public void fillMst56_x(){
-         fillUmvsp_zzx();
-         mst56_x = min(26832,umvsp_zzx)*1.25;
-     }
-     public void fillMst561_x(){
-         fillUmvsp1_zzx();
-         mst561_x = min(26832,umvsp1_zzx)*1.25;
-     }
-     
-     public void fillMst562_x(){
-         fillUmvsp2_zzx();
-         mst562_x = min(26832,umvsp2_zzx)*1.25;
-     }
-     
-     public void fillMst56_st(){
-         //mst56_st1;
-         
-          fillMst56_x();
-        
-         if(mst56_x<= 8652){
-             mst56_st = 0* mztabfb1_kztab;
-         }else if(mst56_x <= 13669){
-             mst56_st = ((993.62*(mst56_x-8652)/10000+1400)*(mst56_x-8652)/10000)* mztabfb1_kztab;
-         }else if(mst56_x <= 53665){
-             mst56_st = ((((((225.4*(33540-13669))/10000)+2397)*(33540-13669))/10000)+952.48)* mztabfb1_kztab;
-         }else if(mst56_x <= 254446){
-             mst56_st = ((mst56_x * 0.42-8394.14)* mztabfb1_kztab);
-         }else{
-             mst56_st = ((mst56_x * 0.45-16027.52)* mztabfb_kztab);
-         }
-     }
-     
-     public void fillMst561_st(){
-         //mst56_st1;
-         
-          fillMst561_x();
-        
-         if(mst561_x<= 8652){
-             mst561_st = 0;
-         }else if(mst561_x <= 13669){
-             mst561_st = ((993.62*(mst561_x-8652)/10000+1400)*(mst561_x-8652)/10000)* mztabfb1_kztab;
-         }else if(mst561_x <= 53665){
-             mst561_st = ((225.4*(mst561_x-13669)/10000+2397)*(mst561_x-13669)/10000+952.48)* mztabfb1_kztab;
-         }else if(mst561_x <= 254446){
-             mst561_st = ((mst561_x * 0.42-8394.14)* mztabfb1_kztab);
-         }else{
-             mst561_st = ((mst561_x * 0.45-16027.52)*mztabfb_kztab);
-         }
-     }
-     
-      public void fillMst562_st(){
-         //mst56_st1;
-         
-          fillMst562_x();
-        
-         if(mst562_x<= 8652){
-             mst562_st = 0* mztabfb1_kztab;
-         }else if(mst562_x <= 13669){
-             mst562_st = ((993.62*(mst562_x-8652)/10000+1400)*(mst562_x-8652)/10000)* mztabfb1_kztab;
-         }else if(mst562_x <= 53665){
-             mst562_st = ((225.4*(mst562_x-13669)/10000+2397)*(mst562_x-13669)/10000+952.48)* mztabfb1_kztab;
-         }else if(mst562_x <= 254446){
-             mst562_st = ((mst562_x * 0.42-8394.14)* mztabfb1_kztab);
-         }else{
-             mst562_st = ((mst562_x * 0.45-16027.52)*mztabfb_kztab);
-         }
-     }
-     
-      public void fillMst56_x1(){
-         fillUmvsp_zzx();
-         mst56_x1 = min(26832,umvsp_zzx)*0.75;
-     }
-      public void fillMst561_x1(){
-         fillUmvsp1_zzx();
-         mst561_x1 = min(26832,umvsp1_zzx)*0.75;
-     }
-      
-       public void fillMst562_x1(){
-         fillUmvsp2_zzx();
-         mst562_x1 = min(26832,umvsp2_zzx)*0.75;
-     }
-      
-     public void fillMst56_st1(){
-         //mst56_st1;
-         
-          fillMst56_x1();
-        
-         if(mst56_x1<= 8652){
-             mst56_st1 = 0;
-         }else if(mst56_x1 <= 13669){
-             mst56_st2 = ((993.62*(mst56_x1-8652)/10000+1400)*(mst56_x1-8652)/10000)* mztabfb1_kztab;
-         }else if(mst56_x1 <= 53665){
-             mst56_st1 = ((225.4*(mst56_x1-13669)/10000+2397)*(mst56_x1-13669)/10000+952.48)* mztabfb1_kztab;
-         }else if(mst56_x1 <= 254446){
-             mst56_st1 = ((mst56_x1 * 0.42-8394.14))* mztabfb1_kztab;
-         }else{
-             mst56_st1 = ((mst56_x1 * 0.45-16027.52)* mztabfb_kztab);
-         }
-     }
-     
-     public void fillMst561_st1(){
-         //mst56_st1;
-         
-          fillMst561_x1();
-        
-         if(mst561_x1<= 8652){
-             mst561_st1 = 0* mztabfb1_kztab;
-         }else if(mst561_x1 <= 13669){
-             mst561_st2 = ((993.62*(mst561_x1-8652)/10000+1400)*(mst561_x1-8652)/10000)* mztabfb1_kztab;
-         }else if(mst561_x1 <= 53665){
-             System.out.println("Berechnung st1: " +((225.4*(mst561_x1-13669)/10000+2397)*(mst561_x1-13669)/10000+952.48)* mztabfb1_kztab );
-             mst561_st1 = ((225.4*(mst561_x1-13669)/10000+2397)*(mst561_x1-13669)/10000+952.48)* mztabfb1_kztab;
-         }else if(mst561_x1 <= 254446){
-             mst561_st1 = ((mst561_x1 * 0.42-8394.14)* mztabfb1_kztab);
-         }else{
-             mst561_st1 = ((mst561_x1 * 0.45-16027.52)* mztabfb1_kztab);
-         }
-     }
-     
-     public void fillMst562_st1(){
-         //mst56_st1;
-         
-          fillMst562_x1();
-        
-         if(mst562_x1<= 8652){
-             mst562_st1 = 0 * mztabfb1_kztab;
-         }else if(mst562_x1 <= 13669){
-             mst562_st2 = ((993.62*(mst562_x1-8652)/10000+1400)*(mst562_x1-8652)/10000)* mztabfb1_kztab;
-         }else if(mst562_x1 <= 53665){
-             mst562_st1 = ((225.4*(mst562_x1-13669)/10000+2397)*(mst562_x1-13669)/10000+952.48)* mztabfb1_kztab;
-         }else if(mst561_x1 <= 254446){
-             mst562_st1 = ((mst562_x1 * 0.42-8394.14)* mztabfb1_kztab);
-         }else{
-             mst562_st1 = ((mst562_x1 * 0.45-16027.52)* mztabfb1_kztab);
-         }
-     }
-     
-     public void fillMst56_diff(){
-         fillMst56_st();
-         fillMst56_st1();
-         mst56_diff = (mst56_st-mst56_st1)*2;
-     }
-     
-     public void fillMst561_diff(){
-         fillMst561_st();
-         fillMst561_st1();
-         mst561_diff = (mst561_st-mst561_st1)*2;
-     }
-     
-       public void fillMst562_diff(){
-         fillMst562_st();
-         fillMst562_st1();
-         mst562_diff = (mst562_st-mst562_st1)*2;
-     }
-     
-     public void fillMst56_mist(){
+        umvsp_zzx = max(0, umvsp_zve / mztabfb_kztab);
+    }
+
+    public void fillUmvsp1_zzx() {
+        fillUmvsp1_zve();
+        fillMztabfb1_kztab();
+        umvsp1_zzx = max(0, umvsp1_zve / mztabfb1_kztab);
+    }
+
+    public void fillUmvsp2_zzx() {
+        fillUmvsp2_zve();
+        fillMztabfb2_kztab();
+        umvsp2_zzx = max(0, umvsp2_zve / mztabfb2_kztab);
+    }
+
+    public void fillUptab07_st() {
         fillUmvsp_zzx();
-        
-        mst56_mist = min(umvsp_zzx,26832)*0.14;
-     }
-     
-     public void fillMst561_mist(){
+        Double c = 1.0;
+        int b = c.intValue();
+        //uptab07_st;
+        if (umvsp_zzx <= 8652) {
+            uptab07_st = 0;
+        } else if (umvsp_zzx <= 13669) {
+            uptab07_st = new Double(((993.62 * (umvsp_zzx - 8652) / 10000 + 1400) * (umvsp_zzx - 8652) / 10000) * mztabfb_kztab).intValue();
+        } else if (umvsp_zzx <= 53665) {
+            uptab07_st = new Double(((225.4 * (umvsp_zzx - 13669) / 10000 + 2397) * (umvsp_zzx - 13669) / 10000 + 952.48) * mztabfb_kztab).intValue();
+        } else if (umvsp_zzx <= 254446) {
+            uptab07_st = new Double(((umvsp_zzx * 0.42 - 8394.14)) * mztabfb_kztab).intValue();
+        } else {
+            uptab07_st = new Double(((umvsp_zzx * 0.45 - 16027.52) * mztabfb_kztab)).intValue();
+        }
+    }
+
+    public void fillUptab071_st() {
         fillUmvsp1_zzx();
-        
-        mst561_mist = min(umvsp1_zzx,26832)*0.14;
-     }
-     
-     public void fillMst562_mist(){
+
+        //uptab07_st;
+        if (umvsp1_zzx <= 8652) {
+            uptab071_st = 0;
+        } else if (umvsp1_zzx <= 13669) {
+            uptab071_st = new Double(((993.62 * (umvsp1_zzx - 8652) / 10000 + 1400) * (umvsp1_zzx - 8652) / 10000) * mztabfb_kztab).intValue();
+        } else if (umvsp1_zzx <= 53665) {
+            uptab071_st = new Double(((225.4 * (umvsp1_zzx - 13669) / 10000 + 2397) * (umvsp1_zzx - 13669) / 10000 + 952.48) * mztabfb_kztab).intValue();
+        } else if (umvsp1_zzx <= 254446) {
+            uptab071_st = new Double(((umvsp1_zzx * 0.42 - 8394.14)) * mztabfb_kztab).intValue();
+        } else {
+            uptab071_st = Math.floor(((umvsp1_zzx * 0.45 - 16027.52) * mztabfb_kztab));
+        }
+
+    }
+
+    public void fillUptab072_st() {
         fillUmvsp2_zzx();
-        
-        mst562_mist = min(umvsp2_zzx,26832)*0.14;
-     }
-     
-     
-     public void fillMst56_st2(){
-         fillMst56_mist();
-         fillMst56_diff();
-         mst56_st2 = max(mst56_diff,mst56_mist);
-     }
-     
-     public void fillMst561_st2(){
-         fillMst561_mist();
-         fillMst561_diff();
-         mst561_st2 = Math.ceil(max(mst561_diff,mst561_mist));
-     }
-     
-     public void fillMst562_st2(){
-         fillMst562_mist();
-         fillMst562_diff();
-         mst562_st2 = max(mst562_diff,mst562_mist);
-     }
-     
-     public void fillMst56_st3(){
-         //mst56_st1;
+
+        //uptab07_st;
+        if (umvsp2_zzx <= 8652) {
+            uptab072_st = 0;
+        } else if (umvsp2_zzx <= 13669) {
+            uptab072_st = new Double(((993.62 * (umvsp2_zzx - 8652) / 10000 + 1400) * (umvsp2_zzx - 8652) / 10000) * mztabfb_kztab).intValue();
+        } else if (umvsp2_zzx <= 53665) {
+            uptab072_st = new Double(((225.4 * (umvsp2_zzx - 13669) / 10000 + 2397) * (umvsp2_zzx - 13669) / 10000 + 952.48) * mztabfb_kztab).intValue();
+        } else if (umvsp2_zzx <= 254446) {
+            uptab072_st = new Double(((umvsp2_zzx * 0.42 - 8394.14)) * mztabfb_kztab).intValue();
+        } else {
+            uptab072_st = new Double(((umvsp2_zzx * 0.45 - 16027.52) * mztabfb_kztab)).intValue();
+        }
+
+    }
+
+    public void fillMst56_x() {
+        fillUmvsp_zzx();
+        mst56_x = min(26832, umvsp_zzx) * 1.25;
+    }
+
+    public void fillMst561_x() {
+        fillUmvsp1_zzx();
+        mst561_x = min(26832, umvsp1_zzx) * 1.25;
+    }
+
+    public void fillMst562_x() {
+        fillUmvsp2_zzx();
+        mst562_x = min(26832, umvsp2_zzx) * 1.25;
+    }
+
+    public void fillMst56_st() {
+        //mst56_st1;
+
+        fillMst56_x();
+
+        if (mst56_x <= 8652) {
+            mst56_st = 0 * mztabfb1_kztab;
+        } else if (mst56_x <= 13669) {
+            mst56_st = ((993.62 * (mst56_x - 8652) / 10000 + 1400) * (mst56_x - 8652) / 10000) * mztabfb1_kztab;
+        } else if (mst56_x <= 53665) {
+            mst56_st = ((((((225.4 * (33540 - 13669)) / 10000) + 2397) * (33540 - 13669)) / 10000) + 952.48) * mztabfb1_kztab;
+        } else if (mst56_x <= 254446) {
+            mst56_st = ((mst56_x * 0.42 - 8394.14) * mztabfb1_kztab);
+        } else {
+            mst56_st = ((mst56_x * 0.45 - 16027.52) * mztabfb_kztab);
+        }
+    }
+
+    public void fillMst561_st() {
+        //mst56_st1;
+
+        fillMst561_x();
+
+        if (mst561_x <= 8652) {
+            mst561_st = 0;
+        } else if (mst561_x <= 13669) {
+            mst561_st = ((993.62 * (mst561_x - 8652) / 10000 + 1400) * (mst561_x - 8652) / 10000) * mztabfb1_kztab;
+        } else if (mst561_x <= 53665) {
+            mst561_st = ((225.4 * (mst561_x - 13669) / 10000 + 2397) * (mst561_x - 13669) / 10000 + 952.48) * mztabfb1_kztab;
+        } else if (mst561_x <= 254446) {
+            mst561_st = ((mst561_x * 0.42 - 8394.14) * mztabfb1_kztab);
+        } else {
+            mst561_st = ((mst561_x * 0.45 - 16027.52) * mztabfb_kztab);
+        }
+    }
+
+    public void fillMst562_st() {
+        //mst56_st1;
+
+        fillMst562_x();
+
+        if (mst562_x <= 8652) {
+            mst562_st = 0 * mztabfb1_kztab;
+        } else if (mst562_x <= 13669) {
+            mst562_st = ((993.62 * (mst562_x - 8652) / 10000 + 1400) * (mst562_x - 8652) / 10000) * mztabfb1_kztab;
+        } else if (mst562_x <= 53665) {
+            mst562_st = ((225.4 * (mst562_x - 13669) / 10000 + 2397) * (mst562_x - 13669) / 10000 + 952.48) * mztabfb1_kztab;
+        } else if (mst562_x <= 254446) {
+            mst562_st = ((mst562_x * 0.42 - 8394.14) * mztabfb1_kztab);
+        } else {
+            mst562_st = ((mst562_x * 0.45 - 16027.52) * mztabfb_kztab);
+        }
+    }
+
+    public void fillMst56_x1() {
+        fillUmvsp_zzx();
+        mst56_x1 = min(26832, umvsp_zzx) * 0.75;
+    }
+
+    public void fillMst561_x1() {
+        fillUmvsp1_zzx();
+        mst561_x1 = min(26832, umvsp1_zzx) * 0.75;
+    }
+
+    public void fillMst562_x1() {
+        fillUmvsp2_zzx();
+        mst562_x1 = min(26832, umvsp2_zzx) * 0.75;
+    }
+
+    public void fillMst56_st1() {
+        //mst56_st1;
+
+        fillMst56_x1();
+
+        if (mst56_x1 <= 8652) {
+            mst56_st1 = 0;
+        } else if (mst56_x1 <= 13669) {
+            mst56_st2 = ((993.62 * (mst56_x1 - 8652) / 10000 + 1400) * (mst56_x1 - 8652) / 10000) * mztabfb1_kztab;
+        } else if (mst56_x1 <= 53665) {
+            mst56_st1 = ((225.4 * (mst56_x1 - 13669) / 10000 + 2397) * (mst56_x1 - 13669) / 10000 + 952.48) * mztabfb1_kztab;
+        } else if (mst56_x1 <= 254446) {
+            mst56_st1 = ((mst56_x1 * 0.42 - 8394.14)) * mztabfb1_kztab;
+        } else {
+            mst56_st1 = ((mst56_x1 * 0.45 - 16027.52) * mztabfb_kztab);
+        }
+    }
+
+    public void fillMst561_st1() {
+        //mst56_st1;
+
+        fillMst561_x1();
+
+        if (mst561_x1 <= 8652) {
+            mst561_st1 = 0 * mztabfb1_kztab;
+        } else if (mst561_x1 <= 13669) {
+            mst561_st2 = ((993.62 * (mst561_x1 - 8652) / 10000 + 1400) * (mst561_x1 - 8652) / 10000) * mztabfb1_kztab;
+        } else if (mst561_x1 <= 53665) {
+            System.out.println("Berechnung st1: " + ((225.4 * (mst561_x1 - 13669) / 10000 + 2397) * (mst561_x1 - 13669) / 10000 + 952.48) * mztabfb1_kztab);
+            mst561_st1 = ((225.4 * (mst561_x1 - 13669) / 10000 + 2397) * (mst561_x1 - 13669) / 10000 + 952.48) * mztabfb1_kztab;
+        } else if (mst561_x1 <= 254446) {
+            mst561_st1 = ((mst561_x1 * 0.42 - 8394.14) * mztabfb1_kztab);
+        } else {
+            mst561_st1 = ((mst561_x1 * 0.45 - 16027.52) * mztabfb1_kztab);
+        }
+    }
+
+    public void fillMst562_st1() {
+        //mst56_st1;
+
+        fillMst562_x1();
+
+        if (mst562_x1 <= 8652) {
+            mst562_st1 = 0 * mztabfb1_kztab;
+        } else if (mst562_x1 <= 13669) {
+            mst562_st2 = ((993.62 * (mst562_x1 - 8652) / 10000 + 1400) * (mst562_x1 - 8652) / 10000) * mztabfb1_kztab;
+        } else if (mst562_x1 <= 53665) {
+            mst562_st1 = ((225.4 * (mst562_x1 - 13669) / 10000 + 2397) * (mst562_x1 - 13669) / 10000 + 952.48) * mztabfb1_kztab;
+        } else if (mst561_x1 <= 254446) {
+            mst562_st1 = ((mst562_x1 * 0.42 - 8394.14) * mztabfb1_kztab);
+        } else {
+            mst562_st1 = ((mst562_x1 * 0.45 - 16027.52) * mztabfb1_kztab);
+        }
+    }
+
+    public void fillMst56_diff() {
+        fillMst56_st();
+        fillMst56_st1();
+        mst56_diff = (mst56_st - mst56_st1) * 2;
+    }
+
+    public void fillMst561_diff() {
+        fillMst561_st();
+        fillMst561_st1();
+        mst561_diff = (mst561_st - mst561_st1) * 2;
+    }
+
+    public void fillMst562_diff() {
+        fillMst562_st();
+        fillMst562_st1();
+        mst562_diff = (mst562_st - mst562_st1) * 2;
+    }
+
+    public void fillMst56_mist() {
+        fillUmvsp_zzx();
+
+        mst56_mist = min(umvsp_zzx, 26832) * 0.14;
+    }
+
+    public void fillMst561_mist() {
+        fillUmvsp1_zzx();
+
+        mst561_mist = min(umvsp1_zzx, 26832) * 0.14;
+    }
+
+    public void fillMst562_mist() {
+        fillUmvsp2_zzx();
+
+        mst562_mist = min(umvsp2_zzx, 26832) * 0.14;
+    }
+
+    public void fillMst56_st2() {
+        fillMst56_mist();
+        fillMst56_diff();
+        mst56_st2 = max(mst56_diff, mst56_mist);
+    }
+
+    public void fillMst561_st2() {
+        fillMst561_mist();
+        fillMst561_diff();
+        mst561_st2 = Math.ceil(max(mst561_diff, mst561_mist));
+    }
+
+    public void fillMst562_st2() {
+        fillMst562_mist();
+        fillMst562_diff();
+        mst562_st2 = max(mst562_diff, mst562_mist);
+    }
+
+    public void fillMst56_st3() {
+        //mst56_st1;
         fillMst56_st2();
         fillUmvsp_zzx();
 
-         if(umvsp_zzx >203557){
-            mst56_st3 = (203557-26832)*0.42+mst56_st2;
-         }else{
-            mst56_st3 = max((umvsp_zzx-26832),0)*0.42+mst56_st2;
-         }
-         
-     }
-     
-     
-     
-      public void fillMst561_st3(){
-         //mst56_st1;
+        if (umvsp_zzx > 203557) {
+            mst56_st3 = (203557 - 26832) * 0.42 + mst56_st2;
+        } else {
+            mst56_st3 = max((umvsp_zzx - 26832), 0) * 0.42 + mst56_st2;
+        }
+
+    }
+
+    public void fillMst561_st3() {
+        //mst56_st1;
         fillMst561_st2();
         fillUmvsp1_zzx();
 
-         if(umvsp1_zzx >203557){
-            mst561_st3 = (203557-26832)*0.42+mst561_st2;
-         }else{
-            mst561_st3 = max((umvsp1_zzx-26832),0)*0.42+mst561_st2;
-         }
-         
-     }
-      
-        public void fillMst562_st3(){
-         //mst56_st1;
+        if (umvsp1_zzx > 203557) {
+            mst561_st3 = (203557 - 26832) * 0.42 + mst561_st2;
+        } else {
+            mst561_st3 = max((umvsp1_zzx - 26832), 0) * 0.42 + mst561_st2;
+        }
+
+    }
+
+    public void fillMst562_st3() {
+        //mst56_st1;
         fillMst562_st2();
         fillUmvsp2_zzx();
 
-         if(umvsp2_zzx >203557){
-            mst562_st3 = (203557-26832)*0.42+mst562_st2;
-         }else{
-            mst562_st3 = max((umvsp2_zzx-26832),0)*0.42+mst562_st2;
-         }
-         
-     }
-     
-     public void fillMst56_vergl(){
+        if (umvsp2_zzx > 203557) {
+            mst562_st3 = (203557 - 26832) * 0.42 + mst562_st2;
+        } else {
+            mst562_st3 = max((umvsp2_zzx - 26832), 0) * 0.42 + mst562_st2;
+        }
+
+    }
+
+    public void fillMst56_vergl() {
         fillUmvsp_zzx();
         fillMst56_st2();
-        if(umvsp_zzx>10070 && umvsp_zzx <= 26832){
+        if (umvsp_zzx > 10070 && umvsp_zzx <= 26832) {
             mst56_vergl = mst56_st3;
-        }else{
+        } else {
             mst56_vergl = 0;
         }
-     }
-     
-     public void fillMst561_vergl(){
+    }
+
+    public void fillMst561_vergl() {
         fillUmvsp1_zzx();
         fillMst561_st2();
-        if(umvsp1_zzx>10070 && umvsp1_zzx <= 26832){
+        if (umvsp1_zzx > 10070 && umvsp1_zzx <= 26832) {
             mst561_vergl = mst561_st3;
-        }else{
+        } else {
             mst561_vergl = 0;
         }
-     }
-     
-      public void fillMst562_vergl(){
+    }
+
+    public void fillMst562_vergl() {
         fillUmvsp2_zzx();
         fillMst562_st2();
-        if(umvsp2_zzx>10070 && umvsp2_zzx <= 26832){
+        if (umvsp2_zzx > 10070 && umvsp2_zzx <= 26832) {
             mst562_vergl = mst562_st3;
-        }else{
+        } else {
             mst562_vergl = 0;
         }
-     }
-     
-     public void fillMst56_st4(){
-         mst56_st4 = 10070*0.14;
-     }
-     
-     public void fillMst561_st4(){
-         mst561_st4 = 1366;
-     }
-     
-      public void fillMst562_st4(){
-         mst562_st4 = 1366;
-     }
-      
-     public void fillMst56_st5(){
+    }
+
+    public void fillMst56_st4() {
+        mst56_st4 = 10070 * 0.14;
+    }
+
+    public void fillMst561_st4() {
+        mst561_st4 = 1366;
+    }
+
+    public void fillMst562_st4() {
+        mst562_st4 = 1366;
+    }
+
+    public void fillMst56_st5() {
         fillUmvsp_zzx();
         fillMst56_st3();
         fillMst56_st4();
-         mst56_st5 = min(max(umvsp_zzx-10070,0)*0.42+mst56_st4,mst56_st3);
-     }
-      public void fillMst561_st5(){
+        mst56_st5 = min(max(umvsp_zzx - 10070, 0) * 0.42 + mst56_st4, mst56_st3);
+    }
+
+    public void fillMst561_st5() {
         fillUmvsp1_zzx();
         fillMst561_st3();
         fillMst561_st4();
-         mst561_st5 = min(max(umvsp1_zzx-10070,0)*0.42+mst561_st4,mst561_st3);
-     }
-      
-        public void fillMst562_st5(){
+        mst561_st5 = min(max(umvsp1_zzx - 10070, 0) * 0.42 + mst561_st4, mst561_st3);
+    }
+
+    public void fillMst562_st5() {
         fillUmvsp2_zzx();
         fillMst562_st3();
         fillMst562_st4();
-         mst562_st5 = min(max(umvsp2_zzx-10070,0)*0.42+mst562_st4,mst562_st3);
-     }
-     
-     public void fillMst56_reichst(){
+        mst562_st5 = min(max(umvsp2_zzx - 10070, 0) * 0.42 + mst562_st4, mst562_st3);
+    }
+
+    public void fillMst56_reichst() {
         fillUmvsp_zzx();
         fillMst56_st5();
-        mst56_reichst = max(umvsp_zzx-203557,0)*0.45+mst56_st5;
-     }
-     
-      public void fillMst561_reichst(){
+        mst56_reichst = max(umvsp_zzx - 203557, 0) * 0.45 + mst56_st5;
+    }
+
+    public void fillMst561_reichst() {
         fillUmvsp1_zzx();
         fillMst561_st5();
-        mst561_reichst = max(umvsp1_zzx-203557,0)*0.45+mst561_st5;
-     }
-      
-       public void fillMst562_reichst(){
+        mst561_reichst = max(umvsp1_zzx - 203557, 0) * 0.45 + mst561_st5;
+    }
+
+    public void fillMst562_reichst() {
         fillUmvsp2_zzx();
         fillMst562_st5();
-        mst562_reichst = max(umvsp2_zzx-203557,0)*0.45+mst562_st5;
-     }
-     
-     public void fillMst56_lstjahr(){
-         fillLohnst_stkl();
-         fillLohnst_faktorf();
-         fillUptab07_st();
-         fillMst56_reichst();
-         if(lohnst_stkl<5){
-             mst56_lstjahr =Math.floor(uptab07_st*lohnst_faktorF);
-         }else{
-             mst56_lstjahr = Math.floor(mst56_reichst*lohnst_faktorF);
+        mst562_reichst = max(umvsp2_zzx - 203557, 0) * 0.45 + mst562_st5;
+    }
 
-         }
-     }
-     
-      public void fillMst561_lstjahr(){
-         fillJahreslohn_stkl();
-         fillJahreslohn_faktorf();
-         fillUptab071_st();
-         fillMst561_reichst();
-         if(jahreslohn_stkl<5){
-             mst561_lstjahr = Math.floor(uptab071_st*jahreslohn_faktorF);
-         }else{
-             mst561_lstjahr = Math.floor(mst561_reichst*jahreslohn_faktorF);
+    public void fillMst56_lstjahr() {
+        fillLohnst_stkl();
+        fillLohnst_faktorf();
+        fillUptab07_st();
+        fillMst56_reichst();
+        if (lohnst_stkl < 5) {
+            mst56_lstjahr = Math.floor(uptab07_st * lohnst_faktorF);
+        } else {
+            mst56_lstjahr = Math.floor(mst56_reichst * lohnst_faktorF);
 
-         }
-         
- 
-     }
-     
-      public void fillMst562_lstjahr(){
-         fillJahreslohn1_stkl();
-         fillJahreslohn1_faktorf();
-         fillUptab072_st();
-         fillMst562_reichst();
-         if(jahreslohn1_stkl<5){
-             mst562_lstjahr = Math.floor(uptab072_st*jahreslohn1_faktorF);
-         }else{
-             mst562_lstjahr = Math.floor(mst562_reichst*jahreslohn1_faktorF);
+        }
+    }
 
-         }
-         
-     }
-      
-      
-     public void fillMst56_jw(){
-         fillMst56_lstjahr();
-         mst56_jw = mst56_lstjahr*100;
-     }
-     
-     public void fillMst561_jw(){
-         fillMst561_lstjahr();
-         mst561_jw = mst561_lstjahr*100;
-     }
-     
-     public void fillMst562_jw(){
-         fillMst562_lstjahr();
-         mst562_jw = mst562_lstjahr*100;
-     }
-     
-     
-     public void fillMlstjahr1_lstlzz(){
-         fillMst561_jw();
-         
-         mlstjahr1_lstlzzSum = mst561_jw;
-     }
-     
-      public void fillMlstjahr2_lstlzz(){
-         fillMst562_jw();
-         
-         mlstjahr2_lstlzzSum = mst562_jw;
-     }
-     
-     public void fillMlstjahr_lstlzzsum(){
-         fillMst56_jw();
-         fillMlstjahr1_lstlzz();
-         fillMlstjahr2_lstlzz();
-          System.out.println("Rechnung: " + (Math.floor((mst56_jw/12))+mlstjahr1_lstlzzSum-mlstjahr2_lstlzzSum));
-         mlstjahr_lstlzzSum = Math.floor((mst56_jw/12))+mlstjahr2_lstlzzSum-mlstjahr1_lstlzzSum;
-         System.out.println("fillmlstjahr_lstlzzSum mlstjahr_lstlzzSum: " + mlstjahr_lstlzzSum);
-     }
-     
-     public void fillMlstjahr_ztabfb(){
-         fillMztabfb_kfb();
-         fillMztabfb_ztabfb();
-         
-         mlstjahr_ztabfb = mztabfb_kfb + mztabfb_ztabfb;
-     }
-     
-      public void fillMlstjahr1_ztabfb(){
-         fillMztabfb1_kfb();
-         fillMztabfb1_ztabfb();
-         
-         mlstjahr1_ztabfb = mztabfb1_kfb + mztabfb1_ztabfb;
-     }
-      
-      public void fillMlstjahr2_ztabfb(){
-         fillMztabfb2_kfb();
-         fillMztabfb2_ztabfb();
-         
-         mlstjahr2_ztabfb = mztabfb2_kfb + mztabfb2_ztabfb;
-     }
-     
-     public void fillMlstjahr_zve(){
-         fillMre4_zre4();
-         fillUpevp_vspn();
-         fillMlstjahr_ztabfb();
-         mlstjahr_zve = mre4_zre4-upevp_vspn-mlstjahr_ztabfb; 
-     }
-     
-     public void fillMlstjahr1_zve(){
-         fillMre41_zre4();
-         fillUpevp1_vspn();
-         fillMlstjahr1_ztabfb();
-         mlstjahr1_zve = mre41_zre4-upevp1_vspn-mlstjahr1_ztabfb; 
-     }
-     
-      public void fillMlstjahr2_zve(){
-         fillMre42_zre4();
-         fillUpevp2_vspn();
-         fillMlstjahr2_ztabfb();
-         mlstjahr2_zve = mre42_zre4-upevp2_vspn-mlstjahr2_ztabfb; 
-     }
-     
-     public void fillMlstjahr_zvex(){
-         fillMlstjahr_zve();
-         fillMztabfb_kztab();
-         
-         if(mlstjahr_zve<36){
-             mlstjahr_zveX = 0;
-         }else{
-             mlstjahr_zveX = mlstjahr_zve/mztabfb_kztab;
-         }
-     }
-     
-      public void fillMlstjahr1_zvex(){
-         fillMlstjahr1_zve();
-         fillMztabfb1_kztab();
-         
-         if(mlstjahr1_zve<36){
-             mlstjahr1_zveX = 0;
-         }else{
-             mlstjahr1_zveX = mlstjahr1_zve/mztabfb1_kztab;
-         }
-     }
-      
-        public void fillMlstjahr2_zvex(){
-         fillMlstjahr2_zve();
-         fillMztabfb2_kztab();
-         
-         if(mlstjahr2_zve<36){
-             mlstjahr2_zveX = 0;
-         }else{
-             mlstjahr2_zveX = mlstjahr2_zve/mztabfb2_kztab;
-         }
-     }
-      
-     public void fillMlstjahr_st(){
-          fillMlstjahr_zvex();
-        
-         if(mlstjahr_zveX<= 8652){
-             mlstjahr_st = 0 * mztabfb_kztab;
-         }else if(mlstjahr_zveX <= 13669){
-             mlstjahr_st = ((993.62*(mlstjahr_zveX-8652)/10000+1400)*(mlstjahr_zveX-8652)/10000)* mztabfb_kztab;
-         }else if(mlstjahr_zveX <= 53665){
-             mlstjahr_st = ((225.4*(mlstjahr_zveX-13669)/10000+2397)*(mlstjahr_zveX-13669)/10000+952.48)* mztabfb_kztab;
-         }else if(mlstjahr_zveX <= 254446){
-             mlstjahr_st = ((mlstjahr_zveX * 0.42-8394.14)* mztabfb_kztab);
-         }else{
-             mlstjahr_st = ((mlstjahr_zveX * 0.45-16027.52)* mztabfb_kztab);
-         }
-         mlstjahr_st -=1;
-     }
-     
-     public void fillMlstjahr1_st(){
-          fillMlstjahr1_zvex();
-        
-         if(mlstjahr1_zveX<= 8652){
-             mlstjahr1_st = 0 * mztabfb_kztab;
-         }else if(mlstjahr1_zveX <= 13669){
-             mlstjahr1_st = ((993.62*(mlstjahr1_zveX-8652)/10000+1400)*(mlstjahr1_zveX-8652)/10000)* mztabfb_kztab;
-         }else if(mlstjahr1_zveX <= 53665){
-             mlstjahr1_st = ((225.4*(mlstjahr1_zveX-13669)/10000+2397)*(mlstjahr1_zveX-13669)/10000+952.48)* mztabfb_kztab;
-         }else if(mlstjahr1_zveX <= 254446){
-             mlstjahr1_st = ((mlstjahr1_zveX * 0.42-8394.14)* mztabfb_kztab);
-         }else{
-             mlstjahr1_st = ((mlstjahr1_zveX * 0.45-16027.52)* mztabfb_kztab);
-         }
-       mlstjahr1_st -=1;
-     }
-     
-      public void fillMlstjahr2_st(){
-          fillMlstjahr2_zvex();
-        
-         if(mlstjahr2_zveX<= 8652){
-             mlstjahr2_st = 0 * mztabfb_kztab;
-         }else if(mlstjahr2_zveX <= 13669){
-             mlstjahr2_st = ((993.62*(mlstjahr2_zveX-8652)/10000+1400)*(mlstjahr2_zveX-8652)/10000)* mztabfb_kztab;
-         }else if(mlstjahr2_zveX <= 53665){
-             mlstjahr2_st = ((225.4*(mlstjahr2_zveX-13669)/10000+2397)*(mlstjahr2_zveX-13669)/10000+952.48)* mztabfb_kztab;
-         }else if(mlstjahr2_zveX <= 254446){
-             mlstjahr2_st = ((mlstjahr2_zveX * 0.42-8394.14)* mztabfb_kztab);
-         }else{
-             mlstjahr2_st = ((mlstjahr2_zveX * 0.45-16027.52)* mztabfb_kztab);
-         }
-         mlstjahr2_st -=1;
-     }
-     
-     public void fillMlstjahr_jbmg(){
-         fillLohnst_zkf();
-         fillLohnst_faktorf();
-         fillMst56_lstjahr();
-         fillMlstjahr_st();
-         
-         if(lohnst_zkf > 0){
-            mlstjahr_jbmg = mlstjahr_st*lohnst_faktorF;
-         }else{
-             mlstjahr_jbmg = mst56_lstjahr;
-         }
-     }
-     
-     public void fillMlstjahr1_jbmg(){
-         fillJahreslohn_zkf();
-         fillJahreslohn_faktorf();
-         fillMst561_lstjahr();
-         fillMlstjahr1_st();
-         
-         if(jahreslohn_zkf > 0){
-            mlstjahr1_jbmg = mlstjahr1_st*jahreslohn_faktorF;
-         }else{
-             mlstjahr1_jbmg = mst561_lstjahr;
-         }
-     }
-     
-        public void fillMlstjahr2_jbmg(){
-         fillJahreslohn1_zkf();
-         fillJahreslohn1_faktorf();
-         fillMst562_lstjahr();
-         fillMlstjahr2_st();
-         
-         if(jahreslohn1_zkf > 0){
-            mlstjahr2_jbmg = mlstjahr2_st*jahreslohn1_faktorF;
-         }else{
-             mlstjahr2_jbmg = mst562_lstjahr;
-         }
-     }
-     
-     public void fillMsolz_solzfrei(){
-         fillMztabfb_kztab();
-         msolz_solzfrei = 972*mztabfb_kztab;
-     }
-     
-     public void fillMsolz1_solzfrei(){
-         fillMztabfb1_kztab();
-         msolz1_solzfrei = 972*mztabfb1_kztab;
-     }
-     
-      public void fillMsolz2_solzfrei(){
-         fillMztabfb2_kztab();
-         msolz2_solzfrei = 972*mztabfb2_kztab;
-     }
-     
-     public void fillMsolz_solzj(){
-         fillMlstjahr_st();
-         msolz_solzj =(mlstjahr_jbmg*5.5)/100;
-     }
-     
-     public void fillMsolz1_solzj(){
-         fillMlstjahr1_st();
-         msolz1_solzj =(mlstjahr1_jbmg*5.5)/100;
-     }
-     
-     public void fillMsolz2_solzj(){
-         fillMlstjahr2_st();
-         msolz2_solzj =(mlstjahr2_jbmg*5.5)/100;
-     }
-     
-     public void fillMsolz1_solzeinmal(){
-         fillMsolz1_solzj();
-         fillMsolz2_solzj();
-         msolz1_solzeinmal= msolz2_solzj-msolz1_solzj;
-     }
-     
-     public void fillBk1_anteil1(){
-         fillMlstjahr1_jbmg();
-         bk1_anteil1 = mlstjahr1_jbmg;
-     }
-     
-     public void fillBk2_anteil1(){
-         fillMlstjahr2_jbmg();
-         bk2_anteil1 = mlstjahr2_jbmg;
-     }
+    public void fillMst561_lstjahr() {
+        fillJahreslohn_stkl();
+        fillJahreslohn_faktorf();
+        fillUptab071_st();
+        fillMst561_reichst();
+        if (jahreslohn_stkl < 5) {
+            mst561_lstjahr = Math.floor(uptab071_st * jahreslohn_faktorF);
+        } else {
+            mst561_lstjahr = Math.floor(mst561_reichst * jahreslohn_faktorF);
 
-     public void fillBk1_bk(){
-         fillBk1_anteil1();
-         bk1_bk = bk1_anteil1;
-     }
-     
-     public void fillBk2_bk(){
-         fillBk2_anteil1();
-         bk2_bk = bk2_anteil1;
-     }
-     
-     public void fillBk1_bkeinmal(){
-         fillBk1_bk();
-         fillBk2_bk();
-         
-         bk1_bkeinmal = bk2_bk - bk1_bk;
-     }
-     
-     public void fillBk1_kist(){
-         fillBk1_bkeinmal();
-         System.out.println("bk1_kist bk1_bkeinmal: " + bk1_bkeinmal + " basedata.kirchensteuer: " +(baseData.getKirchensteuer()/100) );
-         bk1_kist = baseData.getKirchensteuer()/100*bk1_bkeinmal;
-     }
-     public void fillMsolz_solzmin(){
-         fillMlstjahr_jbmg();
-         fillMsolz_solzfrei();
-         msolz_solzmin = ((mlstjahr_jbmg-msolz_solzfrei)*20)/100;
-     }
-     
-     public void fillMsolz_solzj1(){
-         fillMsolz_solzj();
-         fillMsolz_solzmin();
-         msolz_solzj1 = min(msolz_solzj,msolz_solzmin);
-     }
-     
-     public void fillMsolz_jw(){
-         fillMsolz_solzj1();
-         msolz_jw = msolz_solzj1;
-     }
-     
-     public void fillSolz_anteil1(){
-         fillMsolz_jw();
-         solz_anteil1 = msolz_jw/12;
-     }
-     
-     public void fillSolz_solzsum(){
-         fillMlstjahr_jbmg();
-         fillMsolz_solzfrei();
-         fillSolz_anteil1();
-         fillMsolz1_solzeinmal();
-         
-         if(mlstjahr_jbmg > msolz_solzfrei){
-             solz_solzSum = solz_anteil1+msolz1_solzeinmal;
-         }else{
-            solz_solzSum = 0+msolz1_solzeinmal;
+        }
 
-         }
-     }
-     
-     public void fillSolz_jw(){
-         fillMlstjahr_jbmg();
-         solz_jw = mlstjahr_jbmg *100;
-     }
-     
-     public void fillBk_anteil1(){
-         fillLohnst_lzz();
-         fillSolz_jw();
-         
-         if(lohnst_lzz == 1){
-             bk_anteil1 = solz_jw;
-         }else if(lohnst_lzz==2){
-             bk_anteil1 = solz_jw/12;
-         }else if(lohnst_lzz == 3){
-            bk_anteil1 = (solz_jw*7)/360;
-         }else{
-            bk_anteil1 = solz_jw/360;
-         }
-     }
-     
-     public void fillBk_bk(){
-         fillBk_anteil1();
-         fillBk1_bk();
-         fillBk2_bk();
-         
-         bk_bk = bk_anteil1+bk2_bk-bk1_bk;
-     }
-     
-     public void fillBk_kistsum(){
-         fillBk_bk();
-         fillBk1_bkeinmal();
-         System.out.println("fillBk_kistsumm => basedata.getKirchensteuer/100: " + baseData.getKirchensteuer()/100 + " bk_bk/100: " + bk_bk/100 + " bk1_bkeinmal: " + bk1_bkeinmal);
-         bk_kistSum = ((baseData.getKirchensteuer()/100)*(bk_bk/100))+bk1_kist;
-     }
-    
-    public void calcRVPflichtigerBeitrag(){
+    }
+
+    public void fillMst562_lstjahr() {
+        fillJahreslohn1_stkl();
+        fillJahreslohn1_faktorf();
+        fillUptab072_st();
+        fillMst562_reichst();
+        if (jahreslohn1_stkl < 5) {
+            mst562_lstjahr = Math.floor(uptab072_st * jahreslohn1_faktorF);
+        } else {
+            mst562_lstjahr = Math.floor(mst562_reichst * jahreslohn1_faktorF);
+
+        }
+
+    }
+
+    public void fillMst56_jw() {
+        fillMst56_lstjahr();
+        mst56_jw = mst56_lstjahr * 100;
+    }
+
+    public void fillMst561_jw() {
+        fillMst561_lstjahr();
+        mst561_jw = mst561_lstjahr * 100;
+    }
+
+    public void fillMst562_jw() {
+        fillMst562_lstjahr();
+        mst562_jw = mst562_lstjahr * 100;
+    }
+
+    public void fillMlstjahr1_lstlzz() {
+        fillMst561_jw();
+
+        mlstjahr1_lstlzzSum = mst561_jw;
+    }
+
+    public void fillMlstjahr2_lstlzz() {
+        fillMst562_jw();
+
+        mlstjahr2_lstlzzSum = mst562_jw;
+    }
+
+    public void fillMlstjahr_lstlzzsum() {
+        fillMst56_jw();
+        fillMlstjahr1_lstlzz();
+        fillMlstjahr2_lstlzz();
+        System.out.println("Rechnung: " + (Math.floor((mst56_jw / 12)) + mlstjahr1_lstlzzSum - mlstjahr2_lstlzzSum));
+        mlstjahr_lstlzzSum = Math.floor((mst56_jw / 12)) + mlstjahr2_lstlzzSum - mlstjahr1_lstlzzSum;
+        System.out.println("fillmlstjahr_lstlzzSum mlstjahr_lstlzzSum: " + mlstjahr_lstlzzSum);
+    }
+
+    public void fillMlstjahr_ztabfb() {
+        fillMztabfb_kfb();
+        fillMztabfb_ztabfb();
+
+        mlstjahr_ztabfb = mztabfb_kfb + mztabfb_ztabfb;
+    }
+
+    public void fillMlstjahr1_ztabfb() {
+        fillMztabfb1_kfb();
+        fillMztabfb1_ztabfb();
+
+        mlstjahr1_ztabfb = mztabfb1_kfb + mztabfb1_ztabfb;
+    }
+
+    public void fillMlstjahr2_ztabfb() {
+        fillMztabfb2_kfb();
+        fillMztabfb2_ztabfb();
+
+        mlstjahr2_ztabfb = mztabfb2_kfb + mztabfb2_ztabfb;
+    }
+
+    public void fillMlstjahr_zve() {
+        fillMre4_zre4();
+        fillUpevp_vspn();
+        fillMlstjahr_ztabfb();
+        mlstjahr_zve = mre4_zre4 - upevp_vspn - mlstjahr_ztabfb;
+    }
+
+    public void fillMlstjahr1_zve() {
+        fillMre41_zre4();
+        fillUpevp1_vspn();
+        fillMlstjahr1_ztabfb();
+        mlstjahr1_zve = mre41_zre4 - upevp1_vspn - mlstjahr1_ztabfb;
+    }
+
+    public void fillMlstjahr2_zve() {
+        fillMre42_zre4();
+        fillUpevp2_vspn();
+        fillMlstjahr2_ztabfb();
+        mlstjahr2_zve = mre42_zre4 - upevp2_vspn - mlstjahr2_ztabfb;
+    }
+
+    public void fillMlstjahr_zvex() {
+        fillMlstjahr_zve();
+        fillMztabfb_kztab();
+
+        if (mlstjahr_zve < 36) {
+            mlstjahr_zveX = 0;
+        } else {
+            mlstjahr_zveX = mlstjahr_zve / mztabfb_kztab;
+        }
+    }
+
+    public void fillMlstjahr1_zvex() {
+        fillMlstjahr1_zve();
+        fillMztabfb1_kztab();
+
+        if (mlstjahr1_zve < 36) {
+            mlstjahr1_zveX = 0;
+        } else {
+            mlstjahr1_zveX = mlstjahr1_zve / mztabfb1_kztab;
+        }
+    }
+
+    public void fillMlstjahr2_zvex() {
+        fillMlstjahr2_zve();
+        fillMztabfb2_kztab();
+
+        if (mlstjahr2_zve < 36) {
+            mlstjahr2_zveX = 0;
+        } else {
+            mlstjahr2_zveX = mlstjahr2_zve / mztabfb2_kztab;
+        }
+    }
+
+    public void fillMlstjahr_st() {
+        fillMlstjahr_zvex();
+
+        if (mlstjahr_zveX <= 8652) {
+            mlstjahr_st = 0 * mztabfb_kztab;
+        } else if (mlstjahr_zveX <= 13669) {
+            mlstjahr_st = ((993.62 * (mlstjahr_zveX - 8652) / 10000 + 1400) * (mlstjahr_zveX - 8652) / 10000) * mztabfb_kztab;
+        } else if (mlstjahr_zveX <= 53665) {
+            mlstjahr_st = ((225.4 * (mlstjahr_zveX - 13669) / 10000 + 2397) * (mlstjahr_zveX - 13669) / 10000 + 952.48) * mztabfb_kztab;
+        } else if (mlstjahr_zveX <= 254446) {
+            mlstjahr_st = ((mlstjahr_zveX * 0.42 - 8394.14) * mztabfb_kztab);
+        } else {
+            mlstjahr_st = ((mlstjahr_zveX * 0.45 - 16027.52) * mztabfb_kztab);
+        }
+        mlstjahr_st -= 1;
+    }
+
+    public void fillMlstjahr1_st() {
+        fillMlstjahr1_zvex();
+
+        if (mlstjahr1_zveX <= 8652) {
+            mlstjahr1_st = 0 * mztabfb_kztab;
+        } else if (mlstjahr1_zveX <= 13669) {
+            mlstjahr1_st = ((993.62 * (mlstjahr1_zveX - 8652) / 10000 + 1400) * (mlstjahr1_zveX - 8652) / 10000) * mztabfb_kztab;
+        } else if (mlstjahr1_zveX <= 53665) {
+            mlstjahr1_st = ((225.4 * (mlstjahr1_zveX - 13669) / 10000 + 2397) * (mlstjahr1_zveX - 13669) / 10000 + 952.48) * mztabfb_kztab;
+        } else if (mlstjahr1_zveX <= 254446) {
+            mlstjahr1_st = ((mlstjahr1_zveX * 0.42 - 8394.14) * mztabfb_kztab);
+        } else {
+            mlstjahr1_st = ((mlstjahr1_zveX * 0.45 - 16027.52) * mztabfb_kztab);
+        }
+        mlstjahr1_st -= 1;
+    }
+
+    public void fillMlstjahr2_st() {
+        fillMlstjahr2_zvex();
+
+        if (mlstjahr2_zveX <= 8652) {
+            mlstjahr2_st = 0 * mztabfb_kztab;
+        } else if (mlstjahr2_zveX <= 13669) {
+            mlstjahr2_st = ((993.62 * (mlstjahr2_zveX - 8652) / 10000 + 1400) * (mlstjahr2_zveX - 8652) / 10000) * mztabfb_kztab;
+        } else if (mlstjahr2_zveX <= 53665) {
+            mlstjahr2_st = ((225.4 * (mlstjahr2_zveX - 13669) / 10000 + 2397) * (mlstjahr2_zveX - 13669) / 10000 + 952.48) * mztabfb_kztab;
+        } else if (mlstjahr2_zveX <= 254446) {
+            mlstjahr2_st = ((mlstjahr2_zveX * 0.42 - 8394.14) * mztabfb_kztab);
+        } else {
+            mlstjahr2_st = ((mlstjahr2_zveX * 0.45 - 16027.52) * mztabfb_kztab);
+        }
+        mlstjahr2_st -= 1;
+    }
+
+    public void fillMlstjahr_jbmg() {
+        fillLohnst_zkf();
+        fillLohnst_faktorf();
+        fillMst56_lstjahr();
+        fillMlstjahr_st();
+
+        if (lohnst_zkf > 0) {
+            mlstjahr_jbmg = mlstjahr_st * lohnst_faktorF;
+        } else {
+            mlstjahr_jbmg = mst56_lstjahr;
+        }
+    }
+
+    public void fillMlstjahr1_jbmg() {
+        fillJahreslohn_zkf();
+        fillJahreslohn_faktorf();
+        fillMst561_lstjahr();
+        fillMlstjahr1_st();
+
+        if (jahreslohn_zkf > 0) {
+            mlstjahr1_jbmg = mlstjahr1_st * jahreslohn_faktorF;
+        } else {
+            mlstjahr1_jbmg = mst561_lstjahr;
+        }
+    }
+
+    public void fillMlstjahr2_jbmg() {
+        fillJahreslohn1_zkf();
+        fillJahreslohn1_faktorf();
+        fillMst562_lstjahr();
+        fillMlstjahr2_st();
+
+        if (jahreslohn1_zkf > 0) {
+            mlstjahr2_jbmg = mlstjahr2_st * jahreslohn1_faktorF;
+        } else {
+            mlstjahr2_jbmg = mst562_lstjahr;
+        }
+    }
+
+    public void fillMsolz_solzfrei() {
+        fillMztabfb_kztab();
+        msolz_solzfrei = 972 * mztabfb_kztab;
+    }
+
+    public void fillMsolz1_solzfrei() {
+        fillMztabfb1_kztab();
+        msolz1_solzfrei = 972 * mztabfb1_kztab;
+    }
+
+    public void fillMsolz2_solzfrei() {
+        fillMztabfb2_kztab();
+        msolz2_solzfrei = 972 * mztabfb2_kztab;
+    }
+
+    public void fillMsolz_solzj() {
+        fillMlstjahr_st();
+        msolz_solzj = (mlstjahr_jbmg * 5.5) / 100;
+    }
+
+    public void fillMsolz1_solzj() {
+        fillMlstjahr1_st();
+        msolz1_solzj = (mlstjahr1_jbmg * 5.5) / 100;
+    }
+
+    public void fillMsolz2_solzj() {
+        fillMlstjahr2_st();
+        msolz2_solzj = (mlstjahr2_jbmg * 5.5) / 100;
+    }
+
+    public void fillMsolz1_solzeinmal() {
+        fillMsolz1_solzj();
+        fillMsolz2_solzj();
+        msolz1_solzeinmal = msolz2_solzj - msolz1_solzj;
+    }
+
+    public void fillBk1_anteil1() {
+        fillMlstjahr1_jbmg();
+        bk1_anteil1 = mlstjahr1_jbmg;
+    }
+
+    public void fillBk2_anteil1() {
+        fillMlstjahr2_jbmg();
+        bk2_anteil1 = mlstjahr2_jbmg;
+    }
+
+    public void fillBk1_bk() {
+        fillBk1_anteil1();
+        bk1_bk = bk1_anteil1;
+    }
+
+    public void fillBk2_bk() {
+        fillBk2_anteil1();
+        bk2_bk = bk2_anteil1;
+    }
+
+    public void fillBk1_bkeinmal() {
+        fillBk1_bk();
+        fillBk2_bk();
+
+        bk1_bkeinmal = bk2_bk - bk1_bk;
+    }
+
+    public void fillBk1_kist() {
+        fillBk1_bkeinmal();
+        System.out.println("bk1_kist bk1_bkeinmal: " + bk1_bkeinmal + " basedata.kirchensteuer: " + (baseData.getKirchensteuer() / 100));
+        bk1_kist = baseData.getKirchensteuer() / 100 * bk1_bkeinmal;
+    }
+
+    public void fillMsolz_solzmin() {
+        fillMlstjahr_jbmg();
+        fillMsolz_solzfrei();
+        msolz_solzmin = ((mlstjahr_jbmg - msolz_solzfrei) * 20) / 100;
+    }
+
+    public void fillMsolz_solzj1() {
+        fillMsolz_solzj();
+        fillMsolz_solzmin();
+        msolz_solzj1 = min(msolz_solzj, msolz_solzmin);
+    }
+
+    public void fillMsolz_jw() {
+        fillMsolz_solzj1();
+        msolz_jw = msolz_solzj1;
+    }
+
+    public void fillSolz_anteil1() {
+        fillMsolz_jw();
+        solz_anteil1 = msolz_jw / 12;
+    }
+
+    public void fillSolz_solzsum() {
+        fillMlstjahr_jbmg();
+        fillMsolz_solzfrei();
+        fillSolz_anteil1();
+        fillMsolz1_solzeinmal();
+
+        if (mlstjahr_jbmg > msolz_solzfrei) {
+            solz_solzSum = solz_anteil1 + msolz1_solzeinmal;
+        } else {
+            solz_solzSum = 0 + msolz1_solzeinmal;
+
+        }
+    }
+
+    public void fillSolz_jw() {
+        fillMlstjahr_jbmg();
+        solz_jw = mlstjahr_jbmg * 100;
+    }
+
+    public void fillBk_anteil1() {
+        fillLohnst_lzz();
+        fillSolz_jw();
+
+        if (lohnst_lzz == 1) {
+            bk_anteil1 = solz_jw;
+        } else if (lohnst_lzz == 2) {
+            bk_anteil1 = solz_jw / 12;
+        } else if (lohnst_lzz == 3) {
+            bk_anteil1 = (solz_jw * 7) / 360;
+        } else {
+            bk_anteil1 = solz_jw / 360;
+        }
+    }
+
+    public void fillBk_bk() {
+        fillBk_anteil1();
+        fillBk1_bk();
+        fillBk2_bk();
+
+        bk_bk = bk_anteil1 + bk2_bk - bk1_bk;
+    }
+
+    public void fillBk_kistsum() {
+        fillBk_bk();
+        fillBk1_bkeinmal();
+        System.out.println("fillBk_kistsumm => basedata.getKirchensteuer/100: " + baseData.getKirchensteuer() / 100 + " bk_bk/100: " + bk_bk / 100 + " bk1_bkeinmal: " + bk1_bkeinmal);
+        bk_kistSum = ((baseData.getKirchensteuer() / 100) * (bk_bk / 100)) + bk1_kist;
+    }
+
+    public void calcRVPflichtigerBeitrag() {
         calcsVGrossRv();
         System.out.println("beitrag von sVGrossRv ist: " + sVGrossRv);
         rvPflichtigerBeitrag = sVGrossRv;
         System.out.println("beitrag von rvPflichtigerbeitrag nach übertrag ist: " + rvPflichtigerBeitrag);
     }
-    
-    public void calcKVPflichtigerBeitrag(){
+
+    public void calcKVPflichtigerBeitrag() {
         calcsvGrossKv();
         System.out.println("svGrossKv in clacKvplfichtigerbeitrag ist: " + svGrossKv);
         kvPflichtigerBeitrag = svGrossKv;
     }
+
     /*
     public double calcBruttoTaxes(){
         double salaryMonth = employeeSalaryYear/12;
@@ -4562,278 +4499,273 @@ public class Gehaltsabrechnungsrechner implements Serializable {
                 + optionalSalaryInput.getCompanyCarWayToWork() + bavDiscount);
         return taxBrutto;
     }
-    */
-    public void clacOneTimePayment(){
+     */
+    public void clacOneTimePayment() {
         einmalzahlung = (optionalSalaryInput.getHolidayMoney()
                 + optionalSalaryInput.getBonus()
                 + optionalSalaryInput.getCompanyCar1()
-                + optionalSalaryInput.getCompanyCarWayToWork())*100;
+                + optionalSalaryInput.getCompanyCarWayToWork()) * 100;
     }
-    
-    public int getYearFromDate(Date date) throws ParseException{
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(date);
-            int year = cal.get(Calendar.YEAR);
-            return year;
+
+    public int getYearFromDate(Date date) throws ParseException {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int year = cal.get(Calendar.YEAR);
+        return year;
     }
-    
-    public int getMonthFromDate(Date date){
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(date);
-            int month = cal.get(Calendar.MONTH);
-            return month;
+
+    public int getMonthFromDate(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int month = cal.get(Calendar.MONTH);
+        return month;
     }
-    
-    public void fillSolzvers_kvbemes(){
+
+    public void fillSolzvers_kvbemes() {
         solzvers_kvBemes = 4125;
     }
-    
-    public void fillSolzvers_rvbemes(){
+
+    public void fillSolzvers_rvbemes() {
         fillLohnst_rvbemes();
-        solzvers_rvBemes = lohnst_rvbemes/12 ;
+        solzvers_rvBemes = lohnst_rvbemes / 12;
     }
-    
-    public void fillSolzvers_rvan(){
+
+    public void fillSolzvers_rvan() {
         calcRVPflichtigerBeitrag();
         //System.out.println("Monat der Gehaltsabrechnung: " + changeMonthInNumberGehaltsrechnung() + " n23: " + (getMonthFromDate(employee.getGeburtsdatum())+2));
-        if((lohnst_alter1>0 && lohnst_alter1<9)||(lohnst_alter1 == 9 && changeMonthInNumberGehaltsrechnung() > (getMonthFromDate(employee.getGeburtsdatum())+2))){
-            solzvers_rvAn = 0; 
-        }else if(baseData.getRentenversichert()==1){
-           // solzvers_rvAn = min(solzAnteilBaV_sozVpflichtBrut,solzAnteilBaV_sozVpflichtBrut-(calcTaxBrutto()-solzvers_rvBemes));
-          System.out.println("baseData.getRentenversicherung(): " + baseData.getRentenversicherung() + " Rechnung baseData.getRentenversicherung()/200: " + baseData.getRentenversicherung()/200 + " rvPflichtigerBeitrag: " + rvPflichtigerBeitrag);
-           solzvers_rvAn = rvPflichtigerBeitrag*baseData.getRentenversicherung()/200;
+        if ((lohnst_alter1 > 0 && lohnst_alter1 < 9) || (lohnst_alter1 == 9 && changeMonthInNumberGehaltsrechnung() > (getMonthFromDate(employee.getGeburtsdatum()) + 2))) {
+            solzvers_rvAn = 0;
+        } else if (baseData.getRentenversichert() == 1) {
+            // solzvers_rvAn = min(solzAnteilBaV_sozVpflichtBrut,solzAnteilBaV_sozVpflichtBrut-(calcTaxBrutto()-solzvers_rvBemes));
+            System.out.println("baseData.getRentenversicherung(): " + baseData.getRentenversicherung() + " Rechnung baseData.getRentenversicherung()/200: " + baseData.getRentenversicherung() / 200 + " rvPflichtigerBeitrag: " + rvPflichtigerBeitrag);
+            solzvers_rvAn = rvPflichtigerBeitrag * baseData.getRentenversicherung() / 200;
         }
-        
+
         setUebertragw_rvAn(solzvers_rvAn);
     }
-    
-    public void fillSolzvers_avan(){
+
+    public void fillSolzvers_avan() {
         calcRVPflichtigerBeitrag();
-        if((lohnst_alter1>0 && lohnst_alter1<9)||(lohnst_alter1 == 9 && changeMonthInNumberGehaltsrechnung() > (getMonthFromDate(employee.getGeburtsdatum())+2))){
-            solzvers_avAn = 0; 
-        }else if(baseData.getArbeitslosenversicherungspflichtig()==1){
-           // solzvers_rvAn = min(solzAnteilBaV_sozVpflichtBrut,solzAnteilBaV_sozVpflichtBrut-(calcTaxBrutto()-solzvers_rvBemes));
-           solzvers_avAn = rvPflichtigerBeitrag*0.015;
+        if ((lohnst_alter1 > 0 && lohnst_alter1 < 9) || (lohnst_alter1 == 9 && changeMonthInNumberGehaltsrechnung() > (getMonthFromDate(employee.getGeburtsdatum()) + 2))) {
+            solzvers_avAn = 0;
+        } else if (baseData.getArbeitslosenversicherungspflichtig() == 1) {
+            // solzvers_rvAn = min(solzAnteilBaV_sozVpflichtBrut,solzAnteilBaV_sozVpflichtBrut-(calcTaxBrutto()-solzvers_rvBemes));
+            solzvers_avAn = rvPflichtigerBeitrag * 0.015;
         }
         setUebertragw_avAn(solzvers_avAn);
     }
-    
-    public void fillSolzvers_kvan(){
+
+    public void fillSolzvers_kvan() {
         calcKVPflichtigerBeitrag();
-        if(baseData.getKrankenversicherung()>20){
-            if(baseData.getArbeitgeberzuschussKvPv()>0){
-                solzvers_kvAn = baseData.getKrankenversicherung()-baseData.getArbeitgeberzuschussKvPv();
-            }else{
+        if (baseData.getKrankenversicherung() > 20) {
+            if (baseData.getArbeitgeberzuschussKvPv() > 0) {
+                solzvers_kvAn = baseData.getKrankenversicherung() - baseData.getArbeitgeberzuschussKvPv();
+            } else {
                 solzvers_kvAn = baseData.getKrankenversicherung();
             }
-        }else if(baseData.getKrankenversicherung() <= 14){
-            solzvers_kvAn = kvPflichtigerBeitrag*0.07;
-        }else{
-            solzvers_kvAn = kvPflichtigerBeitrag*(baseData.getKrankenversicherung()/2)/100;
+        } else if (baseData.getKrankenversicherung() <= 14) {
+            solzvers_kvAn = kvPflichtigerBeitrag * 0.07;
+        } else {
+            solzvers_kvAn = kvPflichtigerBeitrag * (baseData.getKrankenversicherung() / 2) / 100;
         }
-        
-        System.out.println("kvPflichtigerBeitrag ist: " +kvPflichtigerBeitrag + " baseData.getKrankenversicherung()/2: " + (baseData.getKrankenversicherung()/2));
+
+        System.out.println("kvPflichtigerBeitrag ist: " + kvPflichtigerBeitrag + " baseData.getKrankenversicherung()/2: " + (baseData.getKrankenversicherung() / 2));
         setUebertragw_kvAn(solzvers_kvAn);
     }
-    
-    public void fillSolzvers_kvzusatz(){
+
+    public void fillSolzvers_kvzusatz() {
         calcKVPflichtigerBeitrag();
-        if(baseData.getKrankenversicherung()>20){
+        if (baseData.getKrankenversicherung() > 20) {
             solzvers_kvZusatz = 0;
-        }else if(baseData.getKrankenversicherung() <= 14){
-            solzvers_kvZusatz = baseData.getKvzuschlag()/100;
-        }else{
-            solzvers_kvZusatz = kvPflichtigerBeitrag*(baseData.getKvzuschlag()/100);
+        } else if (baseData.getKrankenversicherung() <= 14) {
+            solzvers_kvZusatz = baseData.getKvzuschlag() / 100;
+        } else {
+            solzvers_kvZusatz = kvPflichtigerBeitrag * (baseData.getKvzuschlag() / 100);
         }
         setUebertragw_kvZusatz(solzvers_kvZusatz);
     }
-    
-    public void fillSolzvers_pvan(){
+
+    public void fillSolzvers_pvan() {
         calcKVPflichtigerBeitrag();
         double prozentsatz1 = 0.0d;
         double prozentsatz2 = 0.0d;
-        if(baseData.getKrankenversicherung()>20){
+        if (baseData.getKrankenversicherung() > 20) {
             solzvers_pvAn = 0;
-        }else {
-            if(baseData.getStelleInSachsen() == 1 && baseData.getKinderlos() == 1){
+        } else {
+            if (baseData.getStelleInSachsen() == 1 && baseData.getKinderlos() == 1) {
                 prozentsatz1 = baseData.getPflegeversicherungsachsen();
-            }else{
+            } else {
                 prozentsatz1 = baseData.getPflegeversicherungallgemein();
             }
-           
-            if(baseData.getKinderlos() == 1){
+
+            if (baseData.getKinderlos() == 1) {
                 prozentsatz2 = 0.0025;
-            }else{
+            } else {
                 prozentsatz2 = 0;
             }
-            
-            solzvers_pvAn = (kvPflichtigerBeitrag*(prozentsatz1 + prozentsatz2))/100;
+
+            solzvers_pvAn = (kvPflichtigerBeitrag * (prozentsatz1 + prozentsatz2)) / 100;
         }
-        
+
         setUebertragw_pvAn(solzvers_pvAn);
     }
-    
-    public void fillSolzvers_rvag(){
+
+    public void fillSolzvers_rvag() {
         calcRVPflichtigerBeitrag();
-        solzvers_rvAg = rvPflichtigerBeitrag*baseData.getRentenversicherung()/200;
+        solzvers_rvAg = rvPflichtigerBeitrag * baseData.getRentenversicherung() / 200;
     }
-    
-    public void fillSolzvers_avag(){
+
+    public void fillSolzvers_avag() {
         calcRVPflichtigerBeitrag();
-        solzvers_avAg = rvPflichtigerBeitrag*0.015;
+        solzvers_avAg = rvPflichtigerBeitrag * 0.015;
     }
-    
-    public void fillSolzvers_kvag(){
+
+    public void fillSolzvers_kvag() {
         calcKVPflichtigerBeitrag();
-        if(baseData.getKrankenversicherung()>20){
-            if(baseData.getArbeitgeberzuschussKvPv() == 0){
+        if (baseData.getKrankenversicherung() > 20) {
+            if (baseData.getArbeitgeberzuschussKvPv() == 0) {
                 solzvers_kvAg = 0;
-            }else{
+            } else {
                 solzvers_kvAg = baseData.getArbeitgeberzuschussKvPv();
             }
-        }else if(baseData.getKrankenversicherung() <= 14){
-            solzvers_kvAg = kvPflichtigerBeitrag*0.07;
-        }else{
-                solzvers_kvAg = kvPflichtigerBeitrag*0.073;
+        } else if (baseData.getKrankenversicherung() <= 14) {
+            solzvers_kvAg = kvPflichtigerBeitrag * 0.07;
+        } else {
+            solzvers_kvAg = kvPflichtigerBeitrag * 0.073;
         }
     }
-    
-    public void fillSolzvers_pvag(){
+
+    public void fillSolzvers_pvag() {
         calcKVPflichtigerBeitrag();
         double prozentsatz1 = 0.0d;
         double prozentsatz2 = 0.0d;
-        if(baseData.getKrankenversicherung()>20){
+        if (baseData.getKrankenversicherung() > 20) {
             solzvers_pvAg = 0;
-        }else {
-            if(baseData.getStelleInSachsen() == 1 && baseData.getKinderlos() == 1){
+        } else {
+            if (baseData.getStelleInSachsen() == 1 && baseData.getKinderlos() == 1) {
                 prozentsatz1 = baseData.getPflegeversicherungsachsen();
-            }else{
+            } else {
                 prozentsatz1 = baseData.getPflegeversicherungallgemein();
             }
-           
-            if(baseData.getKinderlos() == 1){
+
+            if (baseData.getKinderlos() == 1) {
                 prozentsatz2 = 0.0025;
-            }else{
+            } else {
                 prozentsatz2 = 0;
             }
-            
-            solzvers_pvAg = (kvPflichtigerBeitrag*(prozentsatz1 + prozentsatz2))/100;
+
+            solzvers_pvAg = (kvPflichtigerBeitrag * (prozentsatz1 + prozentsatz2)) / 100;
         }
     }
-    
-    
-    public void fillSolzAnteilBaV_bavBeitrag(){
-        solzAnteilBaV_bavBeitrag = min(optionalSalaryInput.getBav(),398);
-        
+
+    public void fillSolzAnteilBaV_bavBeitrag() {
+        solzAnteilBaV_bavBeitrag = min(optionalSalaryInput.getBav(), 398);
+
     }
-    
-    public void fillSolzAnteilBav_sozVPflicht(){
+
+    public void fillSolzAnteilBav_sozVPflicht() {
         fillSolzAnteilBaV_bavBeitrag();
-        if(solzAnteilBaV_bavBeitrag > 248){
-            solzAnteilBaV_sozVPflicht = min(optionalSalaryInput.getBav()-248,150);
-        }else{
+        if (solzAnteilBaV_bavBeitrag > 248) {
+            solzAnteilBaV_sozVPflicht = min(optionalSalaryInput.getBav() - 248, 150);
+        } else {
             solzAnteilBaV_sozVPflicht = 0;
-            
+
         }
     }
-    
-    public void fillSolzAnteilBaV_sozVpflichtBrut(){
+
+    public void fillSolzAnteilBaV_sozVpflichtBrut() {
         calcTaxBrutto();
         solzAnteilBaV_sozVpflichtBrut = taxBrutto + solzAnteilBaV_sozVPflicht;
     }
-    
-    
-    public void fillEmployerSubsidyPrivateKv(){
-        if(lohnst_pkv > 0 && baseData.getArbeitgeberzuschussKvPv() == 1){
-            employerSubsidyPrivateKv = baseData.getKrankenversicherung()/2;
-        }else{
+
+    public void fillEmployerSubsidyPrivateKv() {
+        if (lohnst_pkv > 0 && baseData.getArbeitgeberzuschussKvPv() == 1) {
+            employerSubsidyPrivateKv = baseData.getKrankenversicherung() / 2;
+        } else {
             employerSubsidyPrivateKv = 0;
         }
     }
-    public int changeMonthInNumberGehaltsrechnung(){
-        switch(month){
-            case "Januar":{
+
+    public int changeMonthInNumberGehaltsrechnung() {
+        switch (month) {
+            case "Januar": {
                 return 1;
             }
-            case "Februar":{
+            case "Februar": {
                 return 2;
             }
-            case "März":{
+            case "März": {
                 return 3;
             }
-            case "April":{
+            case "April": {
                 return 4;
             }
-            case "Mai":{
+            case "Mai": {
                 return 5;
             }
-            case "Juni":{
-              return 6; 
+            case "Juni": {
+                return 6;
             }
-            case "Juli":{
-               return 7;
+            case "Juli": {
+                return 7;
             }
-            case "August":{
+            case "August": {
                 return 8;
             }
-            case "September":{
+            case "September": {
                 return 9;
             }
-            case "Oktober":{
+            case "Oktober": {
                 return 10;
             }
-            case "November":{
+            case "November": {
                 return 11;
             }
-            default:{
+            default: {
                 return 12;
             }
-            
+
         }
-    }
-  
-    
-    public void calcSalaryMonthWithOneTimePayment(){
-        employeeSalaryMonth = employeeSalaryYear/12 + (einmalzahlung/100);
-    }
-    public double calcTaxBrutto(){
-        double salaryMonth = employeeSalaryYear/12;
-        double bav = 0.0d;
-        
-        if(optionalSalaryInput.getBav() < 398){
-            bav = optionalSalaryInput.getBav();
-        }else{
-            bav = 398;
-        }
-        return salaryMonth +(optionalSalaryInput.getHolidayMoney() 
-                + optionalSalaryInput.getBonus()
-                + optionalSalaryInput.getCompanyCar1()
-                + optionalSalaryInput.getCompanyCarWayToWork())-bav;
     }
 
-    public void calcSteuerfreiebezuege(){
+    public void calcSalaryMonthWithOneTimePayment() {
+        employeeSalaryMonth = employeeSalaryYear / 12 + (einmalzahlung / 100);
+    }
+
+    public double calcTaxBrutto() {
+        double salaryMonth = employeeSalaryYear / 12;
+        double bav = 0.0d;
+
+        if (optionalSalaryInput.getBav() < 398) {
+            bav = optionalSalaryInput.getBav();
+        } else {
+            bav = 398;
+        }
+        return salaryMonth + (optionalSalaryInput.getHolidayMoney()
+                + optionalSalaryInput.getBonus()
+                + optionalSalaryInput.getCompanyCar1()
+                + optionalSalaryInput.getCompanyCarWayToWork()) - bav;
+    }
+
+    public void calcSteuerfreiebezuege() {
         steuerfreiebezuege = optionalSalaryInput.getRideMoney() + optionalSalaryInput.getBonusbaV() + optionalSalaryInput.getExpensesRefund() + optionalSalaryInput.getSunHolidayNightMoney();
     }
-    
-    public void calcPayAmount(){
-        
-        payAmount = employeeSalaryMonth - min(optionalSalaryInput.getBav(),398)- sumDiscount + steuerfreiebezuege;
+
+    public void calcPayAmount() {
+
+        payAmount = employeeSalaryMonth - min(optionalSalaryInput.getBav(), 398) - sumDiscount + steuerfreiebezuege;
     }
-    
-    public void calcSumDiscount(){
-        sumDiscount = (mlstjahr_lstlzzSum/100) + bk_kistSum + solz_solzSum 
+
+    public void calcSumDiscount() {
+        sumDiscount = (mlstjahr_lstlzzSum / 100) + bk_kistSum + solz_solzSum
                 + uebertragw_kvAn + uebertragw_kvZusatz + uebertragw_avAn
                 + uebertragw_rvAn + uebertragw_pvAn;
-        
+
     }
-    
-   
-  
-    
-    public void calcAllValues(){
+
+    public void calcAllValues() {
         taxBrutto = calcTaxBrutto();
-      
-       
+
         fillJahreslohn1_faktorf();
         fillJahreslohn1_jlfreib();
         fillJahreslohn1_jlhinzu();
@@ -4978,7 +4910,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         fillSolz_anteil1();
         fillSolz_jw();
         fillSolz_solzsum();
-       
+
         fillSolzvers_kvbemes();
         fillSolzvers_rvbemes();
         fillUmvsp1_zve();
@@ -5012,31 +4944,29 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         fillUpevp_zukvpv();
         fillUptab071_st();
         fillUptab072_st();
-        fillUptab07_st(); 
+        fillUptab07_st();
         fillSolzAnteilBaV_bavBeitrag();
         fillSolzAnteilBav_sozVPflicht();
         fillSolzAnteilBaV_sozVpflichtBrut();
-       fillEmployerSubsidyPrivateKv();
-          calcSalaryMonthWithOneTimePayment();
+        fillEmployerSubsidyPrivateKv();
+        calcSalaryMonthWithOneTimePayment();
         calcSteuerfreiebezuege();
-         calcsVGrossRv();
+        calcsVGrossRv();
         calcsvGrossKv();
         calcRVPflichtigerBeitrag();
         calcKVPflichtigerBeitrag();
-        
-        
-        
-         fillSolzvers_avan();
+
+        fillSolzvers_avan();
         fillSolzvers_kvan();
         fillSolzvers_kvzusatz();
         fillSolzvers_pvan();
         fillSolzvers_rvan();
-        
+
         fillSolzvers_avag();
         fillSolzvers_kvag();
         fillSolzvers_rvag();
         fillSolzvers_pvag();
-         fillBk1_anteil1();
+        fillBk1_anteil1();
         fillBk1_bk();
         fillBk1_bkeinmal();
         fillBk1_kist();
@@ -5050,7 +4980,7 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         //payrollAccount werte setzen
         payrollAccount.setBruttolohn(employeeSalaryMonth);
         payrollAccount.setGeltwertevorteilelaufend(0.0);
-        payrollAccount.setEinmalbezuegeimbruttolohn(einmalzahlung/100);
+        payrollAccount.setEinmalbezuegeimbruttolohn(einmalzahlung / 100);
         payrollAccount.setGeltwertevorteileeinmalig(0.0);
         payrollAccount.setSteuerfreiebezuege(steuerfreiebezuege);
         payrollAccount.setLohnsteuer(mlstjahr_lstlzzSum);
@@ -5078,474 +5008,77 @@ public class Gehaltsabrechnungsrechner implements Serializable {
         payrollAccount.setSvbruttokv(svGrossKv);
         payrollAccount.setSvbruttorv(sVGrossRv);
         payrollAccount.setMonat(changeMonthInNumberGehaltsrechnung());
-        
-        System.out.println("alles wurde gerechnet)");
-       
-        
-
-        
-    
-    //Lohnsteuer
-  System.out.println("lohnst_alter1: " +     lohnst_alter1);
-   System.out.println("lohnst_zkf: " +    lohnst_zkf);
-  System.out.println("lohnst_lzz: " +     lohnst_lzz);
-       System.out.println("lohnst_krv: " + lohnst_krv);
-        System.out.println("lohnst_zre4j: " +lohnst_zre4j);
-       System.out.println("lohnst_stkl: " + lohnst_stkl);
-       System.out.println("lohnst_jlfreib: " + lohnst_jlfreib);
-
-   
-   //MRE4ALTE
-      System.out.println("mre4alte_tab4: " + mre4alte_tab4);
-      System.out.println("mre4alte_tab5: " + mre4alte_tab5);
-      System.out.println("mre4alte_alteanteil: " + mre4alte_alteanteil);
-      System.out.println("mre4alte_alte: " + mre4alte_alte);
-      System.out.println("mre4alte_zre4: " + mre4alte_zre4);
-      System.out.println("mre4alte_zre4vp: " + mre4alte_zre4vp);
-   
-   //MRE4
-      System.out.println("mre4_zre4: " + mre4_zre4);
-      System.out.println("mre4_zre4vp: " + mre4_zre4vp);
-   
-   //MZTABFB
-      System.out.println("mztabfb_kztab: " + mztabfb_kztab);
-      System.out.println("mztabfb_anp: " + mztabfb_anp);
-      System.out.println("mztabfb_efa: " + mztabfb_efa);
-      System.out.println("mztabfb_sap: " + mztabfb_sap);
-      System.out.println("mztabfb_kfb: " + mztabfb_kfb);
-       System.out.println("mztabfb_ztabfb: " +mztabfb_ztabfb);
-   
-   //UPEVP
-       System.out.println("upevp_zre4vp: " +upevp_zre4vp);
-       System.out.println("upevp_vsp1: " +upevp_vsp1);
-       System.out.println("upevp_vhb: " +upevp_vhb);
-       System.out.println("upevp_vsp2: " +upevp_vsp2);
-       System.out.println("v: " +upevp_zukvPv);
-       System.out.println("upevp_kv: " +upevp_kv);
-       System.out.println("upevp_kvVhb: " +upevp_kvVhb);
-       System.out.println("upevp_vspn: " +upevp_vspn);
-   
-   //UMVSP
-       System.out.println("umvsp_zve: " +umvsp_zve);
-       System.out.println("umvsp_zzx: " +umvsp_zzx);
-   
-   //UPTAB07
-       System.out.println("uptab07_st: " +uptab07_st);
-   
-   //MST5-6
-      System.out.println("mst56_x: " + mst56_x);
-      System.out.println("mst56_st: " + mst56_st);
-      System.out.println("mst56_x1: " + mst56_x1);
-      System.out.println("mst56_st1: " + mst56_st1);
-      System.out.println("mst56_diff: " + mst56_diff);
-      System.out.println("mst56_mist: " + mst56_mist);
-       System.out.println("mst56_st2: " +mst56_st2);
-       System.out.println("mst56_st3: " +mst56_st3);
-      System.out.println("mst56_vergl: " + mst56_vergl);
-      System.out.println("mst56_st4: " + mst56_st4);
-       System.out.println("mst56_st5: " +mst56_st5);
-       System.out.println("mst56_reichst: " +mst56_reichst);
-      System.out.println("mst56_lstjahr: " + mst56_lstjahr);
-       System.out.println("mst56_jw: " +mst56_jw);
-   
-   //MLSTJAHR
-      System.out.println("mlstjahr_lstlzzSum: " + mlstjahr_lstlzzSum);
-       System.out.println("mlstjahr_ztabfb: " +mlstjahr_ztabfb);
-      System.out.println("mlstjahr_zve: " + mlstjahr_zve);
-      System.out.println("mlstjahr_zveX: " + mlstjahr_zveX);
-      System.out.println("mlstjahr_st: " + mlstjahr_st);
-      System.out.println("mlstjahr_jbmg: " + mlstjahr_jbmg);
-   
-   //MSOLZ
-      System.out.println("msolz_solzfrei: " + msolz_solzfrei);
-      System.out.println("msolz_solzj: " + msolz_solzj);
-      System.out.println("msolz_solzmin: " + msolz_solzmin);
-      System.out.println("msolz_solzj1: " + msolz_solzj1);
-      System.out.println("msolz_jw: " +  msolz_jw);
-   
-   //SOLZ
-       System.out.println("solz_anteil1: " +solz_anteil1);
-       System.out.println("solz_solzSum: " +solz_solzSum);
-       System.out.println("solz_jw: " +solz_jw);
-   
-   //BK
-      System.out.println("bk_anteil1: " + bk_anteil1);
-      System.out.println("bk_bk: " + bk_bk);
-       System.out.println("bk_kistSum: " + bk_kistSum);
-   
- 
-   //Gleitzone 400-450
-       System.out.println("gleitzone_sozVEntgelt: " +gleitzone_sozVEntgelt);
-      System.out.println("gleitzone_rvAn: " + gleitzone_rvAn);
-      System.out.println("gleitzone_avAn: " + gleitzone_avAn);
-      System.out.println("gleitzone_kvAn: " + gleitzone_kvAn);
-      System.out.println("gleitzone_kvZusatz: " + gleitzone_kvZusatz);
-       System.out.println("gleitzone_pvAn: " +gleitzone_pvAn);
-   
-  
-        
-        
-    
-    //jahreslohn+abger.EinmZ
-        System.out.println("jahreslohn_alter1: " +jahreslohn_alter1);
-        System.out.println("jahreslohn_zkf: " +jahreslohn_zkf);
-       System.out.println("jahreslohn_lzz: " + jahreslohn_lzz);
-       System.out.println("jahreslohn_krv: " + jahreslohn_krv);
-       System.out.println("jahreslohn_zre4j: " + jahreslohn_zre4j);
-       System.out.println("jahreslohn_stkl: " + jahreslohn_stkl);
-       System.out.println("jahreslohn_jlfreib: " + jahreslohn_jlfreib);
-       System.out.println("jahreslohn_jlhinzu: " + jahreslohn_jlhinzu);
-        System.out.println("jahreslohn_rvBemes: " +jahreslohn_rvBemes);
-        System.out.println("jahreslohn_pkv: " +jahreslohn_pkv);
-        System.out.println("jahreslohn_pv: " +jahreslohn_pv);
-        System.out.println("jahreslohn_faktorF: " +jahreslohn_faktorF);
-    
-    //MRE4ALTE
-       System.out.println("mre4alte1_tab4: " + mre4alte1_tab4);
-       System.out.println("mre4alte1_tab5: " + mre4alte1_tab5);
-       System.out.println("mre4alte1_alteanteil: " + mre4alte1_alteanteil);
-       System.out.println("mre4alte1_alte: " + mre4alte1_alte);
-       System.out.println("mre4alte1_zre4: " + mre4alte1_zre4);
-       System.out.println("mre4alte1_zre4vp: " + mre4alte1_zre4vp);
-    
-    //MRE41
-       System.out.println("mre41_zre4: " + mre41_zre4);
-       System.out.println("mre41_zre4vp: " + mre41_zre4vp);
-    
-    
-    //MZTABFB
-      System.out.println("mztabfb1_kztab: " + mztabfb1_kztab);
-      System.out.println("mztabfb1_anp: " + mztabfb1_anp);
-      System.out.println("mztabfb1_efa: " + mztabfb1_efa);
-      System.out.println("mztabfb1_sap: " + mztabfb1_sap);
-      System.out.println("mztabfb1_kfb: " + mztabfb1_kfb);
-      System.out.println(mztabfb1_ztabfb);
-   
-   //UPEVP
-       System.out.println("upevp1_zre4vp: " +upevp1_zre4vp);
-       System.out.println("upevp1_vsp1: " +upevp1_vsp1);
-       System.out.println("upevp1_vhb: " +upevp1_vhb);
-       System.out.println("upevp1_vsp2: " +upevp1_vsp2);
-       System.out.println("upevp1_zukvPv: " +upevp1_zukvPv);
-       System.out.println("upevp1_kv: " +upevp1_kv);
-       System.out.println("upevp1_kvVhb: " +upevp1_kvVhb);
-       System.out.println("upevp1_vspn: " +upevp1_vspn);
-   
-   //UMVSP
-       System.out.println("umvsp1_zve: " +umvsp1_zve);
-       System.out.println("umvsp1_zzx: " +umvsp1_zzx);
-   
-   //UPTAB07
-       System.out.println("uptab071_st: " +uptab071_st);
-   
-   //MST5-6
-       System.out.println("mst561_x: " +mst561_x);
-       System.out.println("mst561_st: " +mst561_st);
-       System.out.println("mst561_x1: " +mst561_x1);
-       System.out.println("mst561_st1: " +mst561_st1);
-       System.out.println("mst561_diff: " +mst561_diff);
-       System.out.println("mst561_mist: " +mst561_mist);
-      System.out.println("mst561_st2: " + mst561_st2);
-      System.out.println("mst561_st3: " + mst561_st3);
-       System.out.println("mst561_vergl: " +mst561_vergl);
-      System.out.println("mst561_st4: " + mst561_st4);
-       System.out.println("mst561_st5: " +mst561_st5);
-       System.out.println("mst561_reichst: " +mst561_reichst);
-      System.out.println("mst561_lstjahr: " + mst561_lstjahr);
-       System.out.println("mst561_jw: " +mst561_jw);
-   
-   //MLSTJAHR
-      System.out.println("mlstjahr1_lstlzzSum: " + mlstjahr1_lstlzzSum);
-      System.out.println("mlstjahr1_ztabfb: " + mlstjahr1_ztabfb);
-     System.out.println("mlstjahr1_zve: " + mlstjahr1_zve);
-      System.out.println("mlstjahr1_zveX: " + mlstjahr1_zveX);
-      System.out.println("mlstjahr1_st: " + mlstjahr1_st);
-      System.out.println("mlstjahr1_jbmg: " + mlstjahr1_jbmg);
-   
-   //MSOLZ
-      System.out.println("msolz1_solzfrei: " + msolz1_solzfrei);
-      System.out.println("msolz1_solzj: " + msolz1_solzj);
-      System.out.println("msolz1_solzeinmal: " + msolz1_solzeinmal);
-   
-   //BK
-       System.out.println("bk1_anteil1: " +bk1_anteil1);
-       System.out.println("bk1_bk: " +bk1_bk);
-      System.out.println("bk1_bkeinmal: " + bk1_bkeinmal);
-       System.out.println("bk1_kist: " +bk1_kist);
-    
-   
-   
-   //jahreslohn+alle .EinmZ
-        System.out.println("jahreslohn1_alter1: " +jahreslohn1_alter1);
-        System.out.println("jahreslohn1_zkf: " +jahreslohn1_zkf);
-        System.out.println("jahreslohn1_lzz: " +jahreslohn1_lzz);
-        System.out.println("jahreslohn1_krv: " +jahreslohn1_krv);
-        System.out.println("jahreslohn1_zre4j: " +jahreslohn1_zre4j);
-        System.out.println("jahreslohn1_stkl: " +jahreslohn1_stkl);
-        System.out.println("jahreslohn1_jlfreib: " +jahreslohn1_jlfreib);
-        System.out.println("jahreslohn1_jlhinzu: " +jahreslohn1_jlhinzu);
-        System.out.println("jahreslohn1_rvBemes: " +jahreslohn1_rvBemes);
-        System.out.println("jahreslohn1_pkv: " +jahreslohn1_pkv);
-        System.out.println("jahreslohn1_pv: " +jahreslohn1_pv);
-        System.out.println("jahreslohn1_faktorF: " +jahreslohn1_faktorF);
-    
-    //MRE4ALTE
-      System.out.println("mre4alte2_tab4: " +  mre4alte2_tab4);
-       System.out.println("mre4alte2_tab5: " + mre4alte2_tab5);
-       System.out.println("mre4alte2_alteanteil: " + mre4alte2_alteanteil);
-       System.out.println("mre4alte2_alte: " + mre4alte2_alte);
-        System.out.println("mre4alte2_zre4: " +mre4alte2_zre4);
-       System.out.println("mre4alte2_zre4vp: " + mre4alte2_zre4vp);
-    
-    //MRE41
-       System.out.println("mre42_zre4: " + mre42_zre4);
-       System.out.println("mre42_zre4vp: " + mre42_zre4vp);
-    
-    
-    //MZTABFB
-      System.out.println("mztabfb2_kztab: " + mztabfb2_kztab);
-      System.out.println("mztabfb2_anp: " + mztabfb2_anp);
-      System.out.println("mztabfb2_efa: " + mztabfb2_efa);
-      System.out.println("mztabfb2_sap: " + mztabfb2_sap);
-      System.out.println("mztabfb2_kfb: " + mztabfb2_kfb);
-      System.out.println("mztabfb2_ztabfb: " + mztabfb2_ztabfb);
-   
-   //UPEVP
-      System.out.println("upevp2_zre4vp: " + upevp2_zre4vp);
-      System.out.println("upevp2_vsp1: " + upevp2_vsp1);
-      System.out.println("upevp2_vhb: " + upevp2_vhb);
-       System.out.println("upevp2_vsp2: " +upevp2_vsp2);
-      System.out.println("upevp2_zukvPv: " + upevp2_zukvPv);
-      System.out.println("upevp2_kv: " + upevp2_kv);
-       System.out.println("upevp2_kvVhb: " +upevp2_kvVhb);
-      System.out.println("upevp2_vspn: " + upevp2_vspn);
-  
-   //UMVSP
-       System.out.println("umvsp2_zve: " +umvsp2_zve);
-      System.out.println("umvsp2_zzx: " + umvsp2_zzx);
-   
-   //UPTAB07
-      System.out.println("uptab072_st: " + uptab072_st);
-   
-   //MST5-6
-      System.out.println("mst562_x: " + mst562_x);
-      System.out.println("mst562_st: " + mst562_st);
-      System.out.println("mst562_x1: " + mst562_x1);
-      System.out.println("mst562_st1: " + mst562_st1);
-      System.out.println("mst562_diff: " + mst562_diff);
-      System.out.println("mst562_mist: " + mst562_mist);
-      System.out.println("mst562_st2: " + mst562_st2);
-      System.out.println("mst562_st3: " + mst562_st3);
-      System.out.println("mst562_vergl: " + mst562_vergl);
-       System.out.println("mst562_st4: " +mst562_st4);
-      System.out.println("mst562_st5: " + mst562_st5);
-      System.out.println("mst562_reichst: " + mst562_reichst);
-      System.out.println("mst562_lstjahr: " + mst562_lstjahr);
-      System.out.println("mst562_jw: " + mst562_jw);
-   
-   //MLSTJAHR
-      System.out.println("mlstjahr2_lstlzzSum: " + mlstjahr2_lstlzzSum);
-      System.out.println("mlstjahr2_ztabfb: " + mlstjahr2_ztabfb);
-      System.out.println("mlstjahr2_zve: " + mlstjahr2_zve);
-     System.out.println("mlstjahr2_zveX: " +  mlstjahr2_zveX);
-      System.out.println("mlstjahr2_st: " + mlstjahr2_st);
-      System.out.println("mlstjahr2_jbmg: " + mlstjahr2_jbmg);
-   
-   //MSOLZ
-      System.out.println("msolz2_solzfrei: " + msolz2_solzfrei);
-      System.out.println("msolz2_solzj: " + msolz2_solzj);
-
-   
-   //BK
-      System.out.println("bk2_anteil1: " + bk2_anteil1);
-      System.out.println("bk2_bk: " + bk2_bk);
-   
-   
-            //Andere Daten die Benötigt werden
-        System.out.println("employeeSalaryYear: " +employeeSalaryYear);
-        System.out.println("employeeSalaryMonth: " +employeeSalaryMonth);
-	  System.out.println("month: " +	month);
-
-   System.out.println("payAmount: " +    payAmount);
-  System.out.println("sumDiscount: " +     sumDiscount);
-    System.out.println("sVGrossRv: " +   sVGrossRv);
-   System.out.println("svGrossKv: " +    svGrossKv);
-  System.out.println("sumTaxGrossTillNow: " +     sumTaxGrossTillNow);
-  System.out.println("employerSubsidyPrivateKv: " +     employerSubsidyPrivateKv);
-   System.out.println("additionalContribution: " +  additionalContribution);
-    System.out.println("krankenversicherung: " + healthInsurance);
-    System.out.println("avpflichtig: " +avpflichtig);
-        
-        
-               System.out.println("lohnst_jlhinzu: " + lohnst_jlhinzu);
-        System.out.println("lohnst_rvbemes: " +lohnst_rvbemes);
-        System.out.println("lohnst_pkv: " +lohnst_pkv);
-        System.out.println("lohnst_pv: " +lohnst_pv);
-        System.out.println("lohnst_faktorF: " +lohnst_faktorF);
-   
-       System.out.println("taxBrutto: " +taxBrutto);
-   
-       System.out.println("steuerfreiebezuege: " +steuerfreiebezuege);
-   //Einmalzahlungen
-       System.out.println("einmalzahlung: " +einmalzahlung);
-   
-   //laufende zahlungen
-      System.out.println("laufendezahlungen: " + laufendezahlungen);
-   
-   //einmaliger geltw. Vorteil
-      System.out.println("einmaligerGeltwVorteil: " + einmaligerGeltwVorteil);
-   
-   //laufender geltw.Vorteil
-      System.out.println("laufenderGeltwVorteil: " + laufenderGeltwVorteil);
-   
-   
-   
-         //Ãœbertragswerte
-        System.out.println("uebertragw_rvAn: " +uebertragw_rvAn);
-        System.out.println("uebertragw_avAn: " +uebertragw_avAn);
-        System.out.println("uebertragw_kvAn: " +uebertragw_kvAn);
-       System.out.println("uebertragw_kvZusatz: " + uebertragw_kvZusatz);
-       System.out.println("uebertragw_pvAn: " + uebertragw_pvAn);
-   
-     //Sozialversicherung
-      System.out.println("solzvers_kvBemes: " + solzvers_kvBemes);
-      System.out.println("solzvers_rvBemes: " + solzvers_rvBemes);
-      System.out.println("solzvers_rvAn: " + solzvers_rvAn);
-      System.out.println("solzvers_avAn: " + solzvers_avAn);
-      System.out.println("solzvers_kvAn: " + solzvers_kvAn);
-      System.out.println("solzvers_kvZusatz: " + solzvers_kvZusatz);
-       System.out.println("solzvers_pvAn: " +solzvers_pvAn);
-       System.out.println("solzvers_rvAg: " +solzvers_rvAg);
-       System.out.println("solzvers_avAg: " +solzvers_avAg);
-       System.out.println("solzvers_kvAg: " +solzvers_kvAg);
-      System.out.println("solzvers_pvAg: " + solzvers_pvAg);
-   
-   //SozV Gleitzone
-     System.out.println("sozgleit_sozVEntgelt: " +  sozgleit_sozVEntgelt );
-      System.out.println("sozgleit_rvAn: " + sozgleit_rvAn);
-      System.out.println("sozgleit_avAn: " + sozgleit_avAn);
-      System.out.println("sozgleit_kvAn: " + sozgleit_kvAn);
-      System.out.println("sozgleit_kvZusatz: " + sozgleit_kvZusatz);
-      System.out.println("sozgleit_pvAn: " + sozgleit_pvAn);
-   
-   
-   
-   
-   //sozialversichungspflichtiger Anteil des baV-Beitrags
-      System.out.println("solzAnteilBaV_bavBeitrag: " + solzAnteilBaV_bavBeitrag);
-      System.out.println("solzAnteilBaV_sozVPflicht: " + solzAnteilBaV_sozVPflicht);
-     System.out.println("solzAnteilBaV_sozVpflichtBrut: " +  solzAnteilBaV_sozVpflichtBrut);
-    
-   
-   //RV-pflichtiger Beitrag
-      System.out.println("kvPflichtigerBeitrag: " + kvPflichtigerBeitrag);
-   System.out.println("rvPflichtigerBeitrag: " + rvPflichtigerBeitrag);
-   
-   //Umlagen
-      System.out.println("u1: " + u1);
-      System.out.println("u2: " + u2);
-      System.out.println("insolvenz: " + insolvenz);
-   
-   //UmschlÃ¤ge Minijob/Gleitzone
-     System.out.println("mini_u1: " + mini_u1);
-     System.out.println("mini_u2: " +  mini_u2);
-     System.out.println("mini_insolvenz: " +  mini_insolvenz);
-   
-   //Ãœbergabewerte
-      System.out.println("uebWerte_u1: " + uebWerte_u1);
-      System.out.println("uebWerte_u2: " + uebWerte_u2);
-      System.out.println("uebWerte_insolvenz: " + uebWerte_insolvenz);
-   
-   //U1 und U2 bei Minijob
-      System.out.println("minijob_u1: " + minijob_u1);
-     System.out.println("minijob_u2: " +  minijob_u2);
-   
-   //MiniJob % Pauschale
-     System.out.println("minijobpausch_miniJob: " +  minijobpausch_miniJob);
-      System.out.println("minijobpausch_kv: " + minijobpausch_kv);
-      System.out.println("minijobpausch_lst: " + minijobpausch_lst);
-      System.out.println("minijobpausch_berueck: " + minijobpausch_berueck);
-   
-   //Pflege
-   
-       System.out.println("pflege_pflegeversicherung: " +pflege_pflegeversicherung);
-      System.out.println("pflege_pflegeSachsen: " + pflege_pflegeSachsen);
-      System.out.println("pflege_pflegeArbeitgeber: " +pflege_pflegeArbeitgeber);
-      System.out.println("BK: " +bk_bk);
-      System.out.println("BKeinmal: " +bk1_bkeinmal);
- System.out.println("BKKist: " +bk1_kist);
     }
-    
-    
-    
-      //Berechnungen für payrollAccount
-    public void calcsVGrossRv(){
-        switch(month){
-            case "Januar":{
+
+    //Berechnungen für payrollAccount
+    public void calcsVGrossRv() {
+        switch (month) {
+            case "Januar": {
                 calcsVGrossRvJanuar();
-            }break;
-            default:{
+            }
+            break;
+            default: {
                 calcsVGrossRvOtherMonths();
-            }break;
-            
+            }
+            break;
+
         }
     }
-    
-    public void calcsvGrossKv(){
-        switch(month){
-            case "Januar":{
+
+    public void calcsvGrossKv() {
+        switch (month) {
+            case "Januar": {
                 calcsvGrossKvJanuar();
-            }break;
-            default:{
+            }
+            break;
+            default: {
                 calcsvGrossKvOtherMonths();
-            }break;
+            }
+            break;
         }
-    }  
+    }
 
     private void calcsVGrossRvJanuar() {
-        sVGrossRv = min(solzAnteilBaV_sozVpflichtBrut, solzAnteilBaV_sozVpflichtBrut-(payrollAccount.getSteuerbrutto()-(solzvers_rvBemes)));
+        sVGrossRv = min(solzAnteilBaV_sozVpflichtBrut, solzAnteilBaV_sozVpflichtBrut - (payrollAccount.getSteuerbrutto() - (solzvers_rvBemes)));
     }
 
     private void calcsVGrossRvOtherMonths() {
-        if(payrollAccount.getEinmalbezuegeimbruttolohn() > 0){
-            sVGrossRv = min(solzAnteilBaV_sozVpflichtBrut,max(solzvers_rvBemes,solzAnteilBaV_sozVpflichtBrut-sumTaxGrossTillNow - (solzvers_rvBemes*changeMonthInNumberGehaltsrechnung())));
-        }else{
-            sVGrossRv = min(solzAnteilBaV_sozVpflichtBrut,lohnst_rvbemes/12);
+        if (payrollAccount.getEinmalbezuegeimbruttolohn() > 0) {
+            sVGrossRv = min(solzAnteilBaV_sozVpflichtBrut, max(solzvers_rvBemes, solzAnteilBaV_sozVpflichtBrut - sumTaxGrossTillNow - (solzvers_rvBemes * changeMonthInNumberGehaltsrechnung())));
+        } else {
+            sVGrossRv = min(solzAnteilBaV_sozVpflichtBrut, lohnst_rvbemes / 12);
         }
     }
 
-   
-    
-    
-    
     private void calcsvGrossKvJanuar() {
-        
-                svGrossKv = min(solzAnteilBaV_sozVpflichtBrut, solzAnteilBaV_sozVpflichtBrut-(payrollAccount.getSteuerbrutto()-(solzvers_kvBemes)));
-                 //System.out.println("sVBrutto")
+
+        svGrossKv = min(solzAnteilBaV_sozVpflichtBrut, solzAnteilBaV_sozVpflichtBrut - (payrollAccount.getSteuerbrutto() - (solzvers_kvBemes)));
+        //System.out.println("sVBrutto")
     }
 
     private void calcsvGrossKvOtherMonths() {
-         if(payrollAccount.getEinmalbezuegeimbruttolohn() > 0){
-            svGrossKv = min(solzAnteilBaV_sozVpflichtBrut,max(solzvers_kvBemes,solzAnteilBaV_sozVpflichtBrut-sumTaxGrossTillNow - (solzvers_kvBemes*changeMonthInNumberGehaltsrechnung())));
-        }else{
-            svGrossKv = min(solzAnteilBaV_sozVpflichtBrut,solzvers_kvBemes);
+        if (payrollAccount.getEinmalbezuegeimbruttolohn() > 0) {
+            svGrossKv = min(solzAnteilBaV_sozVpflichtBrut, max(solzvers_kvBemes, solzAnteilBaV_sozVpflichtBrut - sumTaxGrossTillNow - (solzvers_kvBemes * changeMonthInNumberGehaltsrechnung())));
+        } else {
+            svGrossKv = min(solzAnteilBaV_sozVpflichtBrut, solzvers_kvBemes);
         }
     }
 
-    
-    private double changeNumberTwoDecimals(double number, int places){
-        if(places< 0 ) throw new IllegalArgumentException();
+    private double changeNumberTwoDecimals(double number, int places) {
+        if (places < 0) {
+            throw new IllegalArgumentException();
+        }
         String twodec;
         String stringnumber = String.valueOf(number);
         String[] split = stringnumber.split("\\.");
-        if(split[1].length() >= 2){
+        if (split[1].length() >= 2) {
             twodec = split[1].substring(0, places);
-        }else{
+        } else {
             twodec = split[1];
         }
-        
+
         String endNumber = split[0] + "." + twodec;
-        
+
         return Double.valueOf(endNumber);
     }
 }

@@ -3,7 +3,7 @@ package com.hrsoftware.jsf;
 import com.hrsoftware.jpa.Stammdaten;
 import com.hrsoftware.jsf.util.JsfUtil;
 import com.hrsoftware.jsf.util.JsfUtil.PersistAction;
-import com.hrsoftware.jpaservice.StammdatenFacade;
+import com.hrsoftware.jpaservice.StammdatenService;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,7 +24,7 @@ import javax.faces.convert.FacesConverter;
 public class StammdatenController implements Serializable {
 
     @EJB
-    private com.hrsoftware.jpaservice.StammdatenFacade ejbFacade;
+    private com.hrsoftware.jpaservice.StammdatenService ejbFacade;
     private List<Stammdaten> items = null;
     private Stammdaten selected;
 
@@ -45,7 +45,7 @@ public class StammdatenController implements Serializable {
     protected void initializeEmbeddableKey() {
     }
 
-    private StammdatenFacade getFacade() {
+    private StammdatenService getFacade() {
         return ejbFacade;
     }
 

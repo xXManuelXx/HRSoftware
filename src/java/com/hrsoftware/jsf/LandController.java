@@ -3,7 +3,7 @@ package com.hrsoftware.jsf;
 import com.hrsoftware.jpa.Land;
 import com.hrsoftware.jsf.util.JsfUtil;
 import com.hrsoftware.jsf.util.JsfUtil.PersistAction;
-import com.hrsoftware.jpaservice.LandFacade;
+import com.hrsoftware.jpaservice.LandService;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,7 +24,7 @@ import javax.faces.convert.FacesConverter;
 public class LandController implements Serializable {
 
     @EJB
-    private com.hrsoftware.jpaservice.LandFacade ejbFacade;
+    private com.hrsoftware.jpaservice.LandService ejbFacade;
     private List<Land> items = null;
     private Land selected;
 
@@ -45,7 +45,7 @@ public class LandController implements Serializable {
     protected void initializeEmbeddableKey() {
     }
 
-    private LandFacade getFacade() {
+    private LandService getFacade() {
         return ejbFacade;
     }
 
