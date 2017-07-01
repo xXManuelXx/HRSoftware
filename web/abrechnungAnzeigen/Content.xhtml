@@ -1,0 +1,180 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="/template/HRSoftwareTemplate.xhtml">
+    <ui:define name="metadata">
+    </ui:define>
+    <ui:define name="content">            
+        <h:form id="MitarbeiterListForm">
+            <p:growl id="growl" life="2000" />
+            <p:panel header="Mitarbeiterauswahl">
+                <p:dataTable id="datalist" value="#{abrechnungAnzeigenController.itemsEmployee}" var="item"
+                             selectionMode="single" selection="#{abrechnungAnzeigenController.selectedEmployee}"
+                             paginator="true"
+                             rowKey="#{item.id}"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             >
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListMitarbeiterTitle_id}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.id}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListMitarbeiterTitle_nachname}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nachname}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListMitarbeiterTitle_vorname}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.vorname}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundle.ListMitarbeiterTitle_geburtsdatum}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.geburtsdatum}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+            <!--</h:form>-->
+            <br />
+            <br/>
+            <p:panel header="Abrechnungszeitraum">
+                <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+                    <p:outputLabel for="month" value="Monat: " />
+                    <p:selectOneRadio id="month" value="#{abrechnungAnzeigenController.monthView.month}"  layout="grid" columns="3">
+                        <f:selectItems value="#{abrechnungAnzeigenController.monthView.months}" var="c" itemLabel="#{month}" itemValue="#{month}"/>
+                    </p:selectOneRadio>
+                </h:panelGrid>
+            </p:panel>
+            <p:panel header="Lohnabrechnung anzeigen">
+                <h:form id="AbrechnungErstellen">
+                    <h:panelGroup style="white-space: nowrap">                        
+                        <p:commandButton value="Abrechnung anzeigen" id="ajaxAnzeigen" actionListener="#{abrechnungAnzeigenController.showSalaryStatement}" update="lohnabrechnung" styleClass="ui-priority-primary" />
+                    </h:panelGroup>
+                    <h3>Abrechnung</h3>
+                    <p:panelGrid id="lohnabrechnung" style="margin-top:20px" >
+                        <f:facet name="header">
+                            <p:row>
+                                <p:column colspan="7">Lohnabrechnung</p:column>
+                            </p:row>
+                        </f:facet>
+
+                        <p:separator style="visibility: hidden"/>
+                        <p:row>
+                            <p:column style="font-weight: bold;">Monat</p:column>
+                            <p:column><h:outputText value="#{abrechnungAnzeigenController.monthView.month}"/></p:column>
+                            <p:column style="font-weight: bold;">Geburtsdatum</p:column>
+                            <p:column><h:outputText value="#{abrechnungAnzeigenController.birthdate}"/></p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column style="font-weight: bold;">Name</p:column>
+                            <p:column><h:outputText value="#{abrechnungAnzeigenController.selectedEmployee.nachname}"/></p:column>
+                            <p:column style="font-weight: bold;">(Jahres)hinzurechnungsbetrag</p:column>
+                            <p:column><h:outputText value="#{abrechnungAnzeigenController.selectedBaseData.hinzurechnungsbetrag}"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="font-weight: bold;">Vorname</p:column>
+                            <p:column><h:outputText value="#{abrechnungAnzeigenController.selectedEmployee.vorname}"/></p:column>
+                            <p:column style="font-weight: bold;">(Jahres)Lohnsteuerfreibetrag</p:column>
+                            <p:column><h:outputText value="#{abrechnungAnzeigenController.selectedBaseData.lohnsteuerfreibetrag}"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="font-weight: bold;">Datum Erstellung</p:column>
+                            <p:column><h:outputText value="#{abrechnungAnzeigenController.date}"/></p:column>
+                            <p:column style="font-weight: bold;">Krankenversicherung</p:column>
+                            <p:column><h:outputText value="#{abrechnungAnzeigenController.selectedBaseData.krankenversicherung}"/>%</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="font-weight: bold;">Steuerklasse</p:column>
+                            <p:column><h:outputText value="#{abrechnungAnzeigenController.selectedBaseData.steuerklasse}"/></p:column>
+                            <p:column style="font-weight: bold;">Kinder (Lohnsteuerkarte)</p:column>
+                            <p:column><h:outputText value="#{abrechnungAnzeigenController.selectedBaseData.kinderfreibetrag}"/></p:column>
+                        </p:row>
+
+
+                        <p:row>
+                            <p:column colspan="6" styleClass="ui-widget-header">
+                                <p:spacer height="0.5"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3" styleClass="ui-widget-header" style="font-weight: bold;">Bruttoarbeitsentgelt (ohne geltwerte Vorteile)</p:column>
+                            <p:column  styleClass="ui-widget-header" style=" text-align: right;font-weight: bold;"><h:outputText value="#{abrechnungAnzeigenController.payrollAccount.bruttolohn}"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column></p:column>
+                            <p:column colspan="2">Lohnsteuer</p:column>
+                            <p:column  style=" text-align: right;"><h:outputText value="#{abrechnungAnzeigenController.payrollAccount.lohnsteuer}"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column></p:column>
+                            <p:column colspan="2">9% Kirchensteuer</p:column>
+                            <p:column  style=" text-align: right;"><h:outputText value="#{abrechnungAnzeigenController.payrollAccount.kirchensteuer}"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column></p:column>
+                            <p:column colspan="2">Solidaritätszuschlag</p:column>
+                            <p:column  style=" text-align: right;"><h:outputText value="#{abrechnungAnzeigenController.payrollAccount.solidaritaetszuschlag}"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column></p:column>
+                            <p:column colspan="2">7,3% Krankenkassenbeitrag</p:column>
+                            <p:column  style=" text-align: right;"><h:outputText value="#{abrechnungAnzeigenController.payrollAccount.kvan}"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column></p:column>
+                            <p:column colspan="2">1,1% Zusatzbeitrag</p:column>
+                            <p:column  style=" text-align: right;"><h:outputText value="#{abrechnungAnzeigenController.payrollAccount.kvzusatzbeitrag}"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column></p:column>
+                            <p:column colspan="2">1,5% Arbeitslosenversicherung</p:column>
+                            <p:column  style=" text-align: right;"><h:outputText value="#{abrechnungAnzeigenController.payrollAccount.avan}"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column></p:column>
+                            <p:column colspan="2">9,35% Rentenversicherung</p:column>
+                            <p:column  style=" text-align: right;"><h:outputText value="#{abrechnungAnzeigenController.payrollAccount.rvan}"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column></p:column>
+                            <p:column colspan="2">1,175% Pflegeversicherung</p:column>
+                            <p:column  style=" text-align: right;"><h:outputText value="#{abrechnungAnzeigenController.payrollAccount.pvan}"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="6">
+                                <p:spacer height="0.5"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column styleClass="ui-widget-header"  colspan="3" style="font-weight: bold;">Summe steuerfreie Bezüge</p:column>
+                            <p:column   styleClass="ui-widget-header"  style=" text-align: right;font-weight: bold;"><h:outputText value="#{abrechnungAnzeigenController.payrollAccount.steuerfreiebezuege}"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3" style="font-weight: bold;">Auszahlungsbetrag</p:column>
+                            <p:column  style=" text-align: right;font-weight: bold;"><h:outputText value="#{abrechnungAnzeigenController.payrollAccount.gesamtnetto}"/></p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:separator style="visibility: hidden"/>
+
+                    <p:commandButton value="Abrechnung Drucken" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
+                        <p:printer target="lohnabrechnung" />
+                    </p:commandButton>
+                </h:form> 
+            </p:panel>
+        </h:form> 
+
+    </ui:define>
+</ui:composition>

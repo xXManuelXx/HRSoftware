@@ -3,7 +3,7 @@ package com.hrsoftware.jsf;
 import com.hrsoftware.jpa.MaSchulung;
 import com.hrsoftware.jsf.util.JsfUtil;
 import com.hrsoftware.jsf.util.JsfUtil.PersistAction;
-import com.hrsoftware.jpacontroller.MaSchulungFacade;
+import com.hrsoftware.jpaservice.MaSchulungFacade;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,7 +24,7 @@ import javax.faces.convert.FacesConverter;
 public class MaSchulungController implements Serializable {
 
     @EJB
-    private com.hrsoftware.jpacontroller.MaSchulungFacade ejbFacade;
+    private com.hrsoftware.jpaservice.MaSchulungFacade ejbFacade;
     private List<MaSchulung> items = null;
     private MaSchulung selected;
 

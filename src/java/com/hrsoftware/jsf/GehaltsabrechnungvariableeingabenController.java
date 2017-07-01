@@ -3,7 +3,7 @@ package com.hrsoftware.jsf;
 import com.hrsoftware.jpa.Gehaltsabrechnungvariableeingaben;
 import com.hrsoftware.jsf.util.JsfUtil;
 import com.hrsoftware.jsf.util.JsfUtil.PersistAction;
-import com.hrsoftware.jpacontroller.GehaltsabrechnungvariableeingabenFacade;
+import com.hrsoftware.jpaservice.GehaltsabrechnungvariableeingabenFacade;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,7 +24,7 @@ import javax.faces.convert.FacesConverter;
 public class GehaltsabrechnungvariableeingabenController implements Serializable {
 
     @EJB
-    private com.hrsoftware.jpacontroller.GehaltsabrechnungvariableeingabenFacade ejbFacade;
+    private com.hrsoftware.jpaservice.GehaltsabrechnungvariableeingabenFacade ejbFacade;
     private List<Gehaltsabrechnungvariableeingaben> items = null;
     private Gehaltsabrechnungvariableeingaben selected;
 

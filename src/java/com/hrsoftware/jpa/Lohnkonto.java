@@ -61,6 +61,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Lohnkonto.findBySVBruttoRVSum", query = "SELECT SUM(l.svbruttorv) as svbruttorvsum FROM Lohnkonto l where l.maid = :maid")
     , @NamedQuery(name = "Lohnkonto.findBySVBruttoKVSum", query = "SELECT SUM(l.svbruttokv) as svbruttokvsum FROM Lohnkonto l where l.maid = :maid")
     , @NamedQuery(name = "Lohnkonto.findByJahresEinmalbezuege", query = "SELECT SUM(l.einmalbezuegeimbruttolohn) as einmalbezuegeimbruttolohnsum FROM Lohnkonto l where l.maid = :maid")
+    , @NamedQuery(name = "Lohnkonto.findByMonatUndMitarbeiter", query = "SELECT l FROM Lohnkonto l WHERE l.monat = :monat AND l.maid = :maid")
     , @NamedQuery(name = "Lohnkonto.findByGesamtnetto", query = "SELECT l FROM Lohnkonto l WHERE l.gesamtnetto = :gesamtnetto")})
 public class Lohnkonto implements Serializable {
 

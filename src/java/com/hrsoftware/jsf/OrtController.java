@@ -3,7 +3,7 @@ package com.hrsoftware.jsf;
 import com.hrsoftware.jpa.Ort;
 import com.hrsoftware.jsf.util.JsfUtil;
 import com.hrsoftware.jsf.util.JsfUtil.PersistAction;
-import com.hrsoftware.jpacontroller.OrtFacade;
+import com.hrsoftware.jpaservice.OrtFacade;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,7 +24,7 @@ import javax.faces.convert.FacesConverter;
 public class OrtController implements Serializable {
 
     @EJB
-    private com.hrsoftware.jpacontroller.OrtFacade ejbFacade;
+    private com.hrsoftware.jpaservice.OrtFacade ejbFacade;
     private List<Ort> items = null;
     private Ort selected;
 

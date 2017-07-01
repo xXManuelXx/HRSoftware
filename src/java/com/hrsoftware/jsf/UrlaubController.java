@@ -3,7 +3,7 @@ package com.hrsoftware.jsf;
 import com.hrsoftware.jpa.Urlaub;
 import com.hrsoftware.jsf.util.JsfUtil;
 import com.hrsoftware.jsf.util.JsfUtil.PersistAction;
-import com.hrsoftware.jpacontroller.UrlaubFacade;
+import com.hrsoftware.jpaservice.UrlaubFacade;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,7 +24,7 @@ import javax.faces.convert.FacesConverter;
 public class UrlaubController implements Serializable {
 
     @EJB
-    private com.hrsoftware.jpacontroller.UrlaubFacade ejbFacade;
+    private com.hrsoftware.jpaservice.UrlaubFacade ejbFacade;
     private List<Urlaub> items = null;
     private Urlaub selected;
 

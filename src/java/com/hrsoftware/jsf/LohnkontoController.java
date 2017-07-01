@@ -3,7 +3,7 @@ package com.hrsoftware.jsf;
 import com.hrsoftware.jpa.Lohnkonto;
 import com.hrsoftware.jsf.util.JsfUtil;
 import com.hrsoftware.jsf.util.JsfUtil.PersistAction;
-import com.hrsoftware.jpacontroller.LohnkontoFacade;
+import com.hrsoftware.jpaservice.LohnkontoFacade;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,7 +24,7 @@ import javax.inject.Inject;
 public class LohnkontoController implements Serializable {
 
     @Inject
-    private com.hrsoftware.jpacontroller.LohnkontoFacade ejbFacade;
+    private com.hrsoftware.jpaservice.LohnkontoFacade ejbFacade;
     private List<Lohnkonto> items = null;
     private Lohnkonto selected;
 

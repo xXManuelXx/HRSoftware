@@ -5,15 +5,11 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://java.sun.com/jsf/core">
-    
-    
     <p:growl id="messages" showDetail="false"/> 
 	<h:form>
            <p:outputPanel id="menuPanel"  layout="block" >
                 <p:menu toggleable="true">
-                    
                     <p:submenu label="CRUD" icon="ui-icon ui-icon-refresh" >
-			
                         <p:menuitem outcome="/abteilung/List" value="Show All Abteilung Items"/>
                         <p:menuitem outcome="/arbeitszeit/List" value="Show All Arbeitszeit Items"/>
                         <p:menuitem outcome="/gehalt/List" value="Show All Gehalt Items"/>
@@ -33,7 +29,8 @@
                         <p:menuitem outcome="/user/List" value="Show All User Items"/>
                     </p:submenu>
                     <p:submenu label="Personalwesen" icon="ui-icon ui-icon-refresh" >
-			<p:menuitem outcome="/abrechnung/Content" value="Abrechnung" />
+			<p:menuitem outcome="/abrechnung/Content" value="Abrechnung erstellen" />
+                        <p:menuitem outcome="/abrechnungAnzeigen/Content" value="Abrechnung anzeigen" />
                     </p:submenu>
                 </p:menu>
           </p:outputPanel>

@@ -3,7 +3,7 @@ package com.hrsoftware.jsf;
 import com.hrsoftware.jpa.MaHistorie;
 import com.hrsoftware.jsf.util.JsfUtil;
 import com.hrsoftware.jsf.util.JsfUtil.PersistAction;
-import com.hrsoftware.jpacontroller.MaHistorieFacade;
+import com.hrsoftware.jpaservice.MaHistorieFacade;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,7 +24,7 @@ import javax.faces.convert.FacesConverter;
 public class MaHistorieController implements Serializable {
 
     @EJB
-    private com.hrsoftware.jpacontroller.MaHistorieFacade ejbFacade;
+    private com.hrsoftware.jpaservice.MaHistorieFacade ejbFacade;
     private List<MaHistorie> items = null;
     private MaHistorie selected;
 

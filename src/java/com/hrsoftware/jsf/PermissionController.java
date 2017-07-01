@@ -3,7 +3,7 @@ package com.hrsoftware.jsf;
 import com.hrsoftware.jpa.Permission;
 import com.hrsoftware.jsf.util.JsfUtil;
 import com.hrsoftware.jsf.util.JsfUtil.PersistAction;
-import com.hrsoftware.jpacontroller.PermissionFacade;
+import com.hrsoftware.jpaservice.PermissionFacade;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,7 +24,7 @@ import javax.faces.convert.FacesConverter;
 public class PermissionController implements Serializable {
 
     @EJB
-    private com.hrsoftware.jpacontroller.PermissionFacade ejbFacade;
+    private com.hrsoftware.jpaservice.PermissionFacade ejbFacade;
     private List<Permission> items = null;
     private Permission selected;
 

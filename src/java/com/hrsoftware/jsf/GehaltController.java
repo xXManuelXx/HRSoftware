@@ -3,7 +3,7 @@ package com.hrsoftware.jsf;
 import com.hrsoftware.jpa.Gehalt;
 import com.hrsoftware.jsf.util.JsfUtil;
 import com.hrsoftware.jsf.util.JsfUtil.PersistAction;
-import com.hrsoftware.jpacontroller.GehaltFacade;
+import com.hrsoftware.jpaservice.GehaltFacade;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,7 +24,7 @@ import javax.faces.convert.FacesConverter;
 public class GehaltController implements Serializable {
 
     @EJB
-    private com.hrsoftware.jpacontroller.GehaltFacade ejbFacade;
+    private com.hrsoftware.jpaservice.GehaltFacade ejbFacade;
     private List<Gehalt> items = null;
     private Gehalt selected;
 

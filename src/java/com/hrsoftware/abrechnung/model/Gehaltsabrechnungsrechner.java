@@ -14,7 +14,7 @@ import com.hrsoftware.jpa.Gehaltsabrechnungvariableeingaben;
 import com.hrsoftware.jpa.Lohnkonto;
 import com.hrsoftware.jpa.Mitarbeiter;
 import com.hrsoftware.jpa.Stammdaten;
-import com.hrsoftware.jpacontroller.StammdatenFacade;
+import com.hrsoftware.jpaservice.StammdatenFacade;
 import java.io.Serializable;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
